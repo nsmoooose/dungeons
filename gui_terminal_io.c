@@ -24,6 +24,26 @@ void (*d_gui_terminal_key) (char key) = 0;
 struct d_gui_terminal_size d_gui_terminal_size;
 
 void
+d_gui_terminal_box (int x1, int y1, int x2, int y2, char key) {
+	d_gui_terminal_setpos (x1, y1);
+	for (int i=x1;i<=x2;++i) {
+		printf ("%c", key);
+	}
+
+	for (int i=y1+1;i<y2;++i) {
+		d_gui_terminal_setpos (x1, i);
+		printf ("%c", key);
+		d_gui_terminal_setpos (x2, i);
+		printf ("%c", key);
+	}
+
+	d_gui_terminal_setpos (x1, y2);
+	for (int i=x1;i<=x2;++i) {
+		printf ("%c", key);
+	}
+}
+
+void
 d_gui_terminal_update_size () {
 	struct winsize ws;
 	if (ioctl(0, TIOCGWINSZ, &ws) == -1) {
@@ -49,9 +69,22 @@ d_gui_terminal_setpos (int x, int y) {
 }
 
 void
-d_gui_terminal_printf_center (int x, int y, const char *format) {
+d_gui_terminal_printf_center (int x, int y, const char *format, ...) {
 	int width = strlen (format);
 	d_gui_terminal_setpos (x - (width / 2), y);
+	printf (format);
+}
+
+void
+d_gui_terminal_printf_left (int x, int y, const char *format, ...) {
+	d_gui_terminal_setpos (x, y);
+	printf (format);
+}
+
+void
+d_gui_terminal_printf_right (int x, int y, const char *format, ...) {
+	int width = strlen (format);
+	d_gui_terminal_setpos (x - (width), y);
 	printf (format);
 }
 
@@ -65,109 +98,90 @@ d_gui_terminal_show_cursor () {
 	printf ("\033[?25h");
 }
 
-void
-d_gui_terminal_set_style (enum d_gui_terminal_style style) {
-	switch (style) {
-	case d_normal:
-		break;
-	case d_bold:
-		break;
-	case d_italic:
-		break;
-	default:
-		d_bug ("Invalid terminal style");
-	}
-}
-
-void
-d_gui_terminal_set_text_color (enum d_gui_terminal_color color) {
-	switch (color) {
+void d_gui_terminal_set_color (enum d_gui_terminal_color bg, enum d_gui_terminal_color text) {
+	printf ("\033[");
+	switch (text) {
 	case d_black:
-		printf ("\033[0;30m");
+		printf ("0;30");
 		break;
 	case d_dark_gray:
-		printf ("\033[1;30m");
-		break;
-	case d_blue:
-		printf ("\033[0;34m");
-		break;
-	case d_light_blue:
-		printf ("\033[1;34m");
-		break;
-	case d_green:
-		printf ("\033[0;32m");
-		break;
-	case d_light_green:
-		printf ("\033[1;32m");
-		break;
-	case d_cyan:
-		printf ("\033[0;36m");
-		break;
-	case d_light_cyan:
-		printf ("\033[1;36m");
+		printf ("1;30");
 		break;
 	case d_red:
-		printf ("\033[0;31m");
+		printf ("0;31");
 		break;
 	case d_light_red:
-		printf ("\033[1;31m");
+		printf ("1;31");
 		break;
-	case d_purple:
-		printf ("\033[0;35m");
+	case d_green:
+		printf ("0;32");
 		break;
-	case d_light_purple:
-		printf ("\033[1;35m");
+	case d_light_green:
+		printf ("1;32");
 		break;
 	case d_brown:
-		printf ("\033[0;33m");
+		printf ("0;33");
 		break;
 	case d_yellow:
-		printf ("\033[1;33m");
+		printf ("1;33");
+		break;
+	case d_blue:
+		printf ("0;34");
+		break;
+	case d_light_blue:
+		printf ("1;34");
+		break;
+	case d_purple:
+		printf ("0;35");
+		break;
+	case d_light_purple:
+		printf ("1;35");
+		break;
+	case d_cyan:
+		printf ("0;36");
+		break;
+	case d_light_cyan:
+		printf ("1;36");
 		break;
 	case d_light_gray:
-		printf ("\033[0;37m");
+		printf ("0;37");
 		break;
 	case d_white:
-		printf ("\033[1;37m");
+		printf ("1;37");
 		break;
 	default:
 		d_bug ("Invalid terminal color");
 	}
-}
 
-void d_gui_terminal_set_bg_color (enum d_gui_terminal_color color) {
-	switch (color) {
+	printf (";");
+
+	switch (bg) {
+	case d_none:
+		printf ("0m");
+		break;
 	case d_black:
-		break;
-	case d_dark_gray:
-		break;
-	case d_blue:
-		break;
-	case d_light_blue:
-		break;
-	case d_green:
-		break;
-	case d_light_green:
-		break;
-	case d_cyan:
-		break;
-	case d_light_cyan:
+		printf ("40m");
 		break;
 	case d_red:
+		printf ("41m");
 		break;
-	case d_light_red:
-		break;
-	case d_purple:
-		break;
-	case d_light_purple:
-		break;
-	case d_brown:
+	case d_green:
+		printf ("42m");
 		break;
 	case d_yellow:
+		printf ("43m");
 		break;
-	case d_light_gray:
+	case d_blue:
+		printf ("44m");
+		break;
+	case d_purple:
+		printf ("45m");
+		break;
+	case d_cyan:
+		printf ("46m");
 		break;
 	case d_white:
+		printf ("47m");
 		break;
 	default:
 		d_bug ("Invalid terminal color");
@@ -220,12 +234,9 @@ d_gui_terminal_process_input (int fd) {
 		}
 	}
 	for (int i=0;i<result;++i) {
-		switch (buffer[i]) {
-		case 'q':
-			d_quit = 1;
-			break;
+		if (d_gui_terminal_key) {
+			d_gui_terminal_key (buffer[i]);
 		}
-		/* TODO call registred keyboard handler. */
 	}
 }
 
@@ -267,13 +278,13 @@ d_gui_terminal_run () {
 	d_gui_terminal_update = d_gui_terminal_main_menu_update;
 	d_gui_terminal_key = d_gui_terminal_main_menu_key;
 
-	double now = d_time_get ();
-	double last = now;
+	double last = 0;
 
 	d_gui_terminal_clear ();
 	d_gui_terminal_hide_cursor ();
 
 	while (!d_quit) {
+		double now = d_time_get ();
 		d_gui_terminal_process_input (STDIN_FILENO);
 		d_gui_terminal_step (now, last-now);
 	}

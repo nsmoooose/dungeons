@@ -2,6 +2,7 @@
 
 #include "clock.h"
 #include "error.h"
+#include "gui_terminal_game.h"
 #include "gui_terminal_io.h"
 #include "gui_terminal_main_menu.h"
 
@@ -22,14 +23,16 @@ d_gui_terminal_main_menu_update (double now, double delta) {
 
 void
 d_gui_terminal_main_menu_draw () {
+	d_gui_terminal_set_color (d_black, d_green);
+	d_gui_terminal_clear ();
+
 	int center = d_gui_terminal_size.width / 2;
 
-	d_gui_terminal_set_text_color (d_green);
 	for (int i=0;i<7;++i) {
 		d_gui_terminal_printf_center (center, 3 + i, d_gui_terminal_game_title[i]);
 	}
 
-	d_gui_terminal_set_text_color (d_light_gray);
+	d_gui_terminal_set_color (d_black, d_light_gray);
 	d_gui_terminal_printf_center (center, 13, "n) New game");
 	d_gui_terminal_printf_center (center, 14, "c) Continue");
 	d_gui_terminal_printf_center (center, 15, "e) Explore ");
@@ -41,7 +44,9 @@ d_gui_terminal_main_menu_key (char key) {
 	switch (key) {
 	case 'n':
 	case 'N':
-		/* TODO New game will create a new world. */
+		d_gui_terminal_update = d_gui_terminal_game_update;
+		d_gui_terminal_draw = d_gui_terminal_game_draw;
+		d_gui_terminal_key = d_gui_terminal_game_key;
 		break;
 
 	case 'c':
