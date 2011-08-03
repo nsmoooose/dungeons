@@ -35,8 +35,13 @@ void d_gui_terminal_show_cursor ();
 void d_gui_terminal_set_style (enum d_gui_terminal_style style);
 void d_gui_terminal_set_text_color (enum d_gui_terminal_color color);
 void d_gui_terminal_set_bg_color (enum d_gui_terminal_color color);
+void d_gui_terminal_sigint (int sig);
 
-void d_gui_terminal_step ();
+void d_gui_terminal_step (double now, double delta);
 void d_gui_terminal_run ();
+
+void d_gui_terminal_main_menu_update (double now, double delta);
+void d_gui_terminal_main_menu_draw ();
+void d_gui_terminal_main_menu_key (char key);
 
 #endif
