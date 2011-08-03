@@ -1,5 +1,5 @@
-#ifndef __DUNGEONS_GUI_TERMINAL_H__
-#define __DUNGEONS_GUI_TERMINAL_H__
+#ifndef __DUNGEONS_GUI_TERMINAL_IO_H__
+#define __DUNGEONS_GUI_TERMINAL_IO_H__
 
 enum d_gui_terminal_style {
 	d_normal,
@@ -26,6 +26,17 @@ enum d_gui_terminal_color {
 	d_white
 };
 
+extern int d_quit;
+
+extern struct d_gui_terminal_size{
+	int width;
+	int height;
+} d_gui_terminal_size;
+
+extern void (*d_gui_terminal_update) (double now, double delta);
+extern void (*d_gui_terminal_draw) ();
+extern void (*d_gui_terminal_key) (char key);
+
 void d_gui_terminal_update_size ();
 void d_gui_terminal_clear ();
 void d_gui_terminal_setpos (int x, int y);
@@ -39,9 +50,5 @@ void d_gui_terminal_sigint (int sig);
 
 void d_gui_terminal_step (double now, double delta);
 void d_gui_terminal_run ();
-
-void d_gui_terminal_main_menu_update (double now, double delta);
-void d_gui_terminal_main_menu_draw ();
-void d_gui_terminal_main_menu_key (char key);
 
 #endif

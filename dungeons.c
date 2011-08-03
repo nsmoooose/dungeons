@@ -1,6 +1,6 @@
 #include <stdio.h>
 
-#include "gui_terminal.h"
+#include "gui_terminal_io.h"
 
 int
 main (int argc, char *argv[]) {

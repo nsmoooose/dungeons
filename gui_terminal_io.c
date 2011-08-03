@@ -9,17 +9,8 @@
 
 #include "clock.h"
 #include "error.h"
-#include "gui_terminal.h"
-
-const char *d_gui_terminal_game_title[] = {
-	"DDDDD   U    U N    N  GGGG  EEEEE  OOOO   N    N  SSSS ",
-	"D    D  U    U NN   N G    G E     O    O  NN   N S    S",
-	"D     D U    U N N  N G      E     O    O  N N  N S     ",
-	"D     D U    U N N  N G  GG  EEEE  O    O  N N  N  SSSS ",
-	"D     D U    U N  N N G    G E     O    O  N  N N      S",
-	"D    D  U    U N   NN G    G E     O    O  N   NN S    S",
-	"DDDDD    UUUU  N    N  GGGG  EEEEE  OOOO   N    N  SSSS "
-};
+#include "gui_terminal_io.h"
+#include "gui_terminal_main_menu.h"
 
 double d_redraw_last = 0.0;
 double d_redraw_interval = 1.0;
@@ -30,10 +21,7 @@ void (*d_gui_terminal_update) (double now, double delta) = 0;
 void (*d_gui_terminal_draw) () = 0;
 void (*d_gui_terminal_key) (char key) = 0;
 
-struct {
-	int width;
-	int height;
-} d_gui_terminal_size;
+struct d_gui_terminal_size d_gui_terminal_size;
 
 void
 d_gui_terminal_update_size () {
@@ -299,50 +287,4 @@ d_gui_terminal_run () {
 void
 d_gui_terminal_sigint (int sig) {
 	d_quit = 1;
-}
-
-void
-d_gui_terminal_main_menu_update (double now, double delta) {
-	usleep (100000);
-}
-
-void
-d_gui_terminal_main_menu_draw () {
-	int center = d_gui_terminal_size.width / 2;
-
-	d_gui_terminal_set_text_color (d_green);
-	for (int i=0;i<7;++i) {
-		d_gui_terminal_printf_center (center, 3 + i, d_gui_terminal_game_title[i]);
-	}
-
-	d_gui_terminal_set_text_color (d_light_gray);
-	d_gui_terminal_printf_center (center, 13, "n) New game");
-	d_gui_terminal_printf_center (center, 14, "c) Continue");
-	d_gui_terminal_printf_center (center, 15, "e) Explore ");
-	d_gui_terminal_printf_center (center, 16, "q) Quit    ");
-}
-
-void
-d_gui_terminal_main_menu_key (char key) {
-	switch (key) {
-	case 'n':
-	case 'N':
-		/* TODO New game will create a new world. */
-		break;
-
-	case 'c':
-	case 'C':
-		/* TODO Load a previously saved game. */
-		break;
-
-	case 'e':
-	case 'E':
-		/* TODO just lookaround without playing. */
-		break;
-
-	case 'q':
-	case 'Q':
-		d_quit = 1;
-		break;
-	}
 }
