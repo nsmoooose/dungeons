@@ -1,6 +1,7 @@
 #include <errno.h>
 #include <fcntl.h>
 #include <signal.h>
+#include <stdarg.h>
 #include <stdio.h>
 #include <string.h>
 #include <sys/ioctl.h>
@@ -72,20 +73,29 @@ void
 d_gui_terminal_printf_center (int x, int y, const char *format, ...) {
 	int width = strlen (format);
 	d_gui_terminal_setpos (x - (width / 2), y);
-	printf (format);
+	va_list args;
+	va_start (args, format);
+	vprintf (format, args);
+	va_end (args);
 }
 
 void
 d_gui_terminal_printf_left (int x, int y, const char *format, ...) {
 	d_gui_terminal_setpos (x, y);
-	printf (format);
+	va_list args;
+	va_start (args, format);
+	vprintf (format, args);
+	va_end (args);
 }
 
 void
 d_gui_terminal_printf_right (int x, int y, const char *format, ...) {
 	int width = strlen (format);
 	d_gui_terminal_setpos (x - (width), y);
-	printf (format);
+	va_list args;
+	va_start (args, format);
+	vprintf (format, args);
+	va_end (args);
 }
 
 void

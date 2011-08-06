@@ -1,5 +1,5 @@
 export CFLAGS+=-std=gnu99 -g -Os -Wall -pedantic -Werror -I$(CURDIR)
-export LIBS+=-lrt
+export LIBS+=-lrt -lm
 
 all: dungeons
 

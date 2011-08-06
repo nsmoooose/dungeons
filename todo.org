@@ -1,0 +1,22 @@
+Some things to get done
+
+* TODO Embed help as files in the binary?
+  Here is a good link on how to do this:
+  http://www.linuxjournal.com/content/embedding-file-executable-aka-hello-world-version-5967
+* TODO Stack of callback handlers for the terminal gui.
+  Basically I want to push, pop the callback handlers. This way
+  you can end one part of the game by pop:ing to get back to the
+  main menu.
+
+  Build a d_stack struct and functions.
+  - d_stack_create
+  - d_stack_destroy
+  - d_stack_push
+  - d_stack_pop
+  - d_stack_at
+
+* TODO Message box widget.
+  - Push callback handlers.
+  - Draw handler uses previous draw handler and after that it will
+	draw with its own.
+  - When keyboard is pressed we pop the callback handlers.
