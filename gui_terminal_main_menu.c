@@ -23,7 +23,7 @@ d_gui_terminal_main_menu_update (double now, double delta) {
 
 void
 d_gui_terminal_main_menu_draw () {
-	d_gui_terminal_set_color (d_black, d_green);
+	d_gui_terminal_set_color (d_black_green);
 	d_gui_terminal_clear ();
 
 	int center = d_gui_terminal_size.width / 2;
@@ -32,7 +32,7 @@ d_gui_terminal_main_menu_draw () {
 		d_gui_terminal_printf_center (center, 3 + i, d_gui_terminal_game_title[i]);
 	}
 
-	d_gui_terminal_set_color (d_black, d_light_gray);
+	d_gui_terminal_set_color (d_black_white);
 	d_gui_terminal_printf_center (center, 13, "n) New game");
 	d_gui_terminal_printf_center (center, 14, "c) Continue");
 	d_gui_terminal_printf_center (center, 15, "e) Explore ");

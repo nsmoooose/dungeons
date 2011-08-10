@@ -17,30 +17,30 @@ static struct d_gui_terminal_game_view_point *d_viewpoint=0;
 void
 d_gui_terminal_draw_terrain () {
 	if (!d_viewpoint || !d_terrain) {
-		d_gui_terminal_set_color (d_green, d_light_green);
+		d_gui_terminal_set_color (d_green_white);
 		d_gui_terminal_clear ();
 		return;
 	}
 
-	for (int x=2;x<=d_gui_terminal_size.width-1;++x) {
-		for (int y=2;y<=d_gui_terminal_size.height-1;++y) {
+	for (int x=1;x<=d_gui_terminal_size.width-1;++x) {
+		for (int y=1;y<=d_gui_terminal_size.height-1;++y) {
 			int realx = d_viewpoint->x - d_gui_terminal_size.width / 2 + x;
 			int realy = d_viewpoint->y - d_gui_terminal_size.height / 2 + y;
 
 			float f = d_fractal_heightmap_get (d_terrain, realx, realy);
 			if (f < d_viewpoint->z - 5.0) {
 				/* earth. Should be black */
-				d_gui_terminal_set_color (d_black, d_light_gray);
+				d_gui_terminal_set_color (d_black_white);
 				d_gui_terminal_printf_left (x, y, " ");
 			}
 			else if (f > d_viewpoint->z + 5.0) {
 				/* sky. should be blueish. */
-				d_gui_terminal_set_color (d_cyan, d_light_green);
+				d_gui_terminal_set_color (d_cyan_white);
 				d_gui_terminal_printf_left (x, y, " ");
 			}
 			else {
 				/* On this level. Green as gras. */
-				d_gui_terminal_set_color (d_green, d_light_green);
+				d_gui_terminal_set_color (d_green_white);
 				d_gui_terminal_printf_left (x, y, " ");
 			}
 		}
@@ -64,35 +64,35 @@ void
 d_gui_terminal_game_draw () {
 	d_gui_terminal_draw_terrain ();
 
-	d_gui_terminal_set_color (d_white, d_white);
-	d_gui_terminal_box (1, 1, d_gui_terminal_size.width,
-						d_gui_terminal_size.height, ' ');
-	d_gui_terminal_set_color (d_black, d_green);
-	d_gui_terminal_printf_center (d_gui_terminal_size.width / 2, 1,
+	d_gui_terminal_set_color (d_white_black);
+	d_gui_terminal_box (0, 0, d_gui_terminal_size.width-1,
+						d_gui_terminal_size.height-1, ' ');
+	d_gui_terminal_set_color (d_black_green);
+	d_gui_terminal_printf_center (d_gui_terminal_size.width / 2, 0,
 								  "|======- D U N G E O N S -======|");
 
-	d_gui_terminal_set_color (d_black, d_white);
+	d_gui_terminal_set_color (d_black_white);
 	if (d_viewpoint) {
-		d_gui_terminal_printf_left (5, 1, " N 37 23.516, W 122 02.625 (%d, %d), %dm ",
+		d_gui_terminal_printf_left (5, 0, " N 37 23.516, W 122 02.625 (%d, %d), %dm ",
 									d_viewpoint->x, d_viewpoint->y, d_viewpoint->z);
 	}
 
-	d_gui_terminal_printf_right (d_gui_terminal_size.width - 5, 1,
+	d_gui_terminal_printf_right (d_gui_terminal_size.width - 5, 0,
 								 " Tuesday 15 march year 723 ");
 
 	int middle = d_gui_terminal_size.height / 2;
-	d_gui_terminal_printf_left (1, middle - 1, " ");
-	d_gui_terminal_printf_left (1, middle, "W");
-	d_gui_terminal_printf_left (1, middle + 1, " ");
+	d_gui_terminal_printf_left (0, middle - 1, " ");
+	d_gui_terminal_printf_left (0, middle, "W");
+	d_gui_terminal_printf_left (0, middle + 1, " ");
 
-	d_gui_terminal_printf_left (d_gui_terminal_size.width, middle - 1, " ");
-	d_gui_terminal_printf_left (d_gui_terminal_size.width, middle, "E");
-	d_gui_terminal_printf_left (d_gui_terminal_size.width, middle + 1, " ");
+	d_gui_terminal_printf_left (d_gui_terminal_size.width-1, middle - 1, " ");
+	d_gui_terminal_printf_left (d_gui_terminal_size.width-1, middle, "E");
+	d_gui_terminal_printf_left (d_gui_terminal_size.width-1, middle + 1, " ");
 
 	d_gui_terminal_printf_center (d_gui_terminal_size.width / 2,
-								  d_gui_terminal_size.height, " S ");
+								  d_gui_terminal_size.height-1, " S ");
 
-	d_gui_terminal_set_color (d_none, d_white);
+	d_gui_terminal_set_color (d_black_white);
 }
 
 void

@@ -1,5 +1,6 @@
 #include <errno.h>
 #include <fcntl.h>
+#include <ncurses.h>
 #include <signal.h>
 #include <stdarg.h>
 #include <stdio.h>
@@ -16,7 +17,6 @@
 double d_redraw_last = 0.0;
 double d_redraw_interval = 1.0;
 int d_quit = 0;
-static struct termios d_gui_terminal_orig_tty;
 
 void (*d_gui_terminal_update) (double now, double delta) = 0;
 void (*d_gui_terminal_draw) () = 0;
@@ -24,23 +24,49 @@ void (*d_gui_terminal_key) (char key) = 0;
 
 struct d_gui_terminal_size d_gui_terminal_size;
 
+struct d_color_def {
+	enum d_gui_terminal_color index;
+	int bg;
+	int text;
+};
+
+/*
+  COLOR_BLACK
+  COLOR_RED
+  COLOR_GREEN
+  COLOR_YELLOW
+  COLOR_BLUE
+  COLOR_MAGENTA
+  COLOR_CYAN
+  COLOR_WHITE
+*/
+
+struct d_color_def d_color_def[] =
+{
+	{ d_black_white, COLOR_BLACK, COLOR_WHITE },
+	{ d_white_black, COLOR_WHITE, COLOR_BLACK },
+	{ d_black_green, COLOR_BLACK, COLOR_GREEN },
+	{ d_green_white, COLOR_GREEN, COLOR_WHITE },
+	{ d_cyan_white, COLOR_CYAN, COLOR_WHITE }
+};
+
 void
 d_gui_terminal_box (int x1, int y1, int x2, int y2, char key) {
 	d_gui_terminal_setpos (x1, y1);
 	for (int i=x1;i<=x2;++i) {
-		printf ("%c", key);
+		printw ("%c", key);
 	}
 
 	for (int i=y1+1;i<y2;++i) {
 		d_gui_terminal_setpos (x1, i);
-		printf ("%c", key);
+		printw ("%c", key);
 		d_gui_terminal_setpos (x2, i);
-		printf ("%c", key);
+		printw ("%c", key);
 	}
 
 	d_gui_terminal_setpos (x1, y2);
 	for (int i=x1;i<=x2;++i) {
-		printf ("%c", key);
+		printw ("%c", key);
 	}
 }
 
@@ -61,12 +87,16 @@ d_gui_terminal_update_size () {
 
 void
 d_gui_terminal_clear () {
-	printf ("\033[2J");
+	if (erase () == ERR) {
+		d_bug ("Failed to erase screen.");
+	}
 }
 
 void
 d_gui_terminal_setpos (int x, int y) {
-	printf ("\033[%d;%dH", y, x);
+	if (move (y, x) == ERR) {
+		d_bug ("Failed to move cursor position.");
+	}
 }
 
 void
@@ -75,7 +105,7 @@ d_gui_terminal_printf_center (int x, int y, const char *format, ...) {
 	d_gui_terminal_setpos (x - (width / 2), y);
 	va_list args;
 	va_start (args, format);
-	vprintf (format, args);
+	vwprintw (stdscr, format, args);
 	va_end (args);
 }
 
@@ -84,7 +114,7 @@ d_gui_terminal_printf_left (int x, int y, const char *format, ...) {
 	d_gui_terminal_setpos (x, y);
 	va_list args;
 	va_start (args, format);
-	vprintf (format, args);
+	vwprintw (stdscr, format, args);
 	va_end (args);
 }
 
@@ -94,143 +124,27 @@ d_gui_terminal_printf_right (int x, int y, const char *format, ...) {
 	d_gui_terminal_setpos (x - (width), y);
 	va_list args;
 	va_start (args, format);
-	vprintf (format, args);
+	vwprintw (stdscr, format, args);
 	va_end (args);
 }
 
 void
 d_gui_terminal_hide_cursor () {
-	printf ("\033[?25l");
+	if (curs_set (0) == ERR) {
+		d_bug ("Failed to hide cursor");
+	}
 }
 
 void
 d_gui_terminal_show_cursor () {
-	printf ("\033[?25h");
-}
-
-void d_gui_terminal_set_color (enum d_gui_terminal_color bg, enum d_gui_terminal_color text) {
-	printf ("\033[");
-	switch (text) {
-	case d_black:
-		printf ("0;30");
-		break;
-	case d_dark_gray:
-		printf ("1;30");
-		break;
-	case d_red:
-		printf ("0;31");
-		break;
-	case d_light_red:
-		printf ("1;31");
-		break;
-	case d_green:
-		printf ("0;32");
-		break;
-	case d_light_green:
-		printf ("1;32");
-		break;
-	case d_brown:
-		printf ("0;33");
-		break;
-	case d_yellow:
-		printf ("1;33");
-		break;
-	case d_blue:
-		printf ("0;34");
-		break;
-	case d_light_blue:
-		printf ("1;34");
-		break;
-	case d_purple:
-		printf ("0;35");
-		break;
-	case d_light_purple:
-		printf ("1;35");
-		break;
-	case d_cyan:
-		printf ("0;36");
-		break;
-	case d_light_cyan:
-		printf ("1;36");
-		break;
-	case d_light_gray:
-		printf ("0;37");
-		break;
-	case d_white:
-		printf ("1;37");
-		break;
-	default:
-		d_bug ("Invalid terminal color");
-	}
-
-	printf (";");
-
-	switch (bg) {
-	case d_none:
-		printf ("0m");
-		break;
-	case d_black:
-		printf ("40m");
-		break;
-	case d_red:
-		printf ("41m");
-		break;
-	case d_green:
-		printf ("42m");
-		break;
-	case d_yellow:
-		printf ("43m");
-		break;
-	case d_blue:
-		printf ("44m");
-		break;
-	case d_purple:
-		printf ("45m");
-		break;
-	case d_cyan:
-		printf ("46m");
-		break;
-	case d_white:
-		printf ("47m");
-		break;
-	default:
-		d_bug ("Invalid terminal color");
+	if (curs_set (1) == ERR) {
+		d_bug ("Failed to show cursor");
 	}
 }
 
-void
-d_gui_terminal_tty_raw (int fd) {
-    struct termios raw;
-
-    raw = d_gui_terminal_orig_tty;  /* copy original and then modify below */
-
-    /* input modes - clear indicated ones giving: no break, no CR to NL,
-       no parity check, no strip char, no start/stop output (sic) control */
-    raw.c_iflag &= ~(BRKINT |ICRNL | INPCK | ISTRIP | IXON);
-
-    /* output modes - clear giving: no post processing such as NL to CR+NL */
-    raw.c_oflag &= ~(OPOST);
-
-    /* control modes - set 8 bit chars */
-    raw.c_cflag |= (CS8);
-
-    /* local modes - clear giving: echoing off, canonical off (no erase with
-       backspace, ^U,...),  no extended functions, no signal chars (^Z,^C) */
-    raw.c_lflag &= ~(ECHO | ICANON | IEXTEN | ISIG);
-
-    /* control chars - set return condition: min number of bytes and timer */
-    raw.c_cc[VMIN] = 0; raw.c_cc[VTIME] = 0; /* immediate - anything       */
-
-    /* put terminal in raw mode after flushing */
-    if (tcsetattr(fd, TCSAFLUSH, &raw) < 0) {
-		d_bug ("Cannot set raw tty mode.");
-	}
-}
-
-void
-d_gui_terminal_tty_reset (int fd) {
-    if (tcsetattr(fd, TCSAFLUSH, &d_gui_terminal_orig_tty) < 0) {
-		d_bug ("failed to reset tty.");
+void d_gui_terminal_set_color (enum d_gui_terminal_color pair) {
+	if (color_set (pair, 0) == ERR) {
+		d_bug ("Failed to set color");
 	}
 }
 
@@ -265,22 +179,42 @@ d_gui_terminal_step (double now, double delta) {
 		d_gui_terminal_draw ();
 
 		d_redraw_last = now;
-		fflush(stdout);
+		refresh ();
 	}
 }
 
 void
 d_gui_terminal_run () {
+	if (!initscr ()) {
+		d_bug ("Failed to initialize ncurses.");
+	}
+
 	int flags = fcntl (STDIN_FILENO, F_GETFL, 0);
 	if (fcntl (STDIN_FILENO, F_SETFL, flags | O_NONBLOCK) == -1) {
 		d_bug ("Failed to reconfigure stdin to nonblocking.");
 	}
 
-	if (tcgetattr(STDIN_FILENO, &d_gui_terminal_orig_tty) < 0) {
-		d_bug ("Failed to obtain current tty settings.");
+	if (cbreak () == ERR) {
+		d_bug ("Failed to put terminal in raw mode.");
+	}
+	if (noecho () == ERR) {
+		d_bug ("Failed to disable echo");
+	}
+	if (keypad (stdscr, TRUE) == ERR) {
+		d_bug ("Failed to initialize keypad");
+	}
+	if (curs_set (0) == ERR) {
+		d_bug ("Failed to hide cursor.");
+	}
+	if (start_color () == ERR) {
+		d_bug ("Failed to initialize colors.");
 	}
 
-	d_gui_terminal_tty_raw (STDIN_FILENO);
+	for (int i=0;i<sizeof (d_color_def) / sizeof (struct d_color_def);++i) {
+		if (init_pair (d_color_def[i].index, d_color_def[i].text, d_color_def[i].bg) == ERR) {
+			d_bug ("Failed to set color");
+		}
+	}
 
 	signal (SIGINT, d_gui_terminal_sigint);
 
@@ -299,10 +233,13 @@ d_gui_terminal_run () {
 		d_gui_terminal_step (now, last-now);
 	}
 
-	d_gui_terminal_tty_reset (STDIN_FILENO);
 	d_gui_terminal_clear ();
 	d_gui_terminal_setpos (0, 0);
 	d_gui_terminal_show_cursor ();
+
+	if (endwin () == ERR) {
+		d_bug ("Failed to end ncurses.");
+	}
 }
 
 void
