@@ -17,6 +17,7 @@
 double d_redraw_last = 0.0;
 double d_redraw_interval = 1.0;
 int d_quit = 0;
+int d_request_redraw = 0;
 
 void (*d_gui_terminal_update) (double now, double delta) = 0;
 void (*d_gui_terminal_draw) () = 0;
@@ -149,6 +150,11 @@ void d_gui_terminal_set_color (enum d_gui_terminal_color pair) {
 }
 
 void
+d_gui_terminal_request_redraw () {
+	d_request_redraw = 1;
+}
+
+void
 d_gui_terminal_process_input (int fd) {
 	char buffer[10];
 	ssize_t result = read (fd, buffer, 10);
@@ -156,6 +162,9 @@ d_gui_terminal_process_input (int fd) {
 		if (errno == EAGAIN || errno == EWOULDBLOCK) {
 			return;
 		}
+	}
+	if (result > 0) {
+		d_gui_terminal_request_redraw ();
 	}
 	for (int i=0;i<result;++i) {
 		if (d_gui_terminal_key) {
@@ -170,10 +179,11 @@ d_gui_terminal_step (double now, double delta) {
 		d_gui_terminal_update (now, delta);
 	}
 
-	if (now - d_redraw_last < d_redraw_interval) {
+	if (d_request_redraw == 0 && now - d_redraw_last < d_redraw_interval) {
 		return;
 	}
 	if (d_gui_terminal_draw) {
+		d_request_redraw = 0;
 		d_gui_terminal_update_size ();
 
 		d_gui_terminal_draw ();

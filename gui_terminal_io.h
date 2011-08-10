@@ -31,6 +31,7 @@ void d_gui_terminal_show_cursor ();
 void d_gui_terminal_set_color (enum d_gui_terminal_color pair);
 void d_gui_terminal_sigint (int sig);
 void d_gui_terminal_box (int x1, int y1, int x2, int y2, char key);
+void d_gui_terminal_request_redraw ();
 
 void d_gui_terminal_step (double now, double delta);
 void d_gui_terminal_run ();
