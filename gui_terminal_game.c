@@ -163,6 +163,6 @@ d_gui_terminal_game_key (char key) {
 		/* TODO pause the game. */
 		break;
 	default:
-		printf ("Received key: %d\n", key);
+		break;
 	}
 }
