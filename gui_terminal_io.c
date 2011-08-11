@@ -156,20 +156,13 @@ d_gui_terminal_request_redraw () {
 
 void
 d_gui_terminal_process_input (int fd) {
-	char buffer[10];
-	ssize_t result = read (fd, buffer, 10);
-	if (result == -1) {
-		if (errno == EAGAIN || errno == EWOULDBLOCK) {
-			return;
-		}
+	int key = getch ();
+	if (key == ERR) {
+		return;
 	}
-	if (result > 0) {
+	if (d_gui_terminal_key) {
+		d_gui_terminal_key (key);
 		d_gui_terminal_request_redraw ();
-	}
-	for (int i=0;i<result;++i) {
-		if (d_gui_terminal_key) {
-			d_gui_terminal_key (buffer[i]);
-		}
 	}
 }
 
@@ -199,25 +192,23 @@ d_gui_terminal_run () {
 		d_bug ("Failed to initialize ncurses.");
 	}
 
-	int flags = fcntl (STDIN_FILENO, F_GETFL, 0);
-	if (fcntl (STDIN_FILENO, F_SETFL, flags | O_NONBLOCK) == -1) {
-		d_bug ("Failed to reconfigure stdin to nonblocking.");
-	}
-
 	if (cbreak () == ERR) {
 		d_bug ("Failed to put terminal in raw mode.");
 	}
 	if (noecho () == ERR) {
-		d_bug ("Failed to disable echo");
+		d_bug ("Failed to disable echo.");
 	}
 	if (keypad (stdscr, TRUE) == ERR) {
-		d_bug ("Failed to initialize keypad");
+		d_bug ("Failed to initialize keypad.");
 	}
 	if (curs_set (0) == ERR) {
 		d_bug ("Failed to hide cursor.");
 	}
 	if (start_color () == ERR) {
 		d_bug ("Failed to initialize colors.");
+	}
+	if (nodelay (stdscr, TRUE) == ERR) {
+		d_bug ("Failed to set nodelay.");
 	}
 
 	for (int i=0;i<sizeof (d_color_def) / sizeof (struct d_color_def);++i) {
