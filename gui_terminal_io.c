@@ -1,5 +1,6 @@
 #include <errno.h>
 #include <fcntl.h>
+#include <math.h>
 #include <ncurses.h>
 #include <signal.h>
 #include <stdarg.h>
@@ -73,17 +74,7 @@ d_gui_terminal_box (int x1, int y1, int x2, int y2, char key) {
 
 void
 d_gui_terminal_update_size () {
-	struct winsize ws;
-	if (ioctl(0, TIOCGWINSZ, &ws) == -1) {
-		d_bug ("Failed to get terminal size.");
-	}
-	if (d_gui_terminal_size.width != ws.ws_col ||
-		d_gui_terminal_size.height != ws.ws_row) {
-		d_gui_terminal_clear ();
-	}
-
-	d_gui_terminal_size.width = ws.ws_col;
-	d_gui_terminal_size.height = ws.ws_row;
+	getmaxyx (stdscr, d_gui_terminal_size.height, d_gui_terminal_size.width);
 }
 
 void
@@ -103,7 +94,7 @@ d_gui_terminal_setpos (int x, int y) {
 void
 d_gui_terminal_printf_center (int x, int y, const char *format, ...) {
 	int width = strlen (format);
-	d_gui_terminal_setpos (x - (width / 2), y);
+	d_gui_terminal_setpos (fmax (x - (width / 2), 0), y);
 	va_list args;
 	va_start (args, format);
 	vwprintw (stdscr, format, args);
