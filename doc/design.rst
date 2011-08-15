@@ -74,8 +74,12 @@ Layout::
 Features
 ========
 
-World
------
+World generation
+----------------
+
+Smallest area the game covers is a tile. A tile is 
+
+Tilesize is 10 m in all directions.
 
 The world is divided into levels. Each level is 10 meters high.
 w h d 1000 x 1000 x 3000

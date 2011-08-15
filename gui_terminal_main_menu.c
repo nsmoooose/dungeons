@@ -16,6 +16,43 @@ const char *d_gui_terminal_game_title[] = {
 	"DDDDD    UUUU  N    N  GGGG  EEEEE  OOOO   N    N  SSSS "
 };
 
+static void d_cmd_new_game_cb ();
+static void d_cmd_load_game_cb ();
+static void d_cmd_explore_cb ();
+static void d_cmd_quit_cb ();
+
+struct d_command d_cmd_new_game = { "New game", d_cmd_new_game_cb };
+struct d_command d_cmd_load_game = { "Load game", d_cmd_load_game_cb };
+struct d_command d_cmd_explore = { "Explore", d_cmd_explore_cb };
+struct d_command d_cmd_quit = { "Quit", d_cmd_quit_cb };
+
+struct d_key_binding d_main_menu[] = {
+	{ 'a', &d_cmd_new_game },
+ 	{ 'c', &d_cmd_load_game },
+	{ 'e', &d_cmd_explore },
+	{ 'q', &d_cmd_quit }
+};
+
+static void
+d_cmd_new_game_cb () {
+	d_gui_terminal_update = d_gui_terminal_game_update;
+	d_gui_terminal_draw = d_gui_terminal_game_draw;
+	d_gui_terminal_key = d_gui_terminal_game_key;
+}
+
+static void
+d_cmd_load_game_cb () {
+}
+
+static void
+d_cmd_explore_cb () {
+}
+
+static void
+d_cmd_quit_cb () {
+	d_quit = 1;
+}
+
 void
 d_gui_terminal_main_menu_update (double now, double delta) {
 	usleep (100000);

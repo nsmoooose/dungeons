@@ -6,7 +6,8 @@ enum d_gui_terminal_color {
 	d_white_black,
 	d_black_green,
 	d_green_white,
-	d_cyan_white
+	d_cyan_white,
+	d_black_blue
 };
 
 extern int d_quit;
@@ -15,6 +16,16 @@ extern struct d_gui_terminal_size {
 	int width;
 	int height;
 } d_gui_terminal_size;
+
+struct d_command {
+	char *description;
+	void (*invoke) ();
+};
+
+struct d_key_binding {
+	int key;
+	struct d_command *command;
+};
 
 extern void (*d_gui_terminal_update) (double now, double delta);
 extern void (*d_gui_terminal_draw) ();

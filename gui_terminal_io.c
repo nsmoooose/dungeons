@@ -49,7 +49,8 @@ struct d_color_def d_color_def[] =
 	{ d_white_black, COLOR_WHITE, COLOR_BLACK },
 	{ d_black_green, COLOR_BLACK, COLOR_GREEN },
 	{ d_green_white, COLOR_GREEN, COLOR_WHITE },
-	{ d_cyan_white, COLOR_CYAN, COLOR_WHITE }
+	{ d_cyan_white, COLOR_CYAN, COLOR_WHITE },
+	{ d_black_blue, COLOR_BLACK, COLOR_BLUE }
 };
 
 void
