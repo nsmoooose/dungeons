@@ -2,11 +2,11 @@
 
 #include "clock.h"
 #include "error.h"
-#include "gui_terminal_game.h"
-#include "gui_terminal_io.h"
-#include "gui_terminal_main_menu.h"
+#include "curses_game.h"
+#include "curses_io.h"
+#include "curses_main_menu.h"
 
-const char *d_gui_terminal_game_title[] = {
+const char *d_curses_game_title[] = {
 	"DDDDD   U    U N    N  GGGG  EEEEE  OOOO   N    N  SSSS ",
 	"D    D  U    U NN   N G    G E     O    O  NN   N S    S",
 	"D     D U    U N N  N G      E     O    O  N N  N S     ",
@@ -35,9 +35,9 @@ struct d_key_binding d_main_menu[] = {
 
 static void
 d_cmd_new_game_cb () {
-	d_gui_terminal_update = d_gui_terminal_game_update;
-	d_gui_terminal_draw = d_gui_terminal_game_draw;
-	d_gui_terminal_key = d_gui_terminal_game_key;
+	d_curses_update = d_curses_game_update;
+	d_curses_draw = d_curses_game_draw;
+	d_curses_key = d_curses_game_key;
 }
 
 static void
@@ -54,36 +54,36 @@ d_cmd_quit_cb () {
 }
 
 void
-d_gui_terminal_main_menu_update (double now, double delta) {
+d_curses_main_menu_update (double now, double delta) {
 	usleep (100000);
 }
 
 void
-d_gui_terminal_main_menu_draw () {
-	d_gui_terminal_set_color (d_black_green);
-	d_gui_terminal_clear ();
+d_curses_main_menu_draw () {
+	d_curses_set_color (d_black_green);
+	d_curses_clear ();
 
-	int center = d_gui_terminal_size.width / 2;
+	int center = d_curses_size.width / 2;
 
 	for (int i=0;i<7;++i) {
-		d_gui_terminal_printf_center (center, 3 + i, d_gui_terminal_game_title[i]);
+		d_curses_printf_center (center, 3 + i, d_curses_game_title[i]);
 	}
 
-	d_gui_terminal_set_color (d_black_white);
-	d_gui_terminal_printf_center (center, 13, "n) New game");
-	d_gui_terminal_printf_center (center, 14, "c) Continue");
-	d_gui_terminal_printf_center (center, 15, "e) Explore ");
-	d_gui_terminal_printf_center (center, 16, "q) Quit    ");
+	d_curses_set_color (d_black_white);
+	d_curses_printf_center (center, 13, "n) New game");
+	d_curses_printf_center (center, 14, "c) Continue");
+	d_curses_printf_center (center, 15, "e) Explore ");
+	d_curses_printf_center (center, 16, "q) Quit    ");
 }
 
 void
-d_gui_terminal_main_menu_key (char key) {
+d_curses_main_menu_key (char key) {
 	switch (key) {
 	case 'n':
 	case 'N':
-		d_gui_terminal_update = d_gui_terminal_game_update;
-		d_gui_terminal_draw = d_gui_terminal_game_draw;
-		d_gui_terminal_key = d_gui_terminal_game_key;
+		d_curses_update = d_curses_game_update;
+		d_curses_draw = d_curses_game_draw;
+		d_curses_key = d_curses_game_key;
 		break;
 
 	case 'c':

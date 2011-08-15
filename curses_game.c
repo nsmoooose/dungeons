@@ -3,8 +3,8 @@
 #include "client.h"
 #include "error.h"
 #include "fractal_heightmap.h"
-#include "gui_terminal_game.h"
-#include "gui_terminal_io.h"
+#include "curses_game.h"
+#include "curses_io.h"
 #include "math.h"
 #include "memory.h"
 #include "ui.h"
@@ -24,20 +24,20 @@ static struct d_ui_viewpoint *d_viewpoint=0;
 */
 
 void
-d_gui_terminal_draw_terrain () {
+d_curses_draw_terrain () {
 	if (!d_viewpoint || !d_terrain) {
-		d_gui_terminal_set_color (d_green_white);
-		d_gui_terminal_clear ();
+		d_curses_set_color (d_green_white);
+		d_curses_clear ();
 		return;
 	}
 
-	for (int x=1;x<=d_gui_terminal_size.width-1;++x) {
-		for (int y=1;y<=d_gui_terminal_size.height-1;++y) {
-			int realx = d_viewpoint->x - d_gui_terminal_size.width / 2 + x;
-			int realy = d_viewpoint->y - d_gui_terminal_size.height / 2 + y;
+	for (int x=1;x<=d_curses_size.width-1;++x) {
+		for (int y=1;y<=d_curses_size.height-1;++y) {
+			int realx = d_viewpoint->x - d_curses_size.width / 2 + x;
+			int realy = d_viewpoint->y - d_curses_size.height / 2 + y;
 			if (realx < 0 || realy < 0 || realx > d_terrain->width || realy > d_terrain->height) {
-				d_gui_terminal_set_color (d_black_white);
-				d_gui_terminal_printf_left (x, y, "X");
+				d_curses_set_color (d_black_white);
+				d_curses_printf_left (x, y, "X");
 				continue;
 			}
 
@@ -51,23 +51,23 @@ d_gui_terminal_draw_terrain () {
 			float f = d_fractal_heightmap_get (d_terrain, realx, realy);
 			if (d_viewpoint->z - 15.0 > f && f < 0.0) {
 				/* above ground but below sea level. */
-				d_gui_terminal_set_color (d_black_blue);
-				d_gui_terminal_printf_left (x, y, "~");
+				d_curses_set_color (d_black_blue);
+				d_curses_printf_left (x, y, "~");
 			}
 			else if (d_viewpoint->z + 15.0 > f && f > 0.0) {
 				/* above ground and above sea level. */
-				d_gui_terminal_set_color (d_cyan_white);
-				d_gui_terminal_printf_left (x, y, " ");
+				d_curses_set_color (d_cyan_white);
+				d_curses_printf_left (x, y, " ");
 			}
 			else if (d_viewpoint->z - 15.0 < f) {
 				/* below ground level. */
-				d_gui_terminal_set_color (d_black_white);
-				d_gui_terminal_printf_left (x, y, " ");
+				d_curses_set_color (d_black_white);
+				d_curses_printf_left (x, y, " ");
 			}
 			else if (d_viewpoint->z + 15.0 >= f && d_viewpoint->z - 15.0 <= f) {
 				/* ground level. */
-				d_gui_terminal_set_color (d_black_green);
-				d_gui_terminal_printf_left (x, y, ".");
+				d_curses_set_color (d_black_green);
+				d_curses_printf_left (x, y, ".");
 			}
 			else {
 				d_bug ("Not supposed to happen. Viewpoint z: %d, Ground level: %f", d_viewpoint->z, f);
@@ -77,7 +77,7 @@ d_gui_terminal_draw_terrain () {
 }
 
 void
-d_gui_terminal_game_update (double now, double delta) {
+d_curses_game_update (double now, double delta) {
 	if (!d_terrain) {
 		int size = 2048;
 		d_terrain = d_fractal_heightmap_new (size);
@@ -90,42 +90,42 @@ d_gui_terminal_game_update (double now, double delta) {
 }
 
 void
-d_gui_terminal_game_draw () {
-	d_gui_terminal_draw_terrain ();
+d_curses_game_draw () {
+	d_curses_draw_terrain ();
 
-	d_gui_terminal_set_color (d_white_black);
-	d_gui_terminal_box (0, 0, d_gui_terminal_size.width-1,
-						d_gui_terminal_size.height-1, ' ');
-	d_gui_terminal_set_color (d_black_green);
-	d_gui_terminal_printf_center (d_gui_terminal_size.width / 2, 0,
+	d_curses_set_color (d_white_black);
+	d_curses_box (0, 0, d_curses_size.width-1,
+						d_curses_size.height-1, ' ');
+	d_curses_set_color (d_black_green);
+	d_curses_printf_center (d_curses_size.width / 2, 0,
 								  "|======- D U N G E O N S -======|");
 
-	d_gui_terminal_set_color (d_black_white);
+	d_curses_set_color (d_black_white);
 	if (d_viewpoint) {
-		d_gui_terminal_printf_left (5, 0, " N 37 23.516, W 122 02.625 (%d, %d), %dm ",
+		d_curses_printf_left (5, 0, " N 37 23.516, W 122 02.625 (%d, %d), %dm ",
 									d_viewpoint->x, d_viewpoint->y, d_viewpoint->z);
 	}
 
-	d_gui_terminal_printf_right (d_gui_terminal_size.width - 5, 0,
+	d_curses_printf_right (d_curses_size.width - 5, 0,
 								 " Tuesday 15 march year 723 ");
 
-	int middle = d_gui_terminal_size.height / 2;
-	d_gui_terminal_printf_left (0, middle - 1, " ");
-	d_gui_terminal_printf_left (0, middle, "W");
-	d_gui_terminal_printf_left (0, middle + 1, " ");
+	int middle = d_curses_size.height / 2;
+	d_curses_printf_left (0, middle - 1, " ");
+	d_curses_printf_left (0, middle, "W");
+	d_curses_printf_left (0, middle + 1, " ");
 
-	d_gui_terminal_printf_left (d_gui_terminal_size.width-1, middle - 1, " ");
-	d_gui_terminal_printf_left (d_gui_terminal_size.width-1, middle, "E");
-	d_gui_terminal_printf_left (d_gui_terminal_size.width-1, middle + 1, " ");
+	d_curses_printf_left (d_curses_size.width-1, middle - 1, " ");
+	d_curses_printf_left (d_curses_size.width-1, middle, "E");
+	d_curses_printf_left (d_curses_size.width-1, middle + 1, " ");
 
-	d_gui_terminal_printf_center (d_gui_terminal_size.width / 2,
-								  d_gui_terminal_size.height-1, " S ");
+	d_curses_printf_center (d_curses_size.width / 2,
+								  d_curses_size.height-1, " S ");
 
-	d_gui_terminal_set_color (d_black_white);
+	d_curses_set_color (d_black_white);
 }
 
 void
-d_gui_terminal_game_key (char key) {
+d_curses_game_key (char key) {
 	if (key == 'q') {
 		d_quit = 1;
 		return;
