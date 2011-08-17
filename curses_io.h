@@ -17,16 +17,6 @@ extern struct d_curses_size {
 	int height;
 } d_curses_size;
 
-struct d_command {
-	char *description;
-	void (*invoke) ();
-};
-
-struct d_key_binding {
-	int key;
-	struct d_command *command;
-};
-
 extern void (*d_curses_update) (double now, double delta);
 extern void (*d_curses_draw) ();
 extern void (*d_curses_key) (char key);

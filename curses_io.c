@@ -14,15 +14,13 @@
 #include "error.h"
 #include "curses_io.h"
 #include "curses_main_menu.h"
+#include "curses_widget.h"
+#include "ui.h"
 
 double d_redraw_last = 0.0;
 double d_redraw_interval = 1.0;
 int d_quit = 0;
 int d_request_redraw = 0;
-
-void (*d_curses_update) (double now, double delta) = 0;
-void (*d_curses_draw) () = 0;
-void (*d_curses_key) (char key) = 0;
 
 struct d_curses_size d_curses_size;
 
@@ -147,31 +145,33 @@ d_curses_request_redraw () {
 }
 
 void
-d_curses_process_input (int fd) {
+d_curses_process_input () {
 	int key = getch ();
 	if (key == ERR) {
 		return;
 	}
-	if (d_curses_key) {
-		d_curses_key (key);
+	struct d_ui_handler *handler = d_ui_stack_current ();
+	if (handler && handler->input) {
+		handler->input (handler, key);
 		d_curses_request_redraw ();
 	}
 }
 
 void
 d_curses_step (double now, double delta) {
-	if (d_curses_update) {
-		d_curses_update (now, delta);
+	struct d_ui_handler *handler = d_ui_stack_current ();
+	if (handler && handler->update) {
+		handler->update (handler, now, delta);
 	}
 
 	if (d_request_redraw == 0 && now - d_redraw_last < d_redraw_interval) {
 		return;
 	}
-	if (d_curses_draw) {
+	if (handler && handler->draw) {
 		d_request_redraw = 0;
 		d_curses_update_size ();
 
-		d_curses_draw ();
+		handler->draw (handler);
 
 		d_redraw_last = now;
 		refresh ();
@@ -211,20 +211,21 @@ d_curses_run () {
 
 	signal (SIGINT, d_curses_sigint);
 
-	d_curses_draw = d_curses_main_menu_draw;
-	d_curses_update = d_curses_main_menu_update;
-	d_curses_key = d_curses_main_menu_key;
-
 	double last = 0;
 
 	d_curses_clear ();
 	d_curses_hide_cursor ();
 
+	d_ui_stack_push (&d_main_menu_handler);
+	d_curses_widget_menu (d_main_menu);
+
 	while (!d_quit) {
 		double now = d_time_get ();
-		d_curses_process_input (STDIN_FILENO);
+		d_curses_process_input ();
 		d_curses_step (now, last-now);
 	}
+
+	d_ui_stack_pop ();
 
 	d_curses_clear ();
 	d_curses_setpos (0, 0);

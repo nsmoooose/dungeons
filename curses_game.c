@@ -9,6 +9,17 @@
 #include "memory.h"
 #include "ui.h"
 
+static void d_curses_game_update (struct d_ui_handler *handler, double now, double delta);
+static void d_curses_game_draw (struct d_ui_handler *handler);
+static void d_curses_game_key (struct d_ui_handler *handler, int key);
+
+struct d_ui_handler d_game_handler = {
+	0,
+	d_curses_game_update,
+	d_curses_game_draw,
+	d_curses_game_key
+};
+
 /* static struct d_client_context *d_context = 0; */
 static struct d_heightmap *d_terrain = 0;
 static struct d_ui_viewpoint *d_viewpoint=0;
@@ -76,8 +87,8 @@ d_curses_draw_terrain () {
 	}
 }
 
-void
-d_curses_game_update (double now, double delta) {
+static void
+d_curses_game_update (struct d_ui_handler *handler, double now, double delta) {
 	if (!d_terrain) {
 		int size = 2048;
 		d_terrain = d_fractal_heightmap_new (size);
@@ -89,8 +100,8 @@ d_curses_game_update (double now, double delta) {
 	}
 }
 
-void
-d_curses_game_draw () {
+static void
+d_curses_game_draw (struct d_ui_handler *handler) {
 	d_curses_draw_terrain ();
 
 	d_curses_set_color (d_white_black);
@@ -124,8 +135,8 @@ d_curses_game_draw () {
 	d_curses_set_color (d_black_white);
 }
 
-void
-d_curses_game_key (char key) {
+static void
+d_curses_game_key (struct d_ui_handler *handler, int key) {
 	if (key == 'q') {
 		d_quit = 1;
 		return;

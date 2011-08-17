@@ -21,23 +21,32 @@ static void d_cmd_load_game_cb ();
 static void d_cmd_explore_cb ();
 static void d_cmd_quit_cb ();
 
-struct d_command d_cmd_new_game = { "New game", d_cmd_new_game_cb };
-struct d_command d_cmd_load_game = { "Load game", d_cmd_load_game_cb };
-struct d_command d_cmd_explore = { "Explore", d_cmd_explore_cb };
-struct d_command d_cmd_quit = { "Quit", d_cmd_quit_cb };
+static void d_curses_main_menu_update (struct d_ui_handler *handler, double now, double delta);
+static void d_curses_main_menu_draw (struct d_ui_handler *handler);
 
-struct d_key_binding d_main_menu[] = {
-	{ 'a', &d_cmd_new_game },
+struct d_ui_command d_cmd_new_game = { "New game", d_cmd_new_game_cb };
+struct d_ui_command d_cmd_load_game = { "Load game", d_cmd_load_game_cb };
+struct d_ui_command d_cmd_explore = { "Explore", d_cmd_explore_cb };
+struct d_ui_command d_cmd_quit = { "Quit", d_cmd_quit_cb };
+
+struct d_ui_key_binding d_main_menu[] = {
+	{ 'n', &d_cmd_new_game },
  	{ 'c', &d_cmd_load_game },
 	{ 'e', &d_cmd_explore },
-	{ 'q', &d_cmd_quit }
+	{ 'q', &d_cmd_quit },
+	{ 0, 0 }
+};
+
+struct d_ui_handler d_main_menu_handler = {
+	0,
+	d_curses_main_menu_update,
+	d_curses_main_menu_draw,
+	0
 };
 
 static void
 d_cmd_new_game_cb () {
-	d_curses_update = d_curses_game_update;
-	d_curses_draw = d_curses_game_draw;
-	d_curses_key = d_curses_game_key;
+	d_ui_stack_push (&d_game_handler);
 }
 
 static void
@@ -53,13 +62,13 @@ d_cmd_quit_cb () {
 	d_quit = 1;
 }
 
-void
-d_curses_main_menu_update (double now, double delta) {
+static void
+d_curses_main_menu_update (struct d_ui_handler *handler, double now, double delta) {
 	usleep (100000);
 }
 
-void
-d_curses_main_menu_draw () {
+static void
+d_curses_main_menu_draw (struct d_ui_handler *handler) {
 	d_curses_set_color (d_black_green);
 	d_curses_clear ();
 
@@ -67,38 +76,5 @@ d_curses_main_menu_draw () {
 
 	for (int i=0;i<7;++i) {
 		d_curses_printf_center (center, 3 + i, d_curses_game_title[i]);
-	}
-
-	d_curses_set_color (d_black_white);
-	d_curses_printf_center (center, 13, "n) New game");
-	d_curses_printf_center (center, 14, "c) Continue");
-	d_curses_printf_center (center, 15, "e) Explore ");
-	d_curses_printf_center (center, 16, "q) Quit    ");
-}
-
-void
-d_curses_main_menu_key (char key) {
-	switch (key) {
-	case 'n':
-	case 'N':
-		d_curses_update = d_curses_game_update;
-		d_curses_draw = d_curses_game_draw;
-		d_curses_key = d_curses_game_key;
-		break;
-
-	case 'c':
-	case 'C':
-		/* TODO Load a previously saved game. */
-		break;
-
-	case 'e':
-	case 'E':
-		/* TODO just lookaround without playing. */
-		break;
-
-	case 'q':
-	case 'Q':
-		d_quit = 1;
-		break;
 	}
 }
