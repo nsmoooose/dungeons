@@ -7,7 +7,8 @@ enum d_curses_color {
 	d_black_green,
 	d_green_white,
 	d_cyan_white,
-	d_black_blue
+	d_black_blue,
+	d_black_cyan
 };
 
 extern int d_quit;

@@ -60,25 +60,30 @@ d_curses_draw_terrain () {
 			*/
 
 			float f = d_fractal_heightmap_get (d_terrain, realx, realy);
-			if (d_viewpoint->z - 15.0 > f && f < 0.0) {
+			if (d_viewpoint->z - 15.0 > f && d_viewpoint->z <= 0.0) {
 				/* above ground but below sea level. */
 				d_curses_set_color (d_black_blue);
 				d_curses_printf_left (x, y, "~");
 			}
-			else if (d_viewpoint->z + 15.0 > f && f > 0.0) {
+			else if (f <= d_viewpoint->z + 15.0 && f >= d_viewpoint->z - 15.0) {
+				if (f <= 0.0) {
+					d_curses_set_color (d_black_blue);
+				}
+				else {
+					/* ground level. */
+					d_curses_set_color (d_black_green);
+				}
+				d_curses_printf_left (x, y, ".");
+			}
+			else if (d_viewpoint->z + 15.0 > f && d_viewpoint->z > 0.0) {
 				/* above ground and above sea level. */
-				d_curses_set_color (d_cyan_white);
-				d_curses_printf_left (x, y, " ");
+				d_curses_set_color (d_black_cyan);
+				d_curses_printf_left (x, y, "'");
 			}
 			else if (d_viewpoint->z - 15.0 < f) {
 				/* below ground level. */
 				d_curses_set_color (d_black_white);
 				d_curses_printf_left (x, y, " ");
-			}
-			else if (d_viewpoint->z + 15.0 >= f && d_viewpoint->z - 15.0 <= f) {
-				/* ground level. */
-				d_curses_set_color (d_black_green);
-				d_curses_printf_left (x, y, ".");
 			}
 			else {
 				d_bug ("Not supposed to happen. Viewpoint z: %d, Ground level: %f", d_viewpoint->z, f);
@@ -92,7 +97,7 @@ d_curses_game_update (struct d_ui_handler *handler, double now, double delta) {
 	if (!d_terrain) {
 		int size = 2048;
 		d_terrain = d_fractal_heightmap_new (size);
-		d_fractal_heightmap_generate (d_terrain, 123, 10000.f, 0.7f);
+		d_fractal_heightmap_generate (d_terrain, 123, 10000.f, 0.9f);
 		d_viewpoint = d_calloc (1, sizeof (struct d_ui_viewpoint));
 		d_viewpoint->x = size / 2;
 		d_viewpoint->y = size / 2;
