@@ -5,6 +5,7 @@
 #include "curses_game.h"
 #include "curses_io.h"
 #include "curses_main_menu.h"
+#include "ui_commands.h"
 
 const char *d_curses_game_title[] = {
 	"DDDDD   U    U N    N  GGGG  EEEEE  OOOO   N    N  SSSS ",
@@ -19,7 +20,6 @@ const char *d_curses_game_title[] = {
 static void d_cmd_new_game_cb ();
 static void d_cmd_load_game_cb ();
 static void d_cmd_explore_cb ();
-static void d_cmd_quit_cb ();
 
 static void d_curses_main_menu_update (struct d_ui_handler *handler, double now, double delta);
 static void d_curses_main_menu_draw (struct d_ui_handler *handler);
@@ -27,7 +27,6 @@ static void d_curses_main_menu_draw (struct d_ui_handler *handler);
 struct d_ui_command d_cmd_new_game = { "New game", d_cmd_new_game_cb };
 struct d_ui_command d_cmd_load_game = { "Load game", d_cmd_load_game_cb };
 struct d_ui_command d_cmd_explore = { "Explore", d_cmd_explore_cb };
-struct d_ui_command d_cmd_quit = { "Quit", d_cmd_quit_cb };
 
 struct d_ui_key_binding d_main_menu[] = {
 	{ 'n', &d_cmd_new_game },
@@ -55,11 +54,6 @@ d_cmd_load_game_cb () {
 
 static void
 d_cmd_explore_cb () {
-}
-
-static void
-d_cmd_quit_cb () {
-	d_quit = 1;
 }
 
 static void

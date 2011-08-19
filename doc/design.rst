@@ -25,6 +25,13 @@ the file descriptor.
 Terminal user interface
 =======================
 
+Flow:
+
+Main menu -> New world -> Main menu
+Main menu -> New game -> Select world -> embarkment -> game -> main menu
+
+
+
 Keyboard:
 
 * Arrow keys to move arround.
