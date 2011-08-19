@@ -8,6 +8,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
+#include <time.h>
 
 #include "error.h"
 #include "fractal_heightmap.h"
@@ -141,6 +142,8 @@ d_fractal_is_power_of_2 (int size) {
 void
 d_fractal_heightmap_generate (struct d_heightmap *hm,
 							  int seed, float heightScale, float h) {
+	srandom (time (0));
+
     int	i, j;
     int	stride;
     int	oddline;

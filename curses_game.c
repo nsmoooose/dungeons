@@ -23,6 +23,7 @@ struct d_ui_handler d_game_handler = {
 /* static struct d_client_context *d_context = 0; */
 static struct d_heightmap *d_terrain = 0;
 static struct d_ui_viewpoint *d_viewpoint=0;
+static int d_zoom_level = 1;
 
 /* Symbols to use:
    ~ =
@@ -44,8 +45,8 @@ d_curses_draw_terrain () {
 
 	for (int x=1;x<=d_curses_size.width-1;++x) {
 		for (int y=1;y<=d_curses_size.height-1;++y) {
-			int realx = d_viewpoint->x - d_curses_size.width / 2 + x;
-			int realy = d_viewpoint->y - d_curses_size.height / 2 + y;
+			int realx = d_viewpoint->x - (d_curses_size.width / 2) * d_zoom_level + x * d_zoom_level;
+			int realy = d_viewpoint->y - (d_curses_size.height / 2) * d_zoom_level + y * d_zoom_level;
 			if (realx < 0 || realy < 0 || realx > d_terrain->width || realy > d_terrain->height) {
 				d_curses_set_color (d_black_white);
 				d_curses_printf_left (x, y, "X");
@@ -153,44 +154,39 @@ d_curses_game_key (struct d_ui_handler *handler, int key) {
 
 	switch (key) {
 	case 'w':
-		if (d_viewpoint->y > 0) {
-			d_viewpoint->y--;
-		}
+		d_viewpoint->y = fmax (d_viewpoint->y - 1, 0);
 		break;
 	case 'a':
-		if (d_viewpoint->x > 0) {
-			d_viewpoint->x--;
-		}
+		d_viewpoint->x = fmax (d_viewpoint->x - 1, 0);
 		break;
 	case 's':
-		if (d_viewpoint->y < d_terrain->height - 1) {
-			d_viewpoint->y++;
-		}
+		d_viewpoint->y = fmin (d_viewpoint->y + 1, d_terrain->height);
 		break;
 	case 'd':
-		if (d_viewpoint->x < d_terrain->width - 1) {
-			d_viewpoint->x++;
-		}
+		d_viewpoint->x = fmin (d_viewpoint->x + 1, d_terrain->width);
 		break;
 
 	case 'W':
-		if (d_viewpoint->y > 9) {
-			d_viewpoint->y-=10;
-		}
+		d_viewpoint->y = fmax (d_viewpoint->y - 10 * d_zoom_level, 0);
 		break;
 	case 'A':
-		if (d_viewpoint->x > 9) {
-			d_viewpoint->x-=10;
-		}
+		d_viewpoint->x = fmax (d_viewpoint->x - 10 * d_zoom_level, 0);
 		break;
 	case 'S':
-		if (d_viewpoint->y < d_terrain->height - 11) {
-			d_viewpoint->y+=10;
-		}
+		d_viewpoint->y = fmin (d_viewpoint->y + 10 * d_zoom_level, d_terrain->height);
 		break;
 	case 'D':
-		if (d_viewpoint->x < d_terrain->width - 11) {
-			d_viewpoint->x+=10;;
+		d_viewpoint->x = fmin (d_viewpoint->x + 10 * d_zoom_level, d_terrain->width);
+		break;
+
+	case '+':
+		if (d_zoom_level > 1) {
+			d_zoom_level--;
+		}
+		break;
+	case '-':
+		if (d_zoom_level < 15) {
+			d_zoom_level++;
 		}
 		break;
 

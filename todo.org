@@ -20,3 +20,11 @@ Some things to get done
   - Draw handler uses previous draw handler and after that it will
 	draw with its own.
   - When keyboard is pressed we pop the callback handlers.
+
+* TODO Do a proper event loop handling together with widgets.
+  You really want a modal window to contain its own loop for
+  events to make it easy to know when to destroy the window
+  (when the do_modal function returns).
+* TODO Convert the heightmap into an integer based heightmap.
+  This will save space.
+* TODO Persist heightmap to disk into a world directory.
