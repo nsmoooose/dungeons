@@ -3,6 +3,6 @@
 
 #include "ui.h"
 
-extern struct d_ui_handler d_game_handler;
+extern struct d_ui_state d_game_state;
 
 #endif

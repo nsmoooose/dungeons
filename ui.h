@@ -11,11 +11,13 @@ struct d_ui_key_binding {
 	struct d_ui_command *command;
 };
 
-struct d_ui_handler {
+struct d_ui_state {
+	char *description;
 	void *data;
-	void (*update) (struct d_ui_handler *handler, double now, double delta);
-	void (*draw) (struct d_ui_handler *handler);
-	void (*input) (struct d_ui_handler *handler, int key);
+	void (*update) (struct d_ui_state *handler, double now, double delta);
+	void (*draw) (struct d_ui_state *handler);
+
+	struct d_ui_key_binding key_bindings[100];
 };
 
 enum d_ui_map_mode {
@@ -29,9 +31,6 @@ struct d_ui_viewpoint {
 	int x, y, z;
 };
 
-struct d_ui_handler* d_ui_stack_pop ();
-void d_ui_stack_push (struct d_ui_handler *handler);
-struct d_ui_handler* d_ui_stack_current ();
-struct d_ui_handler* d_ui_stack_prev (struct d_ui_handler *handler);
+extern struct d_ui_state *d_ui_state_current;
 
 #endif

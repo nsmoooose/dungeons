@@ -5,6 +5,7 @@
 #include "curses_game.h"
 #include "curses_io.h"
 #include "curses_main_menu.h"
+#include "curses_widget.h"
 #include "ui_commands.h"
 
 const char *d_curses_game_title[] = {
@@ -21,31 +22,31 @@ static void d_cmd_new_game_cb ();
 static void d_cmd_load_game_cb ();
 static void d_cmd_explore_cb ();
 
-static void d_curses_main_menu_update (struct d_ui_handler *handler, double now, double delta);
-static void d_curses_main_menu_draw (struct d_ui_handler *handler);
+static void d_curses_main_menu_update (
+	struct d_ui_state *state, double now, double delta);
+static void d_curses_main_menu_draw (struct d_ui_state *state);
 
 struct d_ui_command d_cmd_new_game = { "New game", d_cmd_new_game_cb };
 struct d_ui_command d_cmd_load_game = { "Load game", d_cmd_load_game_cb };
 struct d_ui_command d_cmd_explore = { "Explore", d_cmd_explore_cb };
 
-struct d_ui_key_binding d_main_menu[] = {
-	{ 'n', &d_cmd_new_game },
- 	{ 'c', &d_cmd_load_game },
-	{ 'e', &d_cmd_explore },
-	{ 'q', &d_cmd_quit },
-	{ 0, 0 }
-};
-
-struct d_ui_handler d_main_menu_handler = {
+struct d_ui_state d_main_menu_state = {
+	"Main menu",
 	0,
 	d_curses_main_menu_update,
 	d_curses_main_menu_draw,
-	0
+	{
+		{ 'n', &d_cmd_new_game },
+		{ 'c', &d_cmd_load_game },
+		{ 'e', &d_cmd_explore },
+		{ 'q', &d_cmd_quit },
+		{ 0, 0 }
+	}
 };
 
 static void
 d_cmd_new_game_cb () {
-	d_ui_stack_push (&d_game_handler);
+	d_ui_state_current = &d_game_state;
 }
 
 static void
@@ -57,12 +58,12 @@ d_cmd_explore_cb () {
 }
 
 static void
-d_curses_main_menu_update (struct d_ui_handler *handler, double now, double delta) {
+d_curses_main_menu_update (struct d_ui_state *state, double now, double delta) {
 	usleep (100000);
 }
 
 static void
-d_curses_main_menu_draw (struct d_ui_handler *handler) {
+d_curses_main_menu_draw (struct d_ui_state *state) {
 	d_curses_set_color (d_black_green);
 	d_curses_clear ();
 
@@ -71,4 +72,6 @@ d_curses_main_menu_draw (struct d_ui_handler *handler) {
 	for (int i=0;i<7;++i) {
 		d_curses_printf_center (center, 3 + i, d_curses_game_title[i]);
 	}
+
+	d_curses_widget_menu_draw (state->key_bindings);
 }

@@ -3,6 +3,6 @@
 
 #include "ui.h"
 
-void d_curses_widget_menu (struct d_ui_key_binding menu[]);
+void d_curses_widget_menu_draw (struct d_ui_key_binding menu[]);
 
 #endif

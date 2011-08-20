@@ -3,7 +3,6 @@
 
 #include "ui.h"
 
-extern struct d_ui_key_binding d_main_menu[];
-extern struct d_ui_handler d_main_menu_handler;
+extern struct d_ui_state d_main_menu_state;
 
 #endif
