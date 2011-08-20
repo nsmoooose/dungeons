@@ -20,17 +20,30 @@ struct d_ui_state {
 	struct d_ui_key_binding key_bindings[100];
 };
 
+struct d_ui_state_transition {
+	char *description;
+	struct d_ui_state *from;
+	struct d_ui_state *next;
+};
+
+struct d_ui_state_machine {
+	char *description;
+	struct d_ui_state *current;
+	struct d_ui_state_transition transitions[100];
+};
+
+void d_ui_change_state (struct d_ui_state *new_state);
+struct d_ui_state* d_ui_state_current ();
+
 enum d_ui_map_mode {
 	/* Draws like a regular map where we can see information from all heights. */
 	d_map,
-	/* Draw a slice from the current viewpoint. You see through the earth and. */
+	/* Draw a slice from the current viewpoint. You see through the earth. */
 	d_level,
 };
 
 struct d_ui_viewpoint {
 	int x, y, z;
 };
-
-extern struct d_ui_state *d_ui_state_current;
 
 #endif

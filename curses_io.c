@@ -151,7 +151,7 @@ d_curses_process_input () {
 	if (key == ERR) {
 		return;
 	}
-	struct d_ui_state *state = d_ui_state_current;
+	struct d_ui_state *state = d_ui_state_current ();
 	for (int i=0;state->key_bindings[i].key != 0;++i) {
 		if (key == state->key_bindings[i].key) {
 			state->key_bindings[i].command->invoke ();
@@ -163,7 +163,7 @@ d_curses_process_input () {
 
 void
 d_curses_step (double now, double delta) {
-	struct d_ui_state *state = d_ui_state_current;
+	struct d_ui_state *state = d_ui_state_current ();
 	if (state && state->update) {
 		state->update (state, now, delta);
 	}
@@ -219,8 +219,6 @@ d_curses_run () {
 
 	d_curses_clear ();
 	d_curses_hide_cursor ();
-
-	d_ui_state_current = &d_main_menu_state;
 
 	while (!d_quit) {
 		double now = d_time_get ();

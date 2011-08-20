@@ -46,7 +46,7 @@ struct d_ui_state d_main_menu_state = {
 
 static void
 d_cmd_new_game_cb () {
-	d_ui_state_current = &d_game_state;
+	d_ui_change_state (&d_game_state);
 }
 
 static void
