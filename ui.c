@@ -1,5 +1,6 @@
-#include "curses_main_menu.h"
 #include "curses_game.h"
+#include "curses_main_menu.h"
+#include "curses_quit.h"
 #include "error.h"
 #include "ui.h"
 
@@ -28,6 +29,8 @@ struct d_ui_state_machine d_ui_state_machine = {
 	&d_main_menu_state,
 	{
 		{ "New game", &d_main_menu_state, &d_game_state },
+		{ "Quit", &d_main_menu_state, &d_quit_state },
+		{ "Resume", &d_quit_state, &d_main_menu_state },
 		{ 0, 0, 0}
 	}
 };

@@ -171,11 +171,18 @@ d_curses_step (double now, double delta) {
 	if (d_request_redraw == 0 && now - d_redraw_last < d_redraw_interval) {
 		return;
 	}
-	if (state && state->draw) {
+	if (state) {
 		d_request_redraw = 0;
 		d_curses_update_size ();
 
-		state->draw (state);
+		if (state->draw) {
+			state->draw (state);
+		}
+		else {
+			d_curses_set_color (d_black_white);
+			d_curses_clear ();
+			d_curses_widget_menu_draw (state->key_bindings);
+		}
 
 		d_redraw_last = now;
 		refresh ();

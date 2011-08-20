@@ -8,7 +8,6 @@
 #include "math.h"
 #include "memory.h"
 #include "ui.h"
-#include "ui_commands.h"
 
 static void d_curses_game_update (struct d_ui_state *handler, double now, double delta);
 static void d_curses_game_draw (struct d_ui_state *handler);
@@ -67,7 +66,6 @@ struct d_ui_state d_game_state = {
 		{ '+', &d_cmd_map_zoom_in },
 		{ '-', &d_cmd_map_zoom_out },
 
-		{ 'q', &d_cmd_quit },
 		{ 0, 0 }
 	}
 };
