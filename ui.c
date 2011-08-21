@@ -50,4 +50,3 @@ struct d_ui_state_machine d_ui_state_machine = {
 		0
 	}
 };
-

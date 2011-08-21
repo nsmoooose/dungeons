@@ -37,4 +37,3 @@ d_cmd_save_dungeon_cb () {
 	/* TODO Save dungeon before returning to the main menu. */
 	d_ui_do_transition (&d_transition_esc_menu_to_main_menu);
 }
-
