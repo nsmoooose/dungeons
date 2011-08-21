@@ -50,4 +50,7 @@ extern struct d_ui_state_transition d_transition_new_game;
 extern struct d_ui_state_transition d_transition_quit_question;
 extern struct d_ui_state_transition d_transition_quit_resume;
 
+extern struct d_ui_state_transition d_transition_esc_menu;
+extern struct d_ui_state_transition d_transition_esc_menu_resume;
+extern struct d_ui_state_transition d_transition_esc_menu_to_main_menu;
 #endif

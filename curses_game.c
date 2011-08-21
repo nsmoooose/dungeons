@@ -28,6 +28,8 @@ static void d_cmd_map_up_cb ();
 static void d_cmd_map_zoom_in_cb ();
 static void d_cmd_map_zoom_out_cb ();
 
+static void d_cmd_esc_menu_cb ();
+
 struct d_ui_command d_cmd_map_pan_right = { "Scroll map right", d_cmd_map_pan_right_cb };
 struct d_ui_command d_cmd_map_pan_left = { "Scroll map left", d_cmd_map_pan_left_cb };
 struct d_ui_command d_cmd_map_pan_up = { "Scroll map up", d_cmd_map_pan_up_cb };
@@ -43,6 +45,8 @@ struct d_ui_command d_cmd_map_up = { "Up", d_cmd_map_up_cb };
 
 struct d_ui_command d_cmd_map_zoom_in = { "Zoom in", d_cmd_map_zoom_in_cb };
 struct d_ui_command d_cmd_map_zoom_out = { "Zoom out", d_cmd_map_zoom_out_cb };
+
+struct d_ui_command d_cmd_esc_menu = { "In game menu", d_cmd_esc_menu_cb };
 
 struct d_ui_state d_game_state = {
 	"Game",
@@ -65,6 +69,8 @@ struct d_ui_state d_game_state = {
 
 		{ '+', &d_cmd_map_zoom_in },
 		{ '-', &d_cmd_map_zoom_out },
+
+		{ 'q', &d_cmd_esc_menu },
 
 		{ 0, 0 }
 	}
@@ -250,4 +256,9 @@ d_cmd_map_down_cb () {
 static void
 d_cmd_map_up_cb () {
 	d_viewpoint->z+=10;
+}
+
+static void
+d_cmd_esc_menu_cb () {
+	d_ui_do_transition (&d_transition_esc_menu);
 }
