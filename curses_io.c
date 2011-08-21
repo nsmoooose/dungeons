@@ -179,8 +179,11 @@ d_curses_step (double now, double delta) {
 			state->draw (state);
 		}
 		else {
-			d_curses_set_color (d_black_white);
 			d_curses_clear ();
+
+			d_curses_widget_title_large_draw ();
+
+			d_curses_set_color (d_black_white);
 			d_curses_widget_menu_draw (state->key_bindings);
 		}
 
