@@ -5,6 +5,7 @@
 #include "fractal_heightmap.h"
 #include "curses_game.h"
 #include "curses_io.h"
+#include "curses_map.h"
 #include "math.h"
 #include "memory.h"
 #include "ui.h"
@@ -81,16 +82,6 @@ static struct d_heightmap *d_terrain = 0;
 static struct d_ui_viewpoint *d_viewpoint=0;
 static int d_zoom_level = 1;
 
-/* Symbols to use:
-   ~ =
-   ▓ =
-   ■ =
-   · =
-   ' =
-   ▼ =
-   ▲ =
-*/
-
 void
 d_curses_draw_terrain () {
 	if (!d_viewpoint || !d_terrain) {
@@ -99,54 +90,11 @@ d_curses_draw_terrain () {
 		return;
 	}
 
-	for (int x=1;x<=d_curses_size.width-1;++x) {
-		for (int y=1;y<=d_curses_size.height-1;++y) {
-			int realx = d_viewpoint->x - (d_curses_size.width / 2) * d_zoom_level + x * d_zoom_level;
-			int realy = d_viewpoint->y - (d_curses_size.height / 2) * d_zoom_level + y * d_zoom_level;
-			if (realx < 0 || realy < 0 || realx > d_terrain->width || realy > d_terrain->height) {
-				d_curses_set_color (d_black_white);
-				d_curses_printf_left (x, y, "X");
-				continue;
-			}
-
-			/* Our point can be in four different places.
-			   - sea.
-			   - air
-			   - below ground level.
-			   - ground level.
-			*/
-
-			float f = d_fractal_heightmap_get (d_terrain, realx, realy);
-			if (d_viewpoint->z - 15.0 > f && d_viewpoint->z <= 0.0) {
-				/* above ground but below sea level. */
-				d_curses_set_color (d_black_blue);
-				d_curses_printf_left (x, y, "~");
-			}
-			else if (f <= d_viewpoint->z + 15.0 && f >= d_viewpoint->z - 15.0) {
-				if (f <= 0.0) {
-					d_curses_set_color (d_black_blue);
-				}
-				else {
-					/* ground level. */
-					d_curses_set_color (d_black_green);
-				}
-				d_curses_printf_left (x, y, ".");
-			}
-			else if (d_viewpoint->z + 15.0 > f && d_viewpoint->z > 0.0) {
-				/* above ground and above sea level. */
-				d_curses_set_color (d_black_cyan);
-				d_curses_printf_left (x, y, "'");
-			}
-			else if (d_viewpoint->z - 15.0 < f) {
-				/* below ground level. */
-				d_curses_set_color (d_black_white);
-				d_curses_printf_left (x, y, " ");
-			}
-			else {
-				d_bug ("Not supposed to happen. Viewpoint z: %d, Ground level: %f", d_viewpoint->z, f);
-			}
-		}
-	}
+	struct d_area area;
+	area.pos.x = area.pos.y = 1;
+	area.size.width = d_curses_size.width - 1;
+	area.size.height = d_curses_size.height - 1;
+	d_curses_map_draw (&area, d_viewpoint, d_zoom_level, d_terrain);
 }
 
 static void
