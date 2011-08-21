@@ -27,5 +27,5 @@ d_cmd_quit_accept_cb () {
 
 static void
 d_cmd_quit_decline_cb () {
-	d_ui_change_state (&d_main_menu_state);
+	d_ui_do_transition (&d_transition_quit_resume);
 }

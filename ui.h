@@ -29,10 +29,10 @@ struct d_ui_state_transition {
 struct d_ui_state_machine {
 	char *description;
 	struct d_ui_state *current;
-	struct d_ui_state_transition transitions[100];
+	struct d_ui_state_transition* transitions[100];
 };
 
-void d_ui_change_state (struct d_ui_state *new_state);
+void d_ui_do_transition (struct d_ui_state_transition *transition);
 struct d_ui_state* d_ui_state_current ();
 
 enum d_ui_map_mode {
@@ -45,5 +45,9 @@ enum d_ui_map_mode {
 struct d_ui_viewpoint {
 	int x, y, z;
 };
+
+extern struct d_ui_state_transition d_transition_new_game;
+extern struct d_ui_state_transition d_transition_quit_question;
+extern struct d_ui_state_transition d_transition_quit_resume;
 
 #endif

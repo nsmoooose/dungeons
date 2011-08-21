@@ -48,7 +48,7 @@ struct d_ui_state d_main_menu_state = {
 
 static void
 d_cmd_new_game_cb () {
-	d_ui_change_state (&d_game_state);
+	d_ui_do_transition (&d_transition_new_game);
 }
 
 static void
@@ -61,7 +61,7 @@ d_cmd_explore_cb () {
 
 static void
 d_cmd_quit_cb () {
-	d_ui_change_state (&d_quit_state);
+	d_ui_do_transition (&d_transition_quit_question);
 }
 
 static void
