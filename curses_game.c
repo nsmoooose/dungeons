@@ -2,6 +2,7 @@
 
 #include "client.h"
 #include "error.h"
+#include "game.h"
 #include "fractal_heightmap.h"
 #include "curses_game.h"
 #include "curses_io.h"
@@ -78,6 +79,7 @@ struct d_ui_state d_game_state = {
 };
 
 /* static struct d_client_context *d_context = 0; */
+static struct d_game_context *d_context = 0;
 static struct d_heightmap *d_terrain = 0;
 static struct d_ui_viewpoint *d_viewpoint=0;
 static int d_zoom_level = 1;
@@ -99,6 +101,9 @@ d_curses_draw_terrain () {
 
 static void
 d_curses_game_update (struct d_ui_state *handler, double now, double delta) {
+	if (!d_context) {
+		d_context = d_game_context_new ();
+	}
 	if (!d_terrain) {
 		int size = 2048;
 		d_terrain = d_fractal_heightmap_new (size);
@@ -108,6 +113,7 @@ d_curses_game_update (struct d_ui_state *handler, double now, double delta) {
 		d_viewpoint->y = size / 2;
 		d_viewpoint->z = fmax (d_fractal_heightmap_get (d_terrain, d_viewpoint->x, d_viewpoint->y), 0.0f);
 	}
+	d_game_run (d_context, now, delta);
 }
 
 static void
@@ -127,8 +133,10 @@ d_curses_game_draw (struct d_ui_state *handler) {
 									d_viewpoint->x, d_viewpoint->y, d_viewpoint->z);
 	}
 
+	char date[30];
+	d_game_format_date (date, 30, d_context->datetime);
 	d_curses_printf_right (d_curses_size.width - 5, 0,
-								 " Tuesday 15 march year 723 ");
+						   date);
 
 	int middle = d_curses_size.height / 2;
 	d_curses_printf_left (0, middle - 1, " ");

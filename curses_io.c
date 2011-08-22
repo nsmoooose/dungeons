@@ -233,7 +233,8 @@ d_curses_run () {
 	while (!d_quit) {
 		double now = d_time_get ();
 		d_curses_process_input ();
-		d_curses_step (now, last-now);
+		d_curses_step (now, now-last);
+		last = now;
 	}
 
 	d_curses_clear ();
