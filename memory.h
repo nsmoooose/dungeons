@@ -6,4 +6,7 @@
 void* d_calloc (size_t nmemb, size_t size);
 void d_free (void *ptr);
 
+extern unsigned int d_allocations;
+extern unsigned int d_frees;
+
 #endif
