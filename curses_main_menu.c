@@ -5,10 +5,12 @@
 #include "curses_game.h"
 #include "curses_io.h"
 #include "curses_main_menu.h"
+#include "curses_new_world.h"
 #include "curses_quit.h"
 #include "curses_widget.h"
 
 static void d_cmd_new_game_cb ();
+static void d_cmd_new_world_cb ();
 static void d_cmd_load_game_cb ();
 static void d_cmd_explore_cb ();
 static void d_cmd_quit_cb ();
@@ -18,6 +20,7 @@ static void d_curses_main_menu_update (
 static void d_curses_main_menu_draw (struct d_ui_state *state);
 
 struct d_ui_command d_cmd_new_game = { "New game", d_cmd_new_game_cb };
+struct d_ui_command d_cmd_new_world = { "New world", d_cmd_new_world_cb };
 struct d_ui_command d_cmd_load_game = { "Load game", d_cmd_load_game_cb };
 struct d_ui_command d_cmd_explore = { "Explore", d_cmd_explore_cb };
 struct d_ui_command d_cmd_quit = { "Quit", d_cmd_quit_cb };
@@ -28,6 +31,7 @@ struct d_ui_state d_main_menu_state = {
 	d_curses_main_menu_update,
 	d_curses_main_menu_draw,
 	{
+		{ 'w', &d_cmd_new_world },
 		{ 'n', &d_cmd_new_game },
 		{ 'c', &d_cmd_load_game },
 		{ 'e', &d_cmd_explore },
@@ -39,6 +43,11 @@ struct d_ui_state d_main_menu_state = {
 static void
 d_cmd_new_game_cb () {
 	d_ui_do_transition (&d_transition_new_game);
+}
+
+static void
+d_cmd_new_world_cb () {
+	d_ui_do_transition (&d_transition_new_world);
 }
 
 static void

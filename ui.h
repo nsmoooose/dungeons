@@ -49,6 +49,8 @@ struct d_ui_viewpoint {
 };
 
 extern struct d_ui_state_transition d_transition_new_game;
+extern struct d_ui_state_transition d_transition_new_world;
+extern struct d_ui_state_transition d_transition_new_world_back;
 extern struct d_ui_state_transition d_transition_quit_question;
 extern struct d_ui_state_transition d_transition_quit_resume;
 

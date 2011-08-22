@@ -1,3 +1,5 @@
+*.dot
 *.o
+*.png
 dungeons
 doc/*.pdf
