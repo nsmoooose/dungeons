@@ -29,11 +29,13 @@ struct d_ui_state_transition {
 struct d_ui_state_machine {
 	char *description;
 	struct d_ui_state *current;
+	struct d_ui_state* states[100];
 	struct d_ui_state_transition* transitions[100];
 };
 
 void d_ui_do_transition (struct d_ui_state_transition *transition);
 struct d_ui_state* d_ui_state_current ();
+void d_ui_state_machine_print (char *filename);
 
 enum d_ui_map_mode {
 	/* Draws like a regular map where we can see information from all heights. */

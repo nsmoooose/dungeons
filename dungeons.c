@@ -2,9 +2,12 @@
 
 #include "curses_io.h"
 #include "memory.h"
+#include "ui.h"
 
 int
 main (int argc, char *argv[]) {
+	d_ui_state_machine_print ("ui_state_machine.dot");
+
 	d_curses_run ();
 
 	if (d_allocations != d_frees) {
