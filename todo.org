@@ -3,28 +3,24 @@ Some things to get done
 * TODO Embed help as files in the binary?
   Here is a good link on how to do this:
   http://www.linuxjournal.com/content/embedding-file-executable-aka-hello-world-version-5967
-* TODO Stack of callback handlers for the terminal gui.
-  Basically I want to push, pop the callback handlers. This way
-  you can end one part of the game by pop:ing to get back to the
-  main menu.
-
-  Build a d_stack struct and functions.
-  - d_stack_create
-  - d_stack_destroy
-  - d_stack_push
-  - d_stack_pop
-  - d_stack_at
-
-* TODO Message box widget.
-  - Push callback handlers.
-  - Draw handler uses previous draw handler and after that it will
-	draw with its own.
-  - When keyboard is pressed we pop the callback handlers.
-
-* TODO Do a proper event loop handling together with widgets.
-  You really want a modal window to contain its own loop for
-  events to make it easy to know when to destroy the window
-  (when the do_modal function returns).
 * TODO Convert the heightmap into an integer based heightmap.
   This will save space.
 * TODO Persist heightmap to disk into a world directory.
+* TODO Wire an ui transition to a command object without any callback assigned.
+  This makes it possible to do cmd to ui state without a callback with a single
+  function call to execute the state change.
+
+  It could be usefull for the cb function to be able to abort the change due to
+  some error as well. Or we might wanna assign a cb to the transition object
+  instead that checks if the transition is allowed or not.
+
+  We could also provide the state machine with a check that tests each for illegal
+  ui state operations.
+
+  Move the transition declaration to the file where the call to d_ui_do_transition
+  is done.
+* DONE Place menu of list of commands where you want.
+  Today this is always rendered at the center of the screen. This should be changed.
+* TODO Create the .dungeons home directory when starting the application.
+  .dungeons/worlds/my_world/
+  .dungeons/dungeons.conf

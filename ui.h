@@ -1,6 +1,19 @@
 #ifndef __DUNGEONS_UI_H__
 #define __DUNGEONS_UI_H__
 
+struct d_ui_pos {
+	int x, y;
+};
+
+struct d_ui_size {
+	int width, height;
+};
+
+struct d_ui_area {
+	struct d_ui_pos pos;
+	struct d_ui_size size;
+};
+
 struct d_ui_command {
 	char *description;
 	void (*invoke) ();

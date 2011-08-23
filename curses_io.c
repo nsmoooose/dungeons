@@ -183,8 +183,8 @@ d_curses_step (double now, double delta) {
 
 			d_curses_widget_title_large_draw ();
 
-			d_curses_set_color (d_black_white);
-			d_curses_widget_menu_draw (state->key_bindings);
+			struct d_ui_area area = { { d_curses_size.width / 2 - 10, 13}, { 20, 20 } };
+			d_curses_widget_menu_draw (&area, state->key_bindings);
 		}
 
 		d_redraw_last = now;

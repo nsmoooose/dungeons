@@ -72,5 +72,6 @@ static void
 d_curses_main_menu_draw (struct d_ui_state *state) {
 	d_curses_clear ();
 	d_curses_widget_title_large_draw ();
-	d_curses_widget_menu_draw (state->key_bindings);
+	struct d_ui_area area = { { d_curses_size.width / 2 - 10, 13}, { 20, 20 } };
+	d_curses_widget_menu_draw (&area, state->key_bindings);
 }

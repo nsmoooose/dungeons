@@ -92,7 +92,7 @@ d_curses_draw_terrain () {
 		return;
 	}
 
-	struct d_area area;
+	struct d_ui_area area;
 	area.pos.x = area.pos.y = 1;
 	area.size.width = d_curses_size.width - 1;
 	area.size.height = d_curses_size.height - 1;
