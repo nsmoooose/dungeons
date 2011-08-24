@@ -24,3 +24,32 @@ Some things to get done
 * TODO Create the .dungeons home directory when starting the application.
   .dungeons/worlds/my_world/
   .dungeons/dungeons.conf
+* TODO Object model
+  This is also a specific state machine.
+
+  struct d_object_type;
+  - serialize
+  - update
+  struct d_object_instance;
+  - type
+* TODO Object: tree
+  The first and a simple object.
+  A tree has the following parameters:
+  - How fast it can spread its seeds.
+  - Some kind of logarithmic curve on the growth of the tree.
+	How do we control this?
+  - How dense it can grow.
+
+  State machine
+  - Growing.
+  - On fire.
+  - Withering/dead
+  - Log
+
+  An instance of a tree has the following properties:
+  - Age
+  - Height
+  - Diameter
+  - On fire? Damage?
+* TODO Accelerate time when doing some development in order to test results.
+* TODO Test suite
