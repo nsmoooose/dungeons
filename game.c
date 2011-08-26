@@ -2,10 +2,13 @@
 
 #include "game.h"
 #include "memory.h"
+#include "object.h"
 
 struct d_game_context*
 d_game_context_new () {
-	return d_calloc (1, sizeof (struct d_game_context));
+	struct d_game_context *context = d_calloc (1, sizeof (struct d_game_context));
+	context->objects = d_ob_list_new ();
+	return context;
 }
 
 void
@@ -17,7 +20,14 @@ void
 d_game_run (struct d_game_context *context, double now, double delta) {
 	/* A day is 86400 seconds. We want a day to pass every 10 seconds. */
 	double second = 86400 / 10.0;
-	context->datetime += delta * second;
+	context->delta = delta * second;
+
+	for (struct d_list_node *node = context->objects->first;node;node=node->next) {
+		struct d_ob_instance *inst = node->data;
+		inst->state->input (context, inst);
+	}
+
+	context->datetime += context->delta;
 }
 
 void

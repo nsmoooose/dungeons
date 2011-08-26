@@ -1,4 +1,6 @@
 #include "curses_esc_menu.h"
+#include "curses_game.h"
+#include "game.h"
 
 static void d_cmd_resume_game_cb ();
 static void d_cmd_abandon_dungeon_cb ();
@@ -29,11 +31,15 @@ d_cmd_resume_game_cb () {
 void
 d_cmd_abandon_dungeon_cb () {
 	/* TODO abandon the dungeon completely by removing from disc. */
+	d_game_context_destroy (d_context);
+	d_context = 0;
 	d_ui_do_transition (&d_transition_esc_menu_to_main_menu);
 }
 
 void
 d_cmd_save_dungeon_cb () {
 	/* TODO Save dungeon before returning to the main menu. */
+	d_game_context_destroy (d_context);
+	d_context = 0;
 	d_ui_do_transition (&d_transition_esc_menu_to_main_menu);
 }

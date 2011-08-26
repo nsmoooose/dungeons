@@ -1,13 +1,20 @@
 #ifndef __DUNGEONS_OBJECT_H__
 #define __DUNGEONS_OBJECT_H__
 
-struct d_ob_instantce;
+#include "game.h"
+
+struct d_ob_instance;
+struct d_ob_state_transition;
+
+struct d_ob_pos {
+	int x,y,z;
+};
 
 struct d_ob_state {
 	char *description;
-	void (*enter) (struct d_ob_instantce *inst, struct d_ob_state *state);
-	void (*input) (struct d_ob_instantce *inst, struct d_ob_state *state);
-	void (*exit) (struct d_ob_instantce *inst, struct d_ob_state *state);
+	void (*enter) (struct d_game_context *context, struct d_ob_instance *inst, struct d_ob_state_transition *transition);
+	void (*input) (struct d_game_context *context, struct d_ob_instance *inst);
+	void (*exit) (struct d_game_context *context, struct d_ob_instance *inst, struct d_ob_state_transition *transition);
 };
 
 struct d_ob_state_transition {
@@ -15,7 +22,7 @@ struct d_ob_state_transition {
 	struct d_ob_state *from, *to;
 
 	void (*transition) (
-		struct d_ob_instantce *inst,
+		struct d_ob_instance *inst,
 		struct d_ob_state *from,
 		struct d_ob_state *to);
 };
@@ -32,14 +39,15 @@ struct d_ob_type {
 	struct d_ob_state_machine *sm;
 	void *data;
 
-	struct d_ob_instance *(*create) ();
+	struct d_ob_instance *(*create) (struct d_ob_type *type, struct d_ob_pos *pos);
 	void (*destroy) (struct d_ob_instance *inst);
-	void (*serialize) (struct d_ob_type *type, struct d_ob_instance *inst);
+	void (*serialize) (struct d_ob_instance *inst);
 };
 
 struct d_ob_instance {
 	struct d_ob_type *type;
 	struct d_ob_state *state;
+	struct d_ob_pos pos;
 	void *data;
 };
 
@@ -51,6 +59,8 @@ struct d_ob_category {
 struct d_ob_registry {
 	struct d_ob_category* categories[50];
 };
+
+struct d_list *d_ob_list_new ();
 
 extern struct d_ob_registry d_ob_registry;
 

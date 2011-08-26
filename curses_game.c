@@ -79,7 +79,7 @@ struct d_ui_state d_game_state = {
 };
 
 /* static struct d_client_context *d_context = 0; */
-static struct d_game_context *d_context = 0;
+struct d_game_context *d_context = 0;
 static struct d_heightmap *d_terrain = 0;
 static struct d_ui_viewpoint *d_viewpoint=0;
 static int d_zoom_level = 1;
