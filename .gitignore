@@ -1,5 +1,6 @@
 *.dot
 *.o
 *.png
-dungeons
+dungeons-curses
+dungeons-gl
 doc/*.pdf
