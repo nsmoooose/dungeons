@@ -87,8 +87,8 @@ static int d_zoom_level = 1;
 void
 d_curses_draw_terrain () {
 	if (!d_viewpoint || !d_terrain) {
-		d_curses_set_color (d_green_white);
-		d_curses_clear ();
+		d_ui->set_color (d_green_white);
+		d_ui->clearscr ();
 		return;
 	}
 
@@ -120,37 +120,37 @@ static void
 d_curses_game_draw (struct d_ui_state *handler) {
 	d_curses_draw_terrain ();
 
-	d_curses_set_color (d_white_black);
-	d_curses_box (0, 0, d_curses_size.width-1,
-						d_curses_size.height-1, ' ');
-	d_curses_set_color (d_black_green);
-	d_curses_printf_center (d_curses_size.width / 2, 0,
+	d_ui->set_color (d_white_black);
+	d_ui->box (0, 0, d_curses_size.width-1,
+			   d_curses_size.height-1, ' ');
+	d_ui->set_color (d_black_green);
+	d_ui->printf_center (d_curses_size.width / 2, 0,
 								  "|======- D U N G E O N S -======|");
 
-	d_curses_set_color (d_black_white);
+	d_ui->set_color (d_black_white);
 	if (d_viewpoint) {
-		d_curses_printf_left (5, 0, " N 37 23.516, W 122 02.625 (%d, %d), %dm ",
-									d_viewpoint->x, d_viewpoint->y, d_viewpoint->z);
+		d_ui->printf_left (5, 0, " N 37 23.516, W 122 02.625 (%d, %d), %dm ",
+						   d_viewpoint->x, d_viewpoint->y, d_viewpoint->z);
 	}
 
 	char date[30];
 	d_game_format_date (date, 30, d_context->datetime);
-	d_curses_printf_right (d_curses_size.width - 5, 0,
+	d_ui->printf_right (d_curses_size.width - 5, 0,
 						   date);
 
 	int middle = d_curses_size.height / 2;
-	d_curses_printf_left (0, middle - 1, " ");
-	d_curses_printf_left (0, middle, "W");
-	d_curses_printf_left (0, middle + 1, " ");
+	d_ui->printf_left (0, middle - 1, " ");
+	d_ui->printf_left (0, middle, "W");
+	d_ui->printf_left (0, middle + 1, " ");
 
-	d_curses_printf_left (d_curses_size.width-1, middle - 1, " ");
-	d_curses_printf_left (d_curses_size.width-1, middle, "E");
-	d_curses_printf_left (d_curses_size.width-1, middle + 1, " ");
+	d_ui->printf_left (d_curses_size.width-1, middle - 1, " ");
+	d_ui->printf_left (d_curses_size.width-1, middle, "E");
+	d_ui->printf_left (d_curses_size.width-1, middle + 1, " ");
 
-	d_curses_printf_center (d_curses_size.width / 2,
-								  d_curses_size.height-1, " S ");
+	d_ui->printf_center (d_curses_size.width / 2,
+						 d_curses_size.height-1, " S ");
 
-	d_curses_set_color (d_black_white);
+	d_ui->set_color (d_black_white);
 }
 
 

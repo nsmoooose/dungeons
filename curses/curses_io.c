@@ -25,7 +25,7 @@ int d_request_redraw = 0;
 struct d_curses_size d_curses_size;
 
 struct d_color_def {
-	enum d_curses_color index;
+	enum d_ui_color index;
 	int bg;
 	int text;
 };
@@ -52,46 +52,46 @@ struct d_color_def d_color_def[] =
 	{ d_black_cyan, COLOR_BLACK, COLOR_CYAN }
 };
 
-void
+static void
 d_curses_box (int x1, int y1, int x2, int y2, char key) {
-	d_curses_setpos (x1, y1);
+	d_ui->setpos (x1, y1);
 	for (int i=x1;i<=x2;++i) {
 		printw ("%c", key);
 	}
 
 	for (int i=y1+1;i<y2;++i) {
-		d_curses_setpos (x1, i);
+		d_ui->setpos (x1, i);
 		printw ("%c", key);
-		d_curses_setpos (x2, i);
+		d_ui->setpos (x2, i);
 		printw ("%c", key);
 	}
 
-	d_curses_setpos (x1, y2);
+	d_ui->setpos (x1, y2);
 	for (int i=x1;i<=x2;++i) {
 		printw ("%c", key);
 	}
 }
 
-void
+static void
 d_curses_update_size () {
 	getmaxyx (stdscr, d_curses_size.height, d_curses_size.width);
 }
 
-void
+static void
 d_curses_clear () {
 	if (erase () == ERR) {
 		d_bug ("Failed to erase screen.");
 	}
 }
 
-void
+static void
 d_curses_setpos (int x, int y) {
 	if (move (y, x) == ERR) {
 		d_bug ("Failed to move cursor position.");
 	}
 }
 
-void
+static void
 d_curses_printf_center (int x, int y, const char *format, ...) {
 	int width = strlen (format);
 	d_curses_setpos (fmax (x - (width / 2), 0), y);
@@ -101,46 +101,47 @@ d_curses_printf_center (int x, int y, const char *format, ...) {
 	va_end (args);
 }
 
-void
+static void
 d_curses_printf_left (int x, int y, const char *format, ...) {
-	d_curses_setpos (x, y);
+	d_ui->setpos (x, y);
 	va_list args;
 	va_start (args, format);
 	vwprintw (stdscr, format, args);
 	va_end (args);
 }
 
-void
+static void
 d_curses_printf_right (int x, int y, const char *format, ...) {
 	int width = strlen (format);
-	d_curses_setpos (x - (width), y);
+	d_ui->setpos (x - (width), y);
 	va_list args;
 	va_start (args, format);
 	vwprintw (stdscr, format, args);
 	va_end (args);
 }
 
-void
+static void
 d_curses_hide_cursor () {
 	if (curs_set (0) == ERR) {
 		d_bug ("Failed to hide cursor");
 	}
 }
 
-void
+static void
 d_curses_show_cursor () {
 	if (curs_set (1) == ERR) {
 		d_bug ("Failed to show cursor");
 	}
 }
 
-void d_curses_set_color (enum d_curses_color pair) {
+static void
+d_curses_set_color (enum d_ui_color pair) {
 	if (color_set (pair, 0) == ERR) {
 		d_bug ("Failed to set color");
 	}
 }
 
-void
+static void
 d_curses_request_redraw () {
 	d_request_redraw = 1;
 }
@@ -192,8 +193,29 @@ d_curses_step (double now, double delta) {
 	}
 }
 
+static struct d_ui d_curses_implementation = {
+	d_curses_clear,
+	d_curses_setpos,
+	d_curses_printf_center,
+	d_curses_printf_left,
+	d_curses_printf_right,
+	d_curses_box,
+	d_curses_update_size,
+	d_curses_set_color,
+	d_curses_request_redraw,
+	d_curses_hide_cursor,
+	d_curses_show_cursor
+};
+
+void
+d_curses_sigint (int sig) {
+	d_quit = 1;
+}
+
 void
 d_curses_run () {
+	d_ui = &d_curses_implementation;
+
 	if (!initscr ()) {
 		d_bug ("Failed to initialize ncurses.");
 	}
@@ -227,8 +249,8 @@ d_curses_run () {
 
 	double last = 0;
 
-	d_curses_clear ();
-	d_curses_hide_cursor ();
+	d_ui->clearscr ();
+	d_ui->hide_cursor ();
 
 	while (!d_quit) {
 		double now = d_time_get ();
@@ -237,16 +259,11 @@ d_curses_run () {
 		last = now;
 	}
 
-	d_curses_clear ();
-	d_curses_setpos (0, 0);
-	d_curses_show_cursor ();
+	d_ui->clearscr ();
+	d_ui->setpos (0, 0);
+	d_ui->show_cursor ();
 
 	if (endwin () == ERR) {
 		d_bug ("Failed to end ncurses.");
 	}
-}
-
-void
-d_curses_sigint (int sig) {
-	d_quit = 1;
 }

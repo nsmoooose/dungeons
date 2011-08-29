@@ -46,6 +46,30 @@ struct d_ui_state_machine {
 	struct d_ui_state_transition* transitions[100];
 };
 
+enum d_ui_color {
+	d_black_white=1,
+	d_white_black,
+	d_black_green,
+	d_green_white,
+	d_cyan_white,
+	d_black_blue,
+	d_black_cyan
+};
+
+struct d_ui {
+	void (*clearscr) ();
+	void (*setpos) (int x, int y);
+	void (*printf_center) (int x, int y, const char *format, ...);
+	void (*printf_left) (int x, int y, const char *format, ...);
+	void (*printf_right) (int x, int y, const char *format, ...);
+	void (*box) (int x1, int y1, int x2, int y2, char key);
+	void (*update_size) ();
+	void (*set_color) (enum d_ui_color pair);
+	void (*request_redraw) ();
+	void (*hide_cursor) ();
+	void (*show_cursor) ();
+};
+
 void d_ui_do_transition (struct d_ui_state_transition *transition);
 struct d_ui_state* d_ui_state_current ();
 void d_ui_state_machine_print (char *filename);
@@ -60,6 +84,8 @@ enum d_ui_map_mode {
 struct d_ui_viewpoint {
 	int x, y, z;
 };
+
+extern struct d_ui *d_ui;
 
 extern struct d_ui_state_transition d_transition_new_game;
 extern struct d_ui_state_transition d_transition_new_world;

@@ -27,9 +27,9 @@ struct d_ui_state d_new_world_state = {
 
 static void
 d_curses_new_world_draw (struct d_ui_state *state) {
-	d_curses_clear ();
+	d_ui->clearscr ();
 
-	d_curses_printf_left (1, 1, "TODO");
+	d_ui->printf_left (1, 1, "TODO");
 	/* TODO draw map and render a small menu with commands
 	   and a part of the screen with basic information about the
 	   map. */

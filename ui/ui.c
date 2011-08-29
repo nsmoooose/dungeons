@@ -8,6 +8,7 @@
 #include "error.h"
 #include "ui.h"
 
+struct d_ui *d_ui = 0;
 extern struct d_ui_state_machine d_ui_state_machine;
 
 void
