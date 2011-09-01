@@ -4,9 +4,9 @@
 #include "curses_game.h"
 #include "curses_io.h"
 #include "curses_main_menu.h"
-#include "curses_quit.h"
 #include "error.h"
 #include "new_world.h"
+#include "quit.h"
 
 static void d_cmd_new_game_cb ();
 static void d_cmd_new_world_cb ();
