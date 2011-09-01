@@ -2,10 +2,10 @@
 
 #include "curses_game.h"
 #include "curses_main_menu.h"
-#include "curses_new_world.h"
 #include "curses_quit.h"
 #include "error.h"
 #include "esc_menu.h"
+#include "new_world.h"
 #include "ui.h"
 
 struct d_ui *d_ui = 0;

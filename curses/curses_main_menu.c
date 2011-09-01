@@ -1,13 +1,13 @@
 #include <unistd.h>
 
 #include "clock.h"
-#include "error.h"
 #include "curses_game.h"
 #include "curses_io.h"
 #include "curses_main_menu.h"
-#include "curses_new_world.h"
 #include "curses_quit.h"
 #include "curses_widget.h"
+#include "error.h"
+#include "new_world.h"
 
 static void d_cmd_new_game_cb ();
 static void d_cmd_new_world_cb ();

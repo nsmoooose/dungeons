@@ -1,11 +1,11 @@
 #include "curses_io.h"
-#include "curses_new_world.h"
+#include "new_world.h"
 
 static void d_cmd_world_to_main_menu_cb ();
 static void d_cmd_world_save_cb ();
 static void d_cmd_world_new_cb ();
 
-static void d_curses_new_world_draw (struct d_ui_state *state);
+static void d_new_world_draw (struct d_ui_state *state);
 
 struct d_ui_command d_cmd_world_to_main_menu = {
 	"Main menu", d_cmd_world_to_main_menu_cb };
@@ -16,7 +16,7 @@ struct d_ui_state d_new_world_state = {
 	"New world",
 	0,
 	0,
-	d_curses_new_world_draw,
+	d_new_world_draw,
 	{
 		{ 'q', &d_cmd_world_to_main_menu },
 		{ 's', &d_cmd_world_save },
@@ -26,7 +26,7 @@ struct d_ui_state d_new_world_state = {
 };
 
 static void
-d_curses_new_world_draw (struct d_ui_state *state) {
+d_new_world_draw (struct d_ui_state *state) {
 	d_ui->clearscr ();
 
 	d_ui->printf_left (1, 1, "TODO");
