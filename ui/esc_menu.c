@@ -1,5 +1,5 @@
-#include "curses_esc_menu.h"
 #include "curses_game.h"
+#include "esc_menu.h"
 #include "game.h"
 
 static void d_cmd_resume_game_cb ();
