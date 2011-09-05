@@ -14,13 +14,8 @@
 #include "error.h"
 #include "curses_io.h"
 #include "curses_main_menu.h"
-#include "curses_widget.h"
 #include "ui.h"
 
-double d_redraw_last = 0.0;
-double d_redraw_interval = 1.0;
-int d_quit = 0;
-int d_request_redraw = 0;
 
 struct d_curses_size d_curses_size;
 
@@ -141,11 +136,6 @@ d_curses_set_color (enum d_ui_color pair) {
 	}
 }
 
-static void
-d_curses_request_redraw () {
-	d_request_redraw = 1;
-}
-
 void
 d_curses_process_input () {
 	int key = getch ();
@@ -156,7 +146,7 @@ d_curses_process_input () {
 	for (int i=0;state->key_bindings[i].key != 0;++i) {
 		if (key == state->key_bindings[i].key) {
 			state->key_bindings[i].command->invoke ();
-			d_curses_request_redraw ();
+			d_ui->request_redraw = 1;
 			break;
 		}
 	}
@@ -169,31 +159,65 @@ d_curses_step (double now, double delta) {
 		state->update (state, now, delta);
 	}
 
-	if (d_request_redraw == 0 && now - d_redraw_last < d_redraw_interval) {
+	if (d_ui->request_redraw == 0 && now - d_ui->redraw_last < d_ui->redraw_interval) {
 		return;
 	}
 	if (state) {
-		d_request_redraw = 0;
-		d_curses_update_size ();
+		d_ui->request_redraw = 0;
+		d_ui->update_size ();
 
 		if (state->draw) {
 			state->draw (state);
 		}
 		else {
-			d_curses_clear ();
+			d_ui->clearscr ();
 
-			d_curses_widget_title_large_draw ();
+			d_ui->title_large_draw ();
 
 			struct d_ui_area area = { { d_curses_size.width / 2 - 10, 13}, { 20, 20 } };
-			d_curses_widget_menu_draw (&area, state->key_bindings);
+			d_ui->menu_draw (&area, state->key_bindings);
 		}
 
-		d_redraw_last = now;
+		d_ui->redraw_last = now;
 		refresh ();
 	}
 }
 
+static void
+d_curses_widget_title_large_draw () {
+	const static char *title[] = {
+		"DDDDD   U    U N    N  GGGG  EEEEE  OOOO   N    N  SSSS ",
+		"D    D  U    U NN   N G    G E     O    O  NN   N S    S",
+		"D     D U    U N N  N G      E     O    O  N N  N S     ",
+		"D     D U    U N N  N G  GG  EEEE  O    O  N N  N  SSSS ",
+		"D     D U    U N  N N G    G E     O    O  N  N N      S",
+		"D    D  U    U N   NN G    G E     O    O  N   NN S    S",
+		"DDDDD    UUUU  N    N  GGGG  EEEEE  OOOO   N    N  SSSS "
+	};
+	d_ui->set_color (d_black_green);
+
+	int center = d_curses_size.width / 2;
+
+	for (int i=0;i<7;++i) {
+		d_ui->printf_center (center, 3 + i, title[i]);
+	}
+}
+
+static void
+d_curses_widget_menu_draw (struct d_ui_area *area, struct d_ui_key_binding menu[]) {
+	d_ui->set_color (d_black_white);
+
+	for (int i=0,row=area->pos.y;menu[i].key != 0;++i,++row) {
+		d_ui->printf_left (area->pos.x, row, "%c) %s",
+						   menu[i].key, menu[i].command->description);
+	}
+}
+
 static struct d_ui d_curses_implementation = {
+	0,          /* quit flag */
+	0.0,        /* last redraw */
+	1.0,        /* redraw interval */
+	0,          /* request redraw flag */
 	d_curses_clear,
 	d_curses_setpos,
 	d_curses_printf_center,
@@ -202,14 +226,16 @@ static struct d_ui d_curses_implementation = {
 	d_curses_box,
 	d_curses_update_size,
 	d_curses_set_color,
-	d_curses_request_redraw,
 	d_curses_hide_cursor,
-	d_curses_show_cursor
+	d_curses_show_cursor,
+
+	d_curses_widget_title_large_draw,
+	d_curses_widget_menu_draw
 };
 
 void
 d_curses_sigint (int sig) {
-	d_quit = 1;
+	d_ui->quit = 1;
 }
 
 void
@@ -252,7 +278,7 @@ d_curses_run () {
 	d_ui->clearscr ();
 	d_ui->hide_cursor ();
 
-	while (!d_quit) {
+	while (!d_ui->quit) {
 		double now = d_time_get ();
 		d_curses_process_input ();
 		d_curses_step (now, now-last);

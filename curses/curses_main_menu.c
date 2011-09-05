@@ -5,7 +5,6 @@
 #include "curses_io.h"
 #include "curses_main_menu.h"
 #include "curses_quit.h"
-#include "curses_widget.h"
 #include "error.h"
 #include "new_world.h"
 
@@ -71,7 +70,7 @@ d_curses_main_menu_update (struct d_ui_state *state, double now, double delta) {
 static void
 d_curses_main_menu_draw (struct d_ui_state *state) {
 	d_ui->clearscr ();
-	d_curses_widget_title_large_draw ();
+	d_ui->title_large_draw ();
 	struct d_ui_area area = { { d_curses_size.width / 2 - 10, 13}, { 20, 20 } };
-	d_curses_widget_menu_draw (&area, state->key_bindings);
+	d_ui->menu_draw (&area, state->key_bindings);
 }

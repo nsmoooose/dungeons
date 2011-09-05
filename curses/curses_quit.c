@@ -22,7 +22,7 @@ struct d_ui_state d_quit_state = {
 
 static void
 d_cmd_quit_accept_cb () {
-	d_quit = 1;
+	d_ui->quit = 1;
 }
 
 static void

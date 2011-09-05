@@ -57,6 +57,12 @@ enum d_ui_color {
 };
 
 struct d_ui {
+	int quit;
+
+	double redraw_last;
+	double redraw_interval;
+	int request_redraw;
+
 	void (*clearscr) ();
 	void (*setpos) (int x, int y);
 	void (*printf_center) (int x, int y, const char *format, ...);
@@ -65,9 +71,11 @@ struct d_ui {
 	void (*box) (int x1, int y1, int x2, int y2, char key);
 	void (*update_size) ();
 	void (*set_color) (enum d_ui_color pair);
-	void (*request_redraw) ();
 	void (*hide_cursor) ();
 	void (*show_cursor) ();
+
+	void (*title_large_draw) ();
+	void (*menu_draw) (struct d_ui_area *area, struct d_ui_key_binding menu[]);
 };
 
 void d_ui_do_transition (struct d_ui_state_transition *transition);
