@@ -1,9 +1,9 @@
 #include <unistd.h>
 
 #include "clock.h"
-#include "curses_game.h"
 #include "curses_io.h"
 #include "error.h"
+#include "gamescreen.h"
 #include "main_menu.h"
 #include "new_world.h"
 #include "quit.h"

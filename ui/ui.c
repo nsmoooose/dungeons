@@ -1,8 +1,8 @@
 #include <stdio.h>
 
-#include "curses_game.h"
 #include "error.h"
 #include "esc_menu.h"
+#include "gamescreen.h"
 #include "main_menu.h"
 #include "new_world.h"
 #include "quit.h"
@@ -62,16 +62,16 @@ d_ui_state_machine_print (char *filename) {
 struct d_ui_state_transition d_transition_new_world = {
 	"New world", &d_main_menu_state, &d_new_world_state };
 struct d_ui_state_transition d_transition_new_game = {
-	"New game", &d_main_menu_state, &d_game_state };
+	"New game", &d_main_menu_state, &d_gamescreen_state };
 struct d_ui_state_transition d_transition_quit_question = {
 	"Quit", &d_main_menu_state, &d_quit_state };
 struct d_ui_state_transition d_transition_quit_resume = {
 	"Resume", &d_quit_state, &d_main_menu_state };
 
 struct d_ui_state_transition d_transition_esc_menu = {
-	"In game menu", &d_game_state, &d_esc_menu_state };
+	"In game menu", &d_gamescreen_state, &d_esc_menu_state };
 struct d_ui_state_transition d_transition_esc_menu_resume = {
-	"Resume", &d_esc_menu_state, &d_game_state };
+	"Resume", &d_esc_menu_state, &d_gamescreen_state };
 struct d_ui_state_transition d_transition_esc_menu_to_main_menu = {
 	"To main menu", &d_esc_menu_state, &d_main_menu_state };
 
@@ -83,7 +83,7 @@ struct d_ui_state_machine d_ui_state_machine = {
 	&d_main_menu_state,
 	{
 		&d_esc_menu_state,
-		&d_game_state,
+		&d_gamescreen_state,
 		&d_main_menu_state,
 		&d_new_world_state,
 		&d_quit_state,

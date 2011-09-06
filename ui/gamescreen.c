@@ -3,16 +3,16 @@
 #include "client.h"
 #include "error.h"
 #include "game.h"
+#include "gamescreen.h"
 #include "fractal_heightmap.h"
-#include "curses_game.h"
 #include "curses_io.h"
 #include "curses_map.h"
 #include "math.h"
 #include "memory.h"
 #include "ui.h"
 
-static void d_curses_game_update (struct d_ui_state *handler, double now, double delta);
-static void d_curses_game_draw (struct d_ui_state *handler);
+static void d_gamescreen_update (struct d_ui_state *handler, double now, double delta);
+static void d_gamescreen_draw (struct d_ui_state *handler);
 
 static void d_cmd_map_pan_right_cb ();
 static void d_cmd_map_pan_left_cb ();
@@ -50,11 +50,11 @@ struct d_ui_command d_cmd_map_zoom_out = { "Zoom out", d_cmd_map_zoom_out_cb };
 
 struct d_ui_command d_cmd_esc_menu = { "In game menu", d_cmd_esc_menu_cb };
 
-struct d_ui_state d_game_state = {
+struct d_ui_state d_gamescreen_state = {
 	"Game",
 	0,
-	d_curses_game_update,
-	d_curses_game_draw,
+	d_gamescreen_update,
+	d_gamescreen_draw,
 	{
 		{ 'a', &d_cmd_map_pan_right },
 		{ 'd', &d_cmd_map_pan_left },
@@ -84,8 +84,8 @@ static struct d_heightmap *d_terrain = 0;
 static struct d_ui_viewpoint *d_viewpoint=0;
 static int d_zoom_level = 1;
 
-void
-d_curses_draw_terrain () {
+static void
+d_gamescreen_draw_terrain () {
 	if (!d_viewpoint || !d_terrain) {
 		d_ui->set_color (d_green_white);
 		d_ui->clearscr ();
@@ -100,7 +100,7 @@ d_curses_draw_terrain () {
 }
 
 static void
-d_curses_game_update (struct d_ui_state *handler, double now, double delta) {
+d_gamescreen_update (struct d_ui_state *handler, double now, double delta) {
 	if (!d_context) {
 		d_context = d_game_context_new ();
 	}
@@ -117,8 +117,8 @@ d_curses_game_update (struct d_ui_state *handler, double now, double delta) {
 }
 
 static void
-d_curses_game_draw (struct d_ui_state *handler) {
-	d_curses_draw_terrain ();
+d_gamescreen_draw (struct d_ui_state *handler) {
+	d_gamescreen_draw_terrain ();
 
 	d_ui->set_color (d_white_black);
 	d_ui->box (0, 0, d_curses_size.width-1,

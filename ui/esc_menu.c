@@ -1,6 +1,6 @@
-#include "curses_game.h"
 #include "esc_menu.h"
 #include "game.h"
+#include "gamescreen.h"
 
 static void d_cmd_resume_game_cb ();
 static void d_cmd_abandon_dungeon_cb ();
