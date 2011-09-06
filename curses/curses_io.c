@@ -13,7 +13,7 @@
 #include "clock.h"
 #include "error.h"
 #include "curses_io.h"
-#include "curses_main_menu.h"
+#include "main_menu.h"
 #include "ui.h"
 
 

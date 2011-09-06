@@ -1,9 +1,9 @@
 #include <stdio.h>
 
 #include "curses_game.h"
-#include "curses_main_menu.h"
 #include "error.h"
 #include "esc_menu.h"
+#include "main_menu.h"
 #include "new_world.h"
 #include "quit.h"
 #include "ui.h"

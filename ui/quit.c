@@ -1,5 +1,5 @@
 #include "curses_io.h"
-#include "curses_main_menu.h"
+#include "main_menu.h"
 #include "quit.h"
 
 static void d_cmd_quit_accept_cb ();

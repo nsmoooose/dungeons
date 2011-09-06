@@ -3,8 +3,8 @@
 #include "clock.h"
 #include "curses_game.h"
 #include "curses_io.h"
-#include "curses_main_menu.h"
 #include "error.h"
+#include "main_menu.h"
 #include "new_world.h"
 #include "quit.h"
 
@@ -14,9 +14,9 @@ static void d_cmd_load_game_cb ();
 static void d_cmd_explore_cb ();
 static void d_cmd_quit_cb ();
 
-static void d_curses_main_menu_update (
+static void d_main_menu_update (
 	struct d_ui_state *state, double now, double delta);
-static void d_curses_main_menu_draw (struct d_ui_state *state);
+static void d_main_menu_draw (struct d_ui_state *state);
 
 struct d_ui_command d_cmd_new_game = { "New game", d_cmd_new_game_cb };
 struct d_ui_command d_cmd_new_world = { "New world", d_cmd_new_world_cb };
@@ -27,8 +27,8 @@ struct d_ui_command d_cmd_quit = { "Quit", d_cmd_quit_cb };
 struct d_ui_state d_main_menu_state = {
 	"Main menu",
 	0,
-	d_curses_main_menu_update,
-	d_curses_main_menu_draw,
+	d_main_menu_update,
+	d_main_menu_draw,
 	{
 		{ 'w', &d_cmd_new_world },
 		{ 'n', &d_cmd_new_game },
@@ -63,12 +63,12 @@ d_cmd_quit_cb () {
 }
 
 static void
-d_curses_main_menu_update (struct d_ui_state *state, double now, double delta) {
+d_main_menu_update (struct d_ui_state *state, double now, double delta) {
 	usleep (100000);
 }
 
 static void
-d_curses_main_menu_draw (struct d_ui_state *state) {
+d_main_menu_draw (struct d_ui_state *state) {
 	d_ui->clearscr ();
 	d_ui->title_large_draw ();
 	struct d_ui_area area = { { d_curses_size.width / 2 - 10, 13}, { 20, 20 } };
