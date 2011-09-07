@@ -1,6 +1,5 @@
-#include "curses_io.h"
-#include "curses_map.h"
 #include "error.h"
+#include "map.h"
 
 /* Symbols to use:
    ~ =
@@ -13,7 +12,7 @@
 */
 
 void
-d_curses_map_draw (
+d_map_draw (
 	struct d_ui_area *area, struct d_ui_viewpoint *vp, int zoom, struct d_heightmap *hm) {
 	for (int x=area->pos.x;x<=area->size.width;++x) {
 		for (int y=area->pos.y;y<=area->size.height;++y) {

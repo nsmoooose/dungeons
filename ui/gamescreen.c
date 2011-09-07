@@ -5,7 +5,7 @@
 #include "game.h"
 #include "gamescreen.h"
 #include "fractal_heightmap.h"
-#include "curses_map.h"
+#include "map.h"
 #include "math.h"
 #include "memory.h"
 #include "ui.h"
@@ -95,7 +95,7 @@ d_gamescreen_draw_terrain () {
 	area.pos.x = area.pos.y = 1;
 	area.size.width = d_ui->size.width - 1;
 	area.size.height = d_ui->size.height - 1;
-	d_curses_map_draw (&area, d_viewpoint, d_zoom_level, d_terrain);
+	d_map_draw (&area, d_viewpoint, d_zoom_level, d_terrain);
 }
 
 static void

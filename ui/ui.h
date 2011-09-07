@@ -1,6 +1,8 @@
 #ifndef __DUNGEONS_UI_H__
 #define __DUNGEONS_UI_H__
 
+#include "fractal_heightmap.h"
+
 struct d_ui_pos {
 	int x, y;
 };
@@ -56,6 +58,10 @@ enum d_ui_color {
 	d_black_cyan
 };
 
+struct d_ui_viewpoint {
+	int x, y, z;
+};
+
 struct d_ui {
 	int quit;
 
@@ -78,6 +84,10 @@ struct d_ui {
 
 	void (*title_large_draw) ();
 	void (*menu_draw) (struct d_ui_area *area, struct d_ui_key_binding menu[]);
+
+	void (*map_draw) (struct d_ui_area *area, struct d_ui_viewpoint *vp,
+					  int zoom, struct d_heightmap *hm);
+
 };
 
 void d_ui_do_transition (struct d_ui_state_transition *transition);
@@ -89,10 +99,6 @@ enum d_ui_map_mode {
 	d_map,
 	/* Draw a slice from the current viewpoint. You see through the earth. */
 	d_level,
-};
-
-struct d_ui_viewpoint {
-	int x, y, z;
 };
 
 extern struct d_ui *d_ui;

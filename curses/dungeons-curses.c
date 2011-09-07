@@ -1,6 +1,6 @@
 #include <stdio.h>
 
-#include "curses_io.h"
+#include "curses_ui.h"
 #include "memory.h"
 #include "ui.h"
 
