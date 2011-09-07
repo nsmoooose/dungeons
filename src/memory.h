@@ -5,6 +5,7 @@
 
 void* d_calloc (size_t nmemb, size_t size);
 void d_free (void *ptr);
+void d_print_memory_leaks ();
 
 extern unsigned int d_allocations;
 extern unsigned int d_frees;

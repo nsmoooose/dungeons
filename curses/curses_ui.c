@@ -133,53 +133,6 @@ d_curses_set_color (enum d_ui_color pair) {
 	}
 }
 
-void
-d_curses_process_input () {
-	int key = getch ();
-	if (key == ERR) {
-		return;
-	}
-	struct d_ui_state *state = d_ui_state_current ();
-	for (int i=0;state->key_bindings[i].key != 0;++i) {
-		if (key == state->key_bindings[i].key) {
-			state->key_bindings[i].command->invoke ();
-			d_ui->request_redraw = 1;
-			break;
-		}
-	}
-}
-
-void
-d_curses_step (double now, double delta) {
-	struct d_ui_state *state = d_ui_state_current ();
-	if (state && state->update) {
-		state->update (state, now, delta);
-	}
-
-	if (d_ui->request_redraw == 0 && now - d_ui->redraw_last < d_ui->redraw_interval) {
-		return;
-	}
-	if (state) {
-		d_ui->request_redraw = 0;
-		d_ui->update_size ();
-
-		if (state->draw) {
-			state->draw (state);
-		}
-		else {
-			d_ui->clearscr ();
-
-			d_ui->title_large_draw ();
-
-			struct d_ui_area area = { { d_ui->size.width / 2 - 10, 13}, { 20, 20 } };
-			d_ui->menu_draw (&area, state->key_bindings);
-		}
-
-		d_ui->redraw_last = now;
-		refresh ();
-	}
-}
-
 static void
 d_curses_widget_title_large_draw () {
 	const static char *title[] = {
@@ -210,36 +163,8 @@ d_curses_widget_menu_draw (struct d_ui_area *area, struct d_ui_key_binding menu[
 	}
 }
 
-static struct d_ui d_curses_implementation = {
-	0,          /* quit flag */
-	{ 0, 0 },   /* size */
-	0.0,        /* last redraw */
-	1.0,        /* redraw interval */
-	0,          /* request redraw flag */
-	d_curses_clear,
-	d_curses_setpos,
-	d_curses_printf_center,
-	d_curses_printf_left,
-	d_curses_printf_right,
-	d_curses_box,
-	d_curses_update_size,
-	d_curses_set_color,
-	d_curses_hide_cursor,
-	d_curses_show_cursor,
-
-	d_curses_widget_title_large_draw,
-	d_curses_widget_menu_draw
-};
-
-void
-d_curses_sigint (int sig) {
-	d_ui->quit = 1;
-}
-
-void
-d_curses_run () {
-	d_ui = &d_curses_implementation;
-
+static void
+d_curses_init () {
 	if (!initscr ()) {
 		d_bug ("Failed to initialize ncurses.");
 	}
@@ -269,20 +194,12 @@ d_curses_run () {
 		}
 	}
 
-	signal (SIGINT, d_curses_sigint);
-
-	double last = 0;
-
 	d_ui->clearscr ();
 	d_ui->hide_cursor ();
+}
 
-	while (!d_ui->quit) {
-		double now = d_time_get ();
-		d_curses_process_input ();
-		d_curses_step (now, now-last);
-		last = now;
-	}
-
+static void
+d_curses_destroy () {
 	d_ui->clearscr ();
 	d_ui->setpos (0, 0);
 	d_ui->show_cursor ();
@@ -291,3 +208,26 @@ d_curses_run () {
 		d_bug ("Failed to end ncurses.");
 	}
 }
+
+struct d_ui d_curses_ui_implementation = {
+	0,          /* quit flag */
+	{ 0, 0 },   /* size */
+	0.0,        /* last redraw */
+	1.0,        /* redraw interval */
+	0,          /* request redraw flag */
+	d_curses_init,
+	d_curses_destroy,
+	d_curses_clear,
+	d_curses_setpos,
+	d_curses_printf_center,
+	d_curses_printf_left,
+	d_curses_printf_right,
+	d_curses_box,
+	d_curses_update_size,
+	d_curses_set_color,
+	d_curses_hide_cursor,
+	d_curses_show_cursor,
+
+	d_curses_widget_title_large_draw,
+	d_curses_widget_menu_draw
+};

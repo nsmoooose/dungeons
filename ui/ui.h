@@ -71,6 +71,9 @@ struct d_ui {
 	double redraw_interval;
 	int request_redraw;
 
+	void (*init) ();
+	void (*destroy) ();
+
 	void (*clearscr) ();
 	void (*setpos) (int x, int y);
 	void (*printf_center) (int x, int y, const char *format, ...);
@@ -93,6 +96,8 @@ struct d_ui {
 void d_ui_do_transition (struct d_ui_state_transition *transition);
 struct d_ui_state* d_ui_state_current ();
 void d_ui_state_machine_print (char *filename);
+
+void d_ui_run ();
 
 enum d_ui_map_mode {
 	/* Draws like a regular map where we can see information from all heights. */

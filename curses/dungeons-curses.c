@@ -8,14 +8,9 @@ int
 main (int argc, char *argv[]) {
 	d_ui_state_machine_print ("ui_state_machine.dot");
 
-	d_curses_run ();
+	d_ui = &d_curses_ui_implementation;
+	d_ui_run ();
 
-	if (d_allocations != d_frees) {
-		fprintf (stderr,
-				 "ERROR: Memory leaks detected. Allocations and free doesn't match. "
-				 "Allocations: %d, Free: %d\n", d_allocations, d_frees);
-		return 1;
-	}
-
+	d_print_memory_leaks ();
 	return 0;
 }
