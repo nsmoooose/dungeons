@@ -59,6 +59,8 @@ enum d_ui_color {
 struct d_ui {
 	int quit;
 
+	struct d_ui_size size;
+
 	double redraw_last;
 	double redraw_interval;
 	int request_redraw;

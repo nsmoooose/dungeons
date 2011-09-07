@@ -1,4 +1,3 @@
-#include "curses_io.h"
 #include "main_menu.h"
 #include "quit.h"
 

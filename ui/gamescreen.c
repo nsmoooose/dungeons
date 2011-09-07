@@ -5,7 +5,6 @@
 #include "game.h"
 #include "gamescreen.h"
 #include "fractal_heightmap.h"
-#include "curses_io.h"
 #include "curses_map.h"
 #include "math.h"
 #include "memory.h"
@@ -94,8 +93,8 @@ d_gamescreen_draw_terrain () {
 
 	struct d_ui_area area;
 	area.pos.x = area.pos.y = 1;
-	area.size.width = d_curses_size.width - 1;
-	area.size.height = d_curses_size.height - 1;
+	area.size.width = d_ui->size.width - 1;
+	area.size.height = d_ui->size.height - 1;
 	d_curses_map_draw (&area, d_viewpoint, d_zoom_level, d_terrain);
 }
 
@@ -121,10 +120,10 @@ d_gamescreen_draw (struct d_ui_state *handler) {
 	d_gamescreen_draw_terrain ();
 
 	d_ui->set_color (d_white_black);
-	d_ui->box (0, 0, d_curses_size.width-1,
-			   d_curses_size.height-1, ' ');
+	d_ui->box (0, 0, d_ui->size.width-1,
+			   d_ui->size.height-1, ' ');
 	d_ui->set_color (d_black_green);
-	d_ui->printf_center (d_curses_size.width / 2, 0,
+	d_ui->printf_center (d_ui->size.width / 2, 0,
 								  "|======- D U N G E O N S -======|");
 
 	d_ui->set_color (d_black_white);
@@ -135,20 +134,20 @@ d_gamescreen_draw (struct d_ui_state *handler) {
 
 	char date[30];
 	d_game_format_date (date, 30, d_context->datetime);
-	d_ui->printf_right (d_curses_size.width - 5, 0,
-						   date);
+	d_ui->printf_right (d_ui->size.width - 5, 0,
+						date);
 
-	int middle = d_curses_size.height / 2;
+	int middle = d_ui->size.height / 2;
 	d_ui->printf_left (0, middle - 1, " ");
 	d_ui->printf_left (0, middle, "W");
 	d_ui->printf_left (0, middle + 1, " ");
 
-	d_ui->printf_left (d_curses_size.width-1, middle - 1, " ");
-	d_ui->printf_left (d_curses_size.width-1, middle, "E");
-	d_ui->printf_left (d_curses_size.width-1, middle + 1, " ");
+	d_ui->printf_left (d_ui->size.width-1, middle - 1, " ");
+	d_ui->printf_left (d_ui->size.width-1, middle, "E");
+	d_ui->printf_left (d_ui->size.width-1, middle + 1, " ");
 
-	d_ui->printf_center (d_curses_size.width / 2,
-						 d_curses_size.height-1, " S ");
+	d_ui->printf_center (d_ui->size.width / 2,
+						 d_ui->size.height-1, " S ");
 
 	d_ui->set_color (d_black_white);
 }

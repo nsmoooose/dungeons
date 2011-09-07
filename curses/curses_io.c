@@ -16,9 +16,6 @@
 #include "main_menu.h"
 #include "ui.h"
 
-
-struct d_curses_size d_curses_size;
-
 struct d_color_def {
 	enum d_ui_color index;
 	int bg;
@@ -69,7 +66,7 @@ d_curses_box (int x1, int y1, int x2, int y2, char key) {
 
 static void
 d_curses_update_size () {
-	getmaxyx (stdscr, d_curses_size.height, d_curses_size.width);
+	getmaxyx (stdscr, d_ui->size.height, d_ui->size.width);
 }
 
 static void
@@ -174,7 +171,7 @@ d_curses_step (double now, double delta) {
 
 			d_ui->title_large_draw ();
 
-			struct d_ui_area area = { { d_curses_size.width / 2 - 10, 13}, { 20, 20 } };
+			struct d_ui_area area = { { d_ui->size.width / 2 - 10, 13}, { 20, 20 } };
 			d_ui->menu_draw (&area, state->key_bindings);
 		}
 
@@ -196,7 +193,7 @@ d_curses_widget_title_large_draw () {
 	};
 	d_ui->set_color (d_black_green);
 
-	int center = d_curses_size.width / 2;
+	int center = d_ui->size.width / 2;
 
 	for (int i=0;i<7;++i) {
 		d_ui->printf_center (center, 3 + i, title[i]);
@@ -215,6 +212,7 @@ d_curses_widget_menu_draw (struct d_ui_area *area, struct d_ui_key_binding menu[
 
 static struct d_ui d_curses_implementation = {
 	0,          /* quit flag */
+	{ 0, 0 },   /* size */
 	0.0,        /* last redraw */
 	1.0,        /* redraw interval */
 	0,          /* request redraw flag */

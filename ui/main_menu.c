@@ -1,7 +1,6 @@
 #include <unistd.h>
 
 #include "clock.h"
-#include "curses_io.h"
 #include "error.h"
 #include "gamescreen.h"
 #include "main_menu.h"
@@ -71,6 +70,6 @@ static void
 d_main_menu_draw (struct d_ui_state *state) {
 	d_ui->clearscr ();
 	d_ui->title_large_draw ();
-	struct d_ui_area area = { { d_curses_size.width / 2 - 10, 13}, { 20, 20 } };
+	struct d_ui_area area = { { d_ui->size.width / 2 - 10, 13}, { 20, 20 } };
 	d_ui->menu_draw (&area, state->key_bindings);
 }

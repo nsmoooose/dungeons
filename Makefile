@@ -23,4 +23,7 @@ dungeons-gl: $(FILES_SRC) $(FILES_UI) $(FILES_GL)
 clean:
 	$(RM) -r *.o *.gcda *.gcno dungeons-curses dungeons-gl
 
-.PHONY: all clean
+tags:
+	etags **/*.c **/*.h
+
+.PHONY: all clean tags

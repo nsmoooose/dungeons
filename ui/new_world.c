@@ -1,4 +1,3 @@
-#include "curses_io.h"
 #include "new_world.h"
 
 static void d_cmd_world_to_main_menu_cb ();
