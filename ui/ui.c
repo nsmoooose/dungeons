@@ -67,12 +67,8 @@ d_ui_sigint (int sig) {
 	d_ui->quit = 1;
 }
 
-static void
-d_ui_process_input () {
-	int key = getch ();
-	if (key == ERR) {
-		return;
-	}
+void
+d_ui_process_input (int key) {
 	struct d_ui_state *state = d_ui_state_current ();
 	for (int i=0;state->key_bindings[i].key != 0;++i) {
 		if (key == state->key_bindings[i].key) {
@@ -83,52 +79,43 @@ d_ui_process_input () {
 	}
 }
 
-static void
+void
 d_ui_step (double now, double delta) {
 	struct d_ui_state *state = d_ui_state_current ();
 	if (state && state->update) {
 		state->update (state, now, delta);
 	}
-
 	if (d_ui->request_redraw == 0 && now - d_ui->redraw_last < d_ui->redraw_interval) {
 		return;
 	}
+	d_ui->request_redraw = 1;
+	d_ui->redraw_last = now;
+}
+
+void
+d_ui_render () {
+	struct d_ui_state *state = d_ui_state_current ();
 	if (state) {
 		d_ui->request_redraw = 0;
 		d_ui->update_size ();
-
 		if (state->draw) {
 			state->draw (state);
 		}
 		else {
 			d_ui->clearscr ();
-
 			d_ui->title_large_draw ();
 
 			struct d_ui_area area = { { d_ui->size.width / 2 - 10, 13}, { 20, 20 } };
 			d_ui->menu_draw (&area, state->key_bindings);
 		}
-
-		d_ui->redraw_last = now;
-		refresh ();
 	}
 }
 
 void
 d_ui_run () {
 	d_ui->init ();
-
 	signal (SIGINT, d_ui_sigint);
-
-	double last = 0;
-
-	while (!d_ui->quit) {
-		double now = d_time_get ();
-		d_ui_process_input ();
-		d_ui_step (now, now-last);
-		last = now;
-	}
-
+	d_ui->run ();
 	d_ui->destroy ();
 }
 

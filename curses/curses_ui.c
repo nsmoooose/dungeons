@@ -209,6 +209,28 @@ d_curses_destroy () {
 	}
 }
 
+static void
+d_curses_run () {
+	double last = 0;
+
+	while (!d_ui->quit) {
+		double now = d_time_get ();
+		int key = getch ();
+		if (key != ERR) {
+			d_ui_process_input (key);
+		}
+
+		double delta = now - last;
+		d_ui_step (now, delta);
+		if (d_ui->request_redraw) {
+			d_ui_render ();
+			refresh ();
+		}
+
+		last = now;
+	}
+}
+
 struct d_ui d_curses_ui_implementation = {
 	0,          /* quit flag */
 	{ 0, 0 },   /* size */
@@ -217,6 +239,7 @@ struct d_ui d_curses_ui_implementation = {
 	0,          /* request redraw flag */
 	d_curses_init,
 	d_curses_destroy,
+	d_curses_run,
 	d_curses_clear,
 	d_curses_setpos,
 	d_curses_printf_center,

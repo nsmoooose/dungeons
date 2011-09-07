@@ -1,7 +1,7 @@
 export CFLAGS+=-std=gnu99 -g -Os -Wall -pedantic -Werror -I$(CURDIR) \
 	-I$(CURDIR)/src -I$(CURDIR)/curses -I$(CURDIR)/gl -I$(CURDIR)/ui
 export LIBS_CURSES+=-lrt -lm -lncurses
-export LIBS_GL+=-lrt -lm -lncurses -lGL
+export LIBS_GL+=-lrt -lm -lncurses -lglut -lGL -lGLU
 
 vpath %.c src
 vpath %.c curses

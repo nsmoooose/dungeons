@@ -73,6 +73,7 @@ struct d_ui {
 
 	void (*init) ();
 	void (*destroy) ();
+	void (*run) ();
 
 	void (*clearscr) ();
 	void (*setpos) (int x, int y);
@@ -87,10 +88,6 @@ struct d_ui {
 
 	void (*title_large_draw) ();
 	void (*menu_draw) (struct d_ui_area *area, struct d_ui_key_binding menu[]);
-
-	void (*map_draw) (struct d_ui_area *area, struct d_ui_viewpoint *vp,
-					  int zoom, struct d_heightmap *hm);
-
 };
 
 void d_ui_do_transition (struct d_ui_state_transition *transition);
@@ -98,6 +95,9 @@ struct d_ui_state* d_ui_state_current ();
 void d_ui_state_machine_print (char *filename);
 
 void d_ui_run ();
+void d_ui_process_input (int key);
+void d_ui_step (double now, double delta);
+void d_ui_render ();
 
 enum d_ui_map_mode {
 	/* Draws like a regular map where we can see information from all heights. */
