@@ -16,7 +16,7 @@
 #include "main_menu.h"
 #include "ui.h"
 
-struct d_color_def {
+struct d_curses_color_def {
 	enum d_ui_color index;
 	int bg;
 	int text;
@@ -33,7 +33,7 @@ struct d_color_def {
   COLOR_WHITE
 */
 
-struct d_color_def d_color_def[] =
+static struct d_curses_color_def d_curses_color_def[] =
 {
 	{ d_black_white, COLOR_BLACK, COLOR_WHITE },
 	{ d_white_black, COLOR_WHITE, COLOR_BLACK },
@@ -188,8 +188,9 @@ d_curses_init () {
 		d_bug ("Failed to set nodelay.");
 	}
 
-	for (int i=0;i<sizeof (d_color_def) / sizeof (struct d_color_def);++i) {
-		if (init_pair (d_color_def[i].index, d_color_def[i].text, d_color_def[i].bg) == ERR) {
+	for (int i=0;i<sizeof (d_curses_color_def) / sizeof (struct d_curses_color_def);++i) {
+		if (init_pair (d_curses_color_def[i].index,
+					   d_curses_color_def[i].text, d_curses_color_def[i].bg) == ERR) {
 			d_bug ("Failed to set color");
 		}
 	}
