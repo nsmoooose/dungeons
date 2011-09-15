@@ -55,7 +55,8 @@ enum d_ui_color {
 	d_green_white,
 	d_cyan_white,
 	d_black_blue,
-	d_black_cyan
+	d_black_cyan,
+	d_last_color = d_black_cyan
 };
 
 struct d_ui_viewpoint {

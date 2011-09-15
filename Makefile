@@ -1,7 +1,8 @@
 export CFLAGS+=-std=gnu99 -g -Os -Wall -pedantic -Werror -I$(CURDIR) \
-	-I$(CURDIR)/src -I$(CURDIR)/curses -I$(CURDIR)/gl -I$(CURDIR)/ui
+	-I$(CURDIR)/src -I$(CURDIR)/curses -I$(CURDIR)/gl -I$(CURDIR)/ui \
+	$(shell pkg-config --cflags cairo)
 export LIBS_CURSES+=-lrt -lm -lncurses
-export LIBS_GL+=-lrt -lm -lncurses -lglut -lGL -lGLU
+export LIBS_GL+=-lrt -lm -lncurses -lglut -lGL -lGLU $(shell pkg-config --libs cairo)
 
 vpath %.c src
 vpath %.c curses

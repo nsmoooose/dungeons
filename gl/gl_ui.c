@@ -1,13 +1,18 @@
+#include <cairo.h>
 #include <GL/freeglut.h>
 #include <GL/gl.h>
 #include <GL/glu.h>
 #include <GL/glext.h>
 #include <math.h>
+#include <stdarg.h>
 #include <stdio.h>
 #include <string.h>
 
 #include "clock.h"
+#include "error.h"
 #include "gl_ui.h"
+
+#define d_gl_char_cache_size 1000
 
 struct d_gl_color_def {
 	enum d_ui_color index;
@@ -15,8 +20,12 @@ struct d_gl_color_def {
 	float fg[3];
 };
 
+struct d_gl_char_texture_cache {
+	GLuint textures[d_gl_char_cache_size];
+};
+
 static struct d_ui_pos d_gl_pos;
-static struct d_ui_size d_gl_char_size = { 8, 15 };
+static struct d_ui_size d_gl_char_size = { 8, 16 };
 static enum d_ui_color d_gl_color;
 static struct d_gl_color_def d_gl_color_def[] = {
 	{ 0, { 0, 0, 0 }, { 0, 0, 0 } },
@@ -28,6 +37,81 @@ static struct d_gl_color_def d_gl_color_def[] = {
 	{ d_black_blue, { 0, 0, 0 }, { 0, 0, 1 } },
 	{ d_black_cyan, { 0, 0, 0 }, { 0, 1, 1 } }
 };
+
+static struct d_gl_char_texture_cache d_gl_char_texture_cache[d_last_color];
+
+static void
+d_gl_check_errors(char *last_section) {
+	GLenum errCode;
+	const GLubyte *errString;
+
+	/* Print errors if there are any. */
+	if ((errCode = glGetError()) != GL_NO_ERROR) {
+		errString = gluErrorString(errCode);
+		fprintf(stderr, "OpenGL Error in section: %s, %s\n", last_section, errString);
+	}
+}
+
+static void
+d_gl_create_char_texture (enum d_ui_color color, int key, GLuint texture) {
+	cairo_t *cr;
+	cairo_surface_t *cairo_surface;
+	unsigned char* cairo_data;
+	int stride;
+
+	stride = cairo_format_stride_for_width(CAIRO_FORMAT_ARGB32, d_gl_char_size.width);
+	cairo_data = (unsigned char *) calloc(stride * d_gl_char_size.height, 1);
+	cairo_surface = cairo_image_surface_create_for_data(
+		cairo_data, CAIRO_FORMAT_ARGB32, d_gl_char_size.width, d_gl_char_size.height, stride);
+
+	cr = cairo_create(cairo_surface);
+
+	cairo_set_source_rgb(cr, d_gl_color_def[color].bg[0],
+						 d_gl_color_def[color].bg[1],
+						 d_gl_color_def[color].bg[2]);
+	cairo_rectangle (cr, 0, 0, d_gl_char_size.width, d_gl_char_size.height);
+	cairo_fill (cr);
+
+	cairo_set_source_rgb(cr, d_gl_color_def[color].fg[0],
+						 d_gl_color_def[color].fg[1],
+						 d_gl_color_def[color].fg[2]);
+
+	cairo_select_font_face(cr, "Meera",
+						   CAIRO_FONT_SLANT_NORMAL,
+						   CAIRO_FONT_WEIGHT_NORMAL);
+
+	cairo_set_font_size(cr, 10);
+	cairo_move_to(cr, 0, d_gl_char_size.height/2);
+	char buffer[5];
+	snprintf (buffer, 5, "%c", key);
+	cairo_show_text(cr, buffer);
+
+	glBindTexture(GL_TEXTURE_2D, texture);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, d_gl_char_size.width, d_gl_char_size.height,
+				 0, GL_BGRA, GL_UNSIGNED_BYTE, cairo_data);
+
+	free(cairo_data);
+	cairo_destroy(cr);
+	cairo_surface_destroy(cairo_surface);
+
+	d_gl_check_errors ("d_gl_create_char_texture");
+}
+
+static GLuint
+d_gl_char_get_texture (enum d_ui_color color, int key) {
+	if (key >= d_gl_char_cache_size || key < 0) {
+		d_bug ("Invalid key code: %d", key);
+	}
+	GLuint texture = d_gl_char_texture_cache[color].textures[key];
+	if (glIsTexture (texture) == GL_FALSE) {
+		d_gl_create_char_texture (color, key, texture);
+	}
+	return texture;
+}
 
 static void
 d_gl_window_size_change(int width, int height) {
@@ -64,8 +148,9 @@ d_gl_render () {
 
 	d_ui_render ();
 
-	/* TODO swap buffers etc */
 	glutSwapBuffers ();
+
+	d_gl_check_errors ("d_gl_render");
 }
 
 static void
@@ -85,10 +170,17 @@ d_gl_init () {
 	glutReshapeFunc(d_gl_window_size_change);
 	glutIdleFunc(d_gl_idle);
 	glutDisplayFunc(d_gl_render);
+
+	for (int i=0;i<d_last_color;++i) {
+		glGenTextures (d_gl_char_cache_size, d_gl_char_texture_cache[i].textures);
+	}
 }
 
 static void
 d_gl_destroy () {
+	for (int i=0;i<d_last_color;++i) {
+		glDeleteTextures (d_gl_char_cache_size, d_gl_char_texture_cache[i].textures);
+	}
 }
 
 static void
@@ -108,33 +200,61 @@ d_gl_setpos (int x, int y) {
 }
 
 static void
-d_gl_printf_center (int x, int y, const char *format, ...) {
-	int width = strlen (format);
-	int cx = fmax (x - (width / 2), 0);
-	int cy = y;
+d_gl_printf_left (int x, int y, const char *format, ...) {
+	char buffer[1000];
 
-	glColor3fv (d_gl_color_def[d_gl_color].fg);
-	glRecti (cx*d_gl_char_size.width, cy*d_gl_char_size.height,
-			 (cx+1+width)*d_gl_char_size.width, (cy+1)*d_gl_char_size.height);
+	va_list args;
+	va_start (args, format);
+	vsnprintf (buffer, 1000, format, args);
+	va_end (args);
+
+	int width = strlen (buffer);
+
+	glEnable(GL_TEXTURE_2D);
+	for (int i=0;i<width;++i) {
+		int top = y * d_gl_char_size.height;
+		int left = (x + i) * d_gl_char_size.width;
+		GLuint texture = d_gl_char_get_texture (d_gl_color, buffer[i]);
+		glBindTexture(GL_TEXTURE_2D, texture);
+		glBegin(GL_POLYGON);
+		glTexCoord2f(0.0f, 0.0f);
+		glVertex2f(left, top);
+		glTexCoord2f(1.0f, 0.0f);
+		glVertex2f(left + d_gl_char_size.width, top);
+		glTexCoord2f(1.0f, 1.0f);
+		glVertex2f(left + d_gl_char_size.width, top + d_gl_char_size.height);
+		glTexCoord2f(0.0f, 1.0f);
+		glVertex2f(left, top + d_gl_char_size.height);
+		glEnd();
+	}
+	glDisable(GL_TEXTURE_2D);
+	d_gl_check_errors ("d_gl_printf_left (exit)");
 }
 
 static void
-d_gl_printf_left (int x, int y, const char *format, ...) {
-	int width = strlen (format);
-	glColor3fv (d_gl_color_def[d_gl_color].fg);
-	glRecti (x*d_gl_char_size.width, y*d_gl_char_size.height,
-			 (x+1+width)*d_gl_char_size.width, (y+1)*d_gl_char_size.height);
+d_gl_printf_center (int x, int y, const char *format, ...) {
+	char buffer[1000];
+
+	va_list args;
+	va_start (args, format);
+	vsnprintf (buffer, 1000, format, args);
+	va_end (args);
+
+	int width = strlen (buffer);
+	d_gl_printf_left (x - width / 2, y, buffer);
 }
 
 static void
 d_gl_printf_right (int x, int y, const char *format, ...) {
-	int width = strlen (format);
-	int cx = x - (width);
-	int cy = y;
+	char buffer[1000];
 
-	glColor3fv (d_gl_color_def[d_gl_color].fg);
-	glRecti (cx*d_gl_char_size.width, cy*d_gl_char_size.height,
-			 (cx+1+width)*d_gl_char_size.width, (cy+1)*d_gl_char_size.height);
+	va_list args;
+	va_start (args, format);
+	vsnprintf (buffer, 1000, format, args);
+	va_end (args);
+
+	int width = strlen (buffer);
+	d_gl_printf_left (x - width, y, buffer);
 }
 
 static void
@@ -211,3 +331,4 @@ struct d_ui d_gl_ui_implementation = {
 	d_gl_widget_title_large_draw,
 	d_gl_widget_menu_draw
 };
+
