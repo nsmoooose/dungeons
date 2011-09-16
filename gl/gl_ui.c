@@ -76,12 +76,12 @@ d_gl_create_char_texture (enum d_ui_color color, int key, GLuint texture) {
 						 d_gl_color_def[color].fg[1],
 						 d_gl_color_def[color].fg[2]);
 
-	cairo_select_font_face(cr, "Meera",
+	cairo_select_font_face(cr, "Monospace",
 						   CAIRO_FONT_SLANT_NORMAL,
 						   CAIRO_FONT_WEIGHT_NORMAL);
 
-	cairo_set_font_size(cr, 10);
-	cairo_move_to(cr, 0, d_gl_char_size.height/2);
+	cairo_set_font_size(cr, 12);
+	cairo_move_to(cr, 0, d_gl_char_size.height/2 + 3);
 	char buffer[5];
 	snprintf (buffer, 5, "%c", key);
 	cairo_show_text(cr, buffer);
@@ -259,6 +259,14 @@ d_gl_printf_right (int x, int y, const char *format, ...) {
 
 static void
 d_gl_box (int x1, int y1, int x2, int y2, char key) {
+	for (int i=x1;i<=x2;++i) {
+		d_ui->printf_left (i, y1, "%c", key);
+		d_ui->printf_left (i, y2, "%c", key);
+	}
+	for (int i=y1+1;i<y2;++i) {
+		d_ui->printf_left (x1, i, "%c", key);
+		d_ui->printf_left (x2, i, "%c", key);
+	}
 }
 
 static void
