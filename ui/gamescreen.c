@@ -1,3 +1,4 @@
+#include <math.h>
 #include <stdio.h>
 
 #include "client.h"
@@ -6,7 +7,6 @@
 #include "gamescreen.h"
 #include "fractal_heightmap.h"
 #include "map.h"
-#include "math.h"
 #include "memory.h"
 #include "ui.h"
 

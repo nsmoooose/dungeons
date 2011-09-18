@@ -37,7 +37,7 @@ randnum (float min, float max) {
  */
 static float
 avgDiamondVals (int i, int j, int stride,
-				int size, int subSize, float *fa) {
+				int size, int subSize, short *fa) {
     /* In this diagram, our input stride is 1, the i,j location is
        indicated by "X", and the four value we want to average are
        "*"s:
@@ -93,7 +93,7 @@ avgDiamondVals (int i, int j, int stride,
  * it. "Stride" represents half the length of one side of the square.
  */
 static float
-avgSquareVals (int i, int j, int stride, int size, float *fa) {
+avgSquareVals (int i, int j, int stride, int size, short *fa) {
     /* In this diagram, our input stride is 1, the i,j location is
        indicated by "*", and the four value we want to average are
        "X"s:
@@ -150,7 +150,7 @@ d_fractal_heightmap_generate (struct d_heightmap *hm,
     int subSize;
 	float ratio, scale;
 
-	float *fa = hm->array;
+	short *fa = hm->array;
 	int size = hm->width;
 
     if (!d_fractal_is_power_of_2 (size) || (size==1)) {
@@ -227,8 +227,8 @@ d_fractal_heightmap_generate (struct d_heightmap *hm,
 		for (i=stride; i<subSize; i+=stride) {
 			for (j=stride; j<subSize; j+=stride) {
 				fa[(i * size) + j] =
-					scale * randnum (-0.5f, 0.5f) +
-					avgSquareVals (i, j, stride, size, fa);
+					(short)(scale * randnum (-0.5f, 0.5f) +
+						  avgSquareVals (i, j, stride, size, fa));
 				j += stride;
 			}
 			i += stride;
@@ -263,8 +263,8 @@ d_fractal_heightmap_generate (struct d_heightmap *hm,
 				   current position. It will return the average of the
 				   surrounding diamond data points. */
 				fa[(i * size) + j] =
-					scale * randnum (-0.5, 0.5f) +
-					avgDiamondVals (i, j, stride, size, subSize, fa);
+					(short)(scale * randnum (-0.5, 0.5f) +
+						  avgDiamondVals (i, j, stride, size, subSize, fa));
 
 				/* To wrap edges seamlessly, copy edge values around
 				   to other side of array */
@@ -310,7 +310,7 @@ d_fractal_heightmap_destroy (struct d_heightmap *hm) {
     d_free (hm);
 }
 
-float
+short
 d_fractal_heightmap_get (struct d_heightmap *hm, int x, int y) {
 	if (x < 0 || y < 0 || x > hm->width || y > hm->height) {
 		d_bug ("Coordinates outside heightmap.");

@@ -30,8 +30,6 @@ Flow:
 Main menu -> New world -> Main menu
 Main menu -> New game -> Select world -> embarkment -> game -> main menu
 
-
-
 Keyboard:
 
 * Arrow keys to move arround.
@@ -84,9 +82,7 @@ Features
 World generation
 ----------------
 
-Smallest area the game covers is a tile. A tile is 
-
-Tilesize is 10 m in all directions.
+Tilesize is 1 m in all directions.
 
 The world is divided into levels. Each level is 10 meters high.
 w h d 1000 x 1000 x 3000
