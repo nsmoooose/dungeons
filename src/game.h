@@ -21,6 +21,13 @@ void d_game_run (struct d_game_context *context, double now, double delta);
 
 void d_game_format_date (char *buffer, int buffer_size, double date);
 
+struct d_game_info {
+	char *path;
+	char *description;
+};
+
+struct d_list *d_game_info_list ();
+
 void d_game_save (struct d_game_context *context);
 struct d_game_context * d_game_load (char *directory);
 

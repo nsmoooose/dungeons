@@ -42,6 +42,14 @@ d_game_format_date (char *buffer, int buffer_size, double datetime) {
 	snprintf (buffer, buffer_size, "%03d-%02d-%02d", year, month, day);
 }
 
+struct d_list *
+d_game_info_list () {
+	struct d_list *list = d_list_new ();
+	
+
+	return list;
+}
+
 void
 d_game_save (struct d_game_context *context) {
 	struct d_storage *storage = d_storage_new (context->directory, "time");

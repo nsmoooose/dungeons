@@ -131,6 +131,8 @@ struct d_ui_state_transition d_transition_quit_question = {
 
 struct d_ui_state_transition d_transition_load_game_abort = {
 	"Abort", &d_load_game_state, &d_main_menu_state };
+struct d_ui_state_transition d_transition_load_game_loading = {
+	"Loading", &d_load_game_state, &d_gamescreen_state };
 
 struct d_ui_state_transition d_transition_quit_resume = {
 	"Resume", &d_quit_state, &d_main_menu_state };
@@ -164,6 +166,7 @@ struct d_ui_state_machine d_ui_state_machine = {
 		&d_transition_new_world_back,
 		&d_transition_load_game,
 		&d_transition_load_game_abort,
+		&d_transition_load_game_loading,
 		&d_transition_quit_question,
 		&d_transition_quit_resume,
 		&d_transition_esc_menu,
