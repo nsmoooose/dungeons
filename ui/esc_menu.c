@@ -38,7 +38,7 @@ d_cmd_abandon_dungeon_cb () {
 
 void
 d_cmd_save_dungeon_cb () {
-	/* TODO Save dungeon before returning to the main menu. */
+	d_game_save (d_context);
 	d_game_context_destroy (d_context);
 	d_context = 0;
 	d_ui_do_transition (&d_transition_esc_menu_to_main_menu);

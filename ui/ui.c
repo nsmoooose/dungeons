@@ -6,6 +6,7 @@
 #include "error.h"
 #include "esc_menu.h"
 #include "gamescreen.h"
+#include "load_game.h"
 #include "main_menu.h"
 #include "new_world.h"
 #include "quit.h"
@@ -123,13 +124,20 @@ struct d_ui_state_transition d_transition_new_world = {
 	"New world", &d_main_menu_state, &d_new_world_state };
 struct d_ui_state_transition d_transition_new_game = {
 	"New game", &d_main_menu_state, &d_gamescreen_state };
+struct d_ui_state_transition d_transition_load_game = {
+	"Load game", &d_main_menu_state, &d_load_game_state };
 struct d_ui_state_transition d_transition_quit_question = {
 	"Quit", &d_main_menu_state, &d_quit_state };
+
+struct d_ui_state_transition d_transition_load_game_abort = {
+	"Abort", &d_load_game_state, &d_main_menu_state };
+
 struct d_ui_state_transition d_transition_quit_resume = {
 	"Resume", &d_quit_state, &d_main_menu_state };
 
 struct d_ui_state_transition d_transition_esc_menu = {
 	"In game menu", &d_gamescreen_state, &d_esc_menu_state };
+
 struct d_ui_state_transition d_transition_esc_menu_resume = {
 	"Resume", &d_esc_menu_state, &d_gamescreen_state };
 struct d_ui_state_transition d_transition_esc_menu_to_main_menu = {
@@ -144,6 +152,7 @@ struct d_ui_state_machine d_ui_state_machine = {
 	{
 		&d_esc_menu_state,
 		&d_gamescreen_state,
+		&d_load_game_state,
 		&d_main_menu_state,
 		&d_new_world_state,
 		&d_quit_state,
@@ -153,6 +162,8 @@ struct d_ui_state_machine d_ui_state_machine = {
 		&d_transition_new_game,
 		&d_transition_new_world,
 		&d_transition_new_world_back,
+		&d_transition_load_game,
+		&d_transition_load_game_abort,
 		&d_transition_quit_question,
 		&d_transition_quit_resume,
 		&d_transition_esc_menu,

@@ -43,15 +43,17 @@ d_game_format_date (char *buffer, int buffer_size, double datetime) {
 }
 
 void
-d_game_save (struct d_game_context *context, char *directory) {
-	struct d_storage *storage = d_storage_new (directory, "time");
+d_game_save (struct d_game_context *context) {
+	struct d_storage *storage = d_storage_new (context->directory, "time");
 	d_storage_write_d (storage, "datetime", &context->datetime);
 	d_storage_close (storage);
 }
 
-void
-d_game_load (struct d_game_context *context, char *directory) {
+struct d_game_context *
+d_game_load (char *directory) {
+	struct d_game_context *context = d_game_context_new ();
 	struct d_storage* storage = d_storage_new (directory, "time");
 	d_storage_read_d (storage, "datetime", &context->datetime);
 	d_storage_close (storage);
+	return context;
 }

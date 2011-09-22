@@ -50,6 +50,7 @@ d_cmd_new_world_cb () {
 
 static void
 d_cmd_load_game_cb () {
+	d_ui_do_transition (&d_transition_load_game);
 }
 
 static void
