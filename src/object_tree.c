@@ -72,6 +72,7 @@ struct d_tree_inst_data {
 
 static struct d_ob_type d_ob_type_tree_picea = {
 	"picea",
+	"Spruce",
 	&d_ob_sm_tree,
 	0, /* data */
 	d_ob_create,

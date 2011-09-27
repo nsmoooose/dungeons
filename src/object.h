@@ -35,6 +35,7 @@ struct d_ob_state_machine {
 };
 
 struct d_ob_type {
+	char *id;
 	char *description;
 	struct d_ob_state_machine *sm;
 	void *data;
@@ -61,6 +62,7 @@ struct d_ob_registry {
 };
 
 struct d_list *d_ob_list_new ();
+struct d_ob_type *d_ob_get_type (struct d_ob_registry *registry, const char *id);
 
 extern struct d_ob_registry d_ob_registry;
 

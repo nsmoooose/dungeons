@@ -1,3 +1,6 @@
+#include <string.h>
+
+#include "error.h"
 #include "list.h"
 #include "object.h"
 #include "object_tree.h"
@@ -15,6 +18,20 @@ d_ob_list_new () {
 	return list;
 }
 
+struct d_ob_type *
+d_ob_get_type (struct d_ob_registry *registry, const char *id) {
+	for (int i=0;registry->categories[i];++i) {
+		struct d_ob_category *category = registry->categories[i];
+		for (int j=0;category->objects[j];++j) {
+			struct d_ob_type *type = category->objects[j];
+			if (strcmp (type->id, id) == 0) {
+				return type;
+			}
+		}
+	}
+	d_bug ("Object type: %s not found.", id);
+	return 0;
+}
 
 struct d_ob_registry d_ob_registry = {
 	{
