@@ -1,9 +1,15 @@
+#include <dirent.h>
 #include <stdio.h>
+#include <string.h>
+#include <sys/stat.h>
+#include <sys/types.h>
 
+#include "error.h"
 #include "game.h"
 #include "memory.h"
 #include "object.h"
 #include "storage.h"
+#include "str.h"
 
 struct d_game_context*
 d_game_context_new () {
@@ -42,10 +48,78 @@ d_game_format_date (char *buffer, int buffer_size, double datetime) {
 	snprintf (buffer, buffer_size, "%03d-%02d-%02d", year, month, day);
 }
 
+static int
+d_dir_exists (const char *path) {
+	DIR *d = opendir (path);
+	if (d == 0) {
+		return 0;
+	}
+	closedir (d);
+	return 1;
+}
+
+/*
+static int
+d_file_exists (const char *path) {
+	struct stat st;
+	return stat (path, &st) == -1 ? 0 : 1;
+}
+*/
+
+static void
+d_game_info_list_delete (void *data) {
+	struct d_game_info *info = data;
+	d_strfree (info->description);
+	d_strfree (info->path);
+	d_free (info);
+}
+
 struct d_list *
 d_game_info_list () {
 	struct d_list *list = d_list_new ();
-	
+	list->remove = d_game_info_list_delete;
+
+	/* TODO Set a item destroy function to the list of game info */
+
+	char *home = getenv ("HOME");
+	char dungeons_path[1024];
+	snprintf (dungeons_path, 1024, "%s/.dungeons", home);
+
+	if (!d_dir_exists (dungeons_path)) {
+		if (mkdir (dungeons_path, S_IRUSR|S_IWUSR|S_IXUSR) == -1) {
+			d_bug ("Failed to create ~/.dungeons");
+		}
+	}
+
+	char saves_path[1024];
+	snprintf (saves_path, 1024, "%s/saves", dungeons_path);
+	if (!d_dir_exists (saves_path)) {
+		if (mkdir (saves_path, S_IRUSR|S_IWUSR|S_IXUSR) == -1) {
+			d_bug ("Failed to create ~/.dungeons/saves");
+		}
+	}
+
+	DIR *d = opendir (saves_path);
+	if (!d) {
+		d_bug ("Failed to open ~/.dungeons/saves directory.");
+	}
+	struct dirent *dir = 0;
+	while ((dir=readdir (d))) {
+		if (strcmp (".", dir->d_name) == 0 ||
+			strcmp ("..", dir->d_name) == 0) {
+			continue;
+		}
+
+		struct d_game_info *info = d_calloc (1, sizeof (struct d_game_info));
+		char buffer[1024];
+		snprintf (buffer, 1024, "%s/%s", saves_path, dir->d_name);
+		info->path = d_strdup (buffer);
+		info->description = d_strdup (dir->d_name);
+		d_list_append (list, info);
+	}
+	closedir (d);
+
+	/* TODO sort game info list? */
 
 	return list;
 }

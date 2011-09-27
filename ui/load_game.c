@@ -57,7 +57,7 @@ d_load_game_draw (struct d_ui_state *handler) {
 		else {
 			d_ui->set_color (d_black_white);
 		}
-		d_ui->printf_center (d_ui->size.width/2, i, info->description);
+		d_ui->printf_center (d_ui->size.width/2, i, "%-40s", info->description);
 	}
 }
 
@@ -75,9 +75,15 @@ d_cmd_load_game_directory_cb () {
 
 static void
 d_cmd_load_game_next_cb () {
+	if (d_selected_game && d_selected_game->next) {
+		d_selected_game = d_selected_game->next;
+	}
 }
 
 static void
 d_cmd_load_game_prev_cb () {
+	if (d_selected_game && d_selected_game->prev) {
+		d_selected_game = d_selected_game->prev;
+	}
 }
 

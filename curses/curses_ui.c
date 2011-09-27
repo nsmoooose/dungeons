@@ -85,12 +85,15 @@ d_curses_setpos (int x, int y) {
 
 static void
 d_curses_printf_center (int x, int y, const char *format, ...) {
-	int width = strlen (format);
-	d_curses_setpos (fmax (x - (width / 2), 0), y);
+	char buffer[1000];
+
 	va_list args;
 	va_start (args, format);
-	vwprintw (stdscr, format, args);
+	vsnprintf (buffer, 1000, format, args);
 	va_end (args);
+
+	int width = strlen (buffer);
+	d_ui->printf_left (x - width / 2, y, buffer);
 }
 
 static void
