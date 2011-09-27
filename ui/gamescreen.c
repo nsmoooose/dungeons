@@ -79,38 +79,20 @@ struct d_ui_state d_gamescreen_state = {
 
 /* static struct d_client_context *d_context = 0; */
 struct d_game_context *d_context = 0;
-static struct d_heightmap *d_terrain = 0;
-static struct d_ui_viewpoint *d_viewpoint=0;
-static int d_zoom_level = 1;
 
 static void
 d_gamescreen_draw_terrain () {
-	if (!d_viewpoint || !d_terrain) {
-		d_ui->set_color (d_green_white);
-		d_ui->clearscr ();
-		return;
-	}
-
 	struct d_ui_area area;
 	area.pos.x = area.pos.y = 1;
 	area.size.width = d_ui->size.width - 1;
 	area.size.height = d_ui->size.height - 1;
-	d_map_draw (&area, d_viewpoint, d_zoom_level, d_terrain);
+	d_map_draw (&area, d_context->vp, d_context->zoom_level, d_context->hm);
 }
 
 static void
 d_gamescreen_update (struct d_ui_state *handler, double now, double delta) {
 	if (!d_context) {
-		d_context = d_game_context_new ();
-	}
-	if (!d_terrain) {
-		int size = 2048;
-		d_terrain = d_fractal_heightmap_new (size);
-		d_fractal_heightmap_generate (d_terrain, 123, 10000.f, 0.9f);
-		d_viewpoint = d_calloc (1, sizeof (struct d_ui_viewpoint));
-		d_viewpoint->x = size / 2;
-		d_viewpoint->y = size / 2;
-		d_viewpoint->z = fmax (d_fractal_heightmap_get (d_terrain, d_viewpoint->x, d_viewpoint->y), 0.0f);
+		d_bug ("No context assign. Cannot run a game.");
 	}
 	d_game_run (d_context, now, delta);
 }
@@ -127,9 +109,9 @@ d_gamescreen_draw (struct d_ui_state *handler) {
 								  "|======- D U N G E O N S -======|");
 
 	d_ui->set_color (d_black_white);
-	if (d_viewpoint) {
+	if (d_context->vp) {
 		d_ui->printf_left (5, 0, " N 37 23.516, W 122 02.625 (%d, %d), %dm ",
-						   d_viewpoint->x, d_viewpoint->y, d_viewpoint->z);
+						   d_context->vp->x, d_context->vp->y, d_context->vp->z);
 	}
 
 	char date[30];
@@ -155,62 +137,62 @@ d_gamescreen_draw (struct d_ui_state *handler) {
 
 static void
 d_cmd_map_pan_right_cb () {
-	d_viewpoint->x = fmax (d_viewpoint->x - 1, 0);
+	d_context->vp->x = fmax (d_context->vp->x - 1, 0);
 }
 
 static void
 d_cmd_map_pan_left_cb () {
-	d_viewpoint->x = fmin (d_viewpoint->x + 1, d_terrain->width);
+	d_context->vp->x = fmin (d_context->vp->x + 1, d_context->hm->width);
 }
 
 static void
 d_cmd_map_pan_up_cb () {
-	d_viewpoint->y = fmin (d_viewpoint->y + 1, d_terrain->height);
+	d_context->vp->y = fmin (d_context->vp->y + 1, d_context->hm->height);
 }
 
 static void
 d_cmd_map_pan_down_cb () {
-	d_viewpoint->y = fmax (d_viewpoint->y - 1, 0);
+	d_context->vp->y = fmax (d_context->vp->y - 1, 0);
 }
 
 static void
 d_cmd_map_pan_right_fast_cb () {
-	d_viewpoint->x = fmax (d_viewpoint->x - 10 * d_zoom_level, 0);
+	d_context->vp->x = fmax (d_context->vp->x - 10 * d_context->zoom_level, 0);
 }
 
 static void
 d_cmd_map_pan_left_fast_cb () {
-	d_viewpoint->x = fmin (d_viewpoint->x + 10 * d_zoom_level, d_terrain->width);
+	d_context->vp->x = fmin (d_context->vp->x + 10 * d_context->zoom_level, d_context->hm->width);
 }
 
 static void
 d_cmd_map_pan_up_fast_cb () {
-	d_viewpoint->y = fmin (d_viewpoint->y + 10 * d_zoom_level, d_terrain->height);
+	d_context->vp->y = fmin (d_context->vp->y + 10 * d_context->zoom_level, d_context->hm->height);
 }
 
 static void
 d_cmd_map_pan_down_fast_cb () {
-	d_viewpoint->y = fmax (d_viewpoint->y - 10 * d_zoom_level, 0);
+	d_context->vp->y = fmax (d_context->vp->y - 10 * d_context->zoom_level, 0);
 }
 
 static void
 d_cmd_map_zoom_in_cb () {
-	d_zoom_level = fmax (1, d_zoom_level - 1);
+	d_context->zoom_level = fmax (1, d_context->zoom_level - 1);
 }
 
 static void
 d_cmd_map_zoom_out_cb () {
-	d_zoom_level = fmin (15, d_zoom_level + 1);
+	d_context->zoom_level = fmin (15, d_context->zoom_level + 1);
 }
 
 static void
 d_cmd_map_down_cb () {
-	d_viewpoint->z-=10;
+	d_context->vp->z-=10;
 }
 
 static void
 d_cmd_map_up_cb () {
-	d_viewpoint->z+=10;
+	d_context->vp->z+=10;
 }
 
 static void

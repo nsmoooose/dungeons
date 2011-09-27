@@ -14,12 +14,16 @@
 struct d_game_context*
 d_game_context_new () {
 	struct d_game_context *context = d_calloc (1, sizeof (struct d_game_context));
+	context->vp = d_calloc (1, sizeof (struct d_viewpoint));
 	context->objects = d_ob_list_new ();
 	return context;
 }
 
 void
 d_game_context_destroy (struct d_game_context *context) {
+	d_free (context->directory);
+	d_free (context->vp);
+	d_list_destroy (context->objects);
 	d_free (context);
 }
 
@@ -127,15 +131,56 @@ d_game_info_list () {
 void
 d_game_save (struct d_game_context *context) {
 	struct d_storage *storage = d_storage_new (context->directory, "time");
-	d_storage_write_d (storage, "datetime", &context->datetime);
+	d_storage_write_d (storage, &context->datetime);
+	d_storage_close (storage);
+
+	storage = d_storage_new (context->directory, "hm");
+	d_storage_write_i (storage, &context->hm->width);
+	for (int x=0;x<=context->hm->width;++x) {
+		for (int y=0;y<=context->hm->height;++y) {
+			int h = d_fractal_heightmap_get (context->hm, x, y);
+			d_storage_write_i (storage, &h);
+		}
+	}
+	d_storage_close (storage);
+
+	storage = d_storage_new (context->directory, "viewpoint");
+	d_storage_write_i (storage, &context->vp->x);
+	d_storage_write_i (storage, &context->vp->y);
+	d_storage_write_i (storage, &context->vp->z);
+	d_storage_write_i (storage, &context->zoom_level);
 	d_storage_close (storage);
 }
 
 struct d_game_context *
 d_game_load (char *directory) {
 	struct d_game_context *context = d_game_context_new ();
+
+	context->directory = d_strdup (directory);
+
 	struct d_storage* storage = d_storage_new (directory, "time");
-	d_storage_read_d (storage, "datetime", &context->datetime);
+	d_storage_read_d (storage, &context->datetime);
 	d_storage_close (storage);
+
+	storage = d_storage_new (directory, "hm");
+	int size;
+	d_storage_read_i (storage, &size);
+	context->hm = d_fractal_heightmap_new (size);
+	for (int x=0;x<=context->hm->width;++x) {
+		for (int y=0;y<=context->hm->height;++y) {
+			int h;
+			d_storage_read_i (storage, &h);
+			d_fractal_heightmap_set (context->hm, x, y, h);
+		}
+	}
+	d_storage_close (storage);
+
+	storage = d_storage_new (directory, "viewpoint");
+	d_storage_read_i (storage, &context->vp->x);
+	d_storage_read_i (storage, &context->vp->y);
+	d_storage_read_i (storage, &context->vp->z);
+	d_storage_read_i (storage, &context->zoom_level);
+	d_storage_close (storage);
+
 	return context;
 }

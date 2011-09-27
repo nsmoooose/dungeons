@@ -1,6 +1,7 @@
 #include <unistd.h>
 
 #include "game.h"
+#include "gamescreen.h"
 #include "load_game.h"
 
 static void d_cmd_load_game_abort_cb ();
@@ -69,6 +70,11 @@ d_cmd_load_game_abort_cb () {
 
 static void
 d_cmd_load_game_directory_cb () {
+	if (!d_selected_game) {
+		return;
+	}
+	struct d_game_info *gi = d_selected_game->data;
+	d_context = d_game_load (gi->path);
 	d_ui_do_transition (&d_transition_load_game_loading);
 	d_list_destroy (d_loadable_games);
 }

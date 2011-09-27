@@ -1,11 +1,14 @@
+#include <math.h>
 #include <unistd.h>
 
 #include "clock.h"
 #include "error.h"
 #include "gamescreen.h"
 #include "main_menu.h"
+#include "memory.h"
 #include "new_world.h"
 #include "quit.h"
+#include "str.h"
 
 static void d_cmd_new_game_cb ();
 static void d_cmd_new_world_cb ();
@@ -40,6 +43,20 @@ struct d_ui_state d_main_menu_state = {
 
 static void
 d_cmd_new_game_cb () {
+	/* Set a context */
+	d_context = d_game_context_new ();
+	d_context->directory = d_strdup ("/home/henrikn/.dungeons/saves/test");
+
+	int size = 2048;
+	d_context->hm = d_fractal_heightmap_new (size);
+	d_fractal_heightmap_generate (d_context->hm, 123, 10000.f, 0.9f);
+
+	d_context->vp->x = size / 2;
+	d_context->vp->y = size / 2;
+	d_context->vp->z = fmax (d_fractal_heightmap_get (d_context->hm, d_context->vp->x, d_context->vp->y), 0.0f);
+
+	d_context->zoom_level = 1;
+
 	d_ui_do_transition (&d_transition_new_game);
 }
 

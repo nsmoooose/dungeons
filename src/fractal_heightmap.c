@@ -317,3 +317,11 @@ d_fractal_heightmap_get (struct d_heightmap *hm, int x, int y) {
 	}
 	return hm->array[y * hm->width + x];
 }
+
+void
+d_fractal_heightmap_set (struct d_heightmap *hm, int x, int y, short value) {
+	if (x < 0 || y < 0 || x > hm->width || y > hm->height) {
+		d_bug ("Coordinates outside heightmap.");
+	}
+	hm->array[y * hm->width + x] = value;
+}

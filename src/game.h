@@ -1,7 +1,12 @@
 #ifndef __DUNGEONS_GAME_H__
 #define __DUNGEONS_GAME_H__
 
+#include "fractal_heightmap.h"
 #include "list.h"
+
+struct d_viewpoint {
+	int x, y, z;
+};
 
 struct d_game_context {
 	char *directory;
@@ -11,6 +16,9 @@ struct d_game_context {
 	/* Delta since the last update. */
 	double delta;
 
+	struct d_heightmap *hm;
+	struct d_viewpoint *vp;
+	int zoom_level;
 	struct d_list *objects;
 };
 

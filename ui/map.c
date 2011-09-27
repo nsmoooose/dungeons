@@ -13,7 +13,7 @@
 
 void
 d_map_draw (
-	struct d_ui_area *area, struct d_ui_viewpoint *vp, int zoom, struct d_heightmap *hm) {
+	struct d_ui_area *area, struct d_viewpoint *vp, int zoom, struct d_heightmap *hm) {
 	for (int x=area->pos.x;x<=area->size.width;++x) {
 		for (int y=area->pos.y;y<=area->size.height;++y) {
 			int realx = vp->x - (area->size.width / 2) * zoom + x * zoom;
