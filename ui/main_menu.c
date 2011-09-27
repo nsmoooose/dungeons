@@ -7,6 +7,7 @@
 #include "main_menu.h"
 #include "memory.h"
 #include "new_world.h"
+#include "object.h"
 #include "quit.h"
 #include "str.h"
 
@@ -56,6 +57,11 @@ d_cmd_new_game_cb () {
 	d_context->vp->z = fmax (d_fractal_heightmap_get (d_context->hm, d_context->vp->x, d_context->vp->y), 0.0f);
 
 	d_context->zoom_level = 1;
+
+	struct d_ob_type *tree_type = d_ob_get_type (&d_ob_registry, "picea");
+	short height = d_fractal_heightmap_get (d_context->hm, 10, 10);
+	struct d_ob_instance *tree = tree_type->create (tree_type, 10, 10, height);
+	d_list_append (d_context->objects, tree);
 
 	d_ui_do_transition (&d_transition_new_game);
 }

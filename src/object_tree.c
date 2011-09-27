@@ -4,7 +4,7 @@
 #include "memory.h"
 #include "object_tree.h"
 
-static struct d_ob_instance* d_ob_create (struct d_ob_type *type, struct d_ob_pos *pos);
+static struct d_ob_instance* d_ob_create (struct d_ob_type *type, int x, int y, int z);
 static void d_ob_destroy (struct d_ob_instance *inst);
 static void d_ob_serialize (struct d_ob_instance *inst);
 static void d_ob_growing_input (struct d_game_context *c, struct d_ob_instance *inst);
@@ -89,12 +89,14 @@ struct d_ob_category d_ob_category_trees = {
 };
 
 static struct d_ob_instance*
-d_ob_create (struct d_ob_type *type, struct d_ob_pos *pos) {
+d_ob_create (struct d_ob_type *type, int x, int y, int z) {
 	struct d_ob_instance *inst = d_calloc (1, sizeof (struct d_ob_instance));
 	inst->type = type;
 	inst->state = type->sm->start;
 	inst->data = d_calloc (1, sizeof (struct d_tree_inst_data));
-	memcpy (&inst->pos, pos, sizeof (struct d_ob_pos));
+	inst->pos.x = x;
+	inst->pos.y = y;
+	inst->pos.z = z;
 	return inst;
 }
 

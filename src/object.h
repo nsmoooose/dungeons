@@ -40,7 +40,7 @@ struct d_ob_type {
 	struct d_ob_state_machine *sm;
 	void *data;
 
-	struct d_ob_instance *(*create) (struct d_ob_type *type, struct d_ob_pos *pos);
+	struct d_ob_instance *(*create) (struct d_ob_type *type, int x, int y, int z);
 	void (*destroy) (struct d_ob_instance *inst);
 	void (*serialize) (struct d_ob_instance *inst);
 };
