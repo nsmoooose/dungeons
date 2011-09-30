@@ -150,6 +150,21 @@ d_game_save (struct d_game_context *context) {
 	d_storage_write_i (storage, &context->vp->z);
 	d_storage_write_i (storage, &context->zoom_level);
 	d_storage_close (storage);
+
+	storage = d_storage_new (context->directory, "objects");
+	d_storage_write_i (storage, &context->objects->nnodes);
+	struct d_list_node *node = context->objects->first;
+	for (;node;node=node->next) {
+		struct d_ob_instance *instance = node->data;
+		struct d_ob_type *type = instance->type;
+		d_storage_write_s (storage, type->id);
+		d_storage_write_s (storage, instance->state->id);
+		d_storage_write_i (storage, &instance->pos.x);
+		d_storage_write_i (storage, &instance->pos.y);
+		d_storage_write_i (storage, &instance->pos.z);
+		type->serialize (instance, storage, d_ob_write);
+	}
+	d_storage_close (storage);
 }
 
 struct d_game_context *
@@ -180,6 +195,30 @@ d_game_load (char *directory) {
 	d_storage_read_i (storage, &context->vp->y);
 	d_storage_read_i (storage, &context->vp->z);
 	d_storage_read_i (storage, &context->zoom_level);
+	d_storage_close (storage);
+
+	storage = d_storage_new (directory, "objects");
+	int object_count;
+	d_storage_read_i (storage, &object_count);
+	for (int i=0;i<object_count;++i) {
+		char *type_id = d_storage_read_s (storage);
+		char *state_id = d_storage_read_s (storage);
+		int x, y, z;
+		d_storage_read_i (storage, &x);
+		d_storage_read_i (storage, &y);
+		d_storage_read_i (storage, &z);
+
+		struct d_ob_type *type = d_ob_get_type (&d_ob_registry, type_id);
+		struct d_ob_state *state = d_ob_get_state (type->sm, state_id);
+		struct d_ob_instance *instance = type->create (type, x, y, z);
+		instance->state = state;
+		type->serialize (instance, storage, d_ob_read);
+
+		d_free (type_id);
+		d_free (state_id);
+
+		d_list_append (context->objects, instance);
+	}
 	d_storage_close (storage);
 
 	return context;

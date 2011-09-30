@@ -6,7 +6,8 @@
 
 static struct d_ob_instance* d_ob_create (struct d_ob_type *type, int x, int y, int z);
 static void d_ob_destroy (struct d_ob_instance *inst);
-static void d_ob_serialize (struct d_ob_instance *inst);
+static void d_ob_serialize (struct d_ob_instance *inst, struct d_storage *storage,
+							enum d_ob_serialize_mode mode);
 static void d_ob_growing_input (struct d_game_context *c, struct d_ob_instance *inst);
 static void d_ob_dead_input (struct d_game_context *c, struct d_ob_instance *inst);
 static void d_ob_on_fire_input (struct d_game_context *c, struct d_ob_instance *inst);
@@ -107,8 +108,19 @@ d_ob_destroy (struct d_ob_instance *inst) {
 }
 
 static void
-d_ob_serialize (struct d_ob_instance *inst) {
-	d_bug ("NOT IMPLEMENTED");
+d_ob_serialize (struct d_ob_instance *inst, struct d_storage *storage,
+				enum d_ob_serialize_mode mode) {
+	struct d_tree_inst_data *id = inst->data;
+	switch (mode) {
+	case d_ob_write:
+		d_storage_write_i (storage, &id->age);
+		d_storage_write_i (storage, &id->height);
+		break;
+	case d_ob_read:
+		d_storage_read_i (storage, &id->age);
+		d_storage_read_i (storage, &id->height);
+		break;
+	}
 }
 
 static void

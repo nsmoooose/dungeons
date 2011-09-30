@@ -33,6 +33,18 @@ d_ob_get_type (struct d_ob_registry *registry, const char *id) {
 	return 0;
 }
 
+struct d_ob_state *
+d_ob_get_state (struct d_ob_state_machine *sm, const char *id) {
+	for (int i=0;sm->states[i];++i) {
+		struct d_ob_state *state = sm->states[i];
+		if (strcmp (state->id, id) == 0) {
+			return state;
+		}
+	}
+	d_bug ("Object state not found: %s", id);
+	return 0;
+}
+
 struct d_ob_registry d_ob_registry = {
 	{
 		&d_ob_category_trees,
