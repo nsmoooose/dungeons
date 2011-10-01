@@ -126,6 +126,14 @@ d_ob_serialize (struct d_ob_instance *inst, struct d_storage *storage,
 static void
 d_ob_growing_input (struct d_game_context *context, struct d_ob_instance *inst) {
 	struct d_tree_type_data *td = inst->type->data;
+
+	short ground_level = d_fractal_heightmap_get (context->hm, inst->pos.x, inst->pos.y);
+	if (inst->pos.z < ground_level || inst->pos.z < 0) {
+		/* if tree is below ground and if it is under water we
+		   transition to dead state. */
+		d_ob_do_transition (context, inst, &d_ob_transition_tree_dying);
+	}
+
 	/* struct d_tree_inst_data *id = inst->data; */
 	if (inst->pos.z >= td->growing_zone_max || inst->pos.z <= td->growing_zone_min) {
 		/* TODO transition to dead. */

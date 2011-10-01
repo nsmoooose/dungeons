@@ -68,8 +68,13 @@ struct d_ob_registry {
 };
 
 struct d_list *d_ob_list_new ();
-struct d_ob_type *d_ob_get_type (struct d_ob_registry *registry, const char *id);
-struct d_ob_state *d_ob_get_state (struct d_ob_state_machine *sm, const char *id);
+struct d_ob_type *d_ob_get_type (struct d_ob_registry *registry,
+								 const char *id);
+struct d_ob_state *d_ob_get_state (struct d_ob_state_machine *sm,
+								   const char *id);
+void d_ob_do_transition (struct d_game_context *context,
+						 struct d_ob_instance *instance,
+						 struct d_ob_state_transition *transition);
 
 extern struct d_ob_registry d_ob_registry;
 

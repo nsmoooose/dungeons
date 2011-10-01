@@ -45,6 +45,33 @@ d_ob_get_state (struct d_ob_state_machine *sm, const char *id) {
 	return 0;
 }
 
+void
+d_ob_do_transition (struct d_game_context *context,
+					struct d_ob_instance *instance,
+					struct d_ob_state_transition *transition) {
+	struct d_ob_state_machine *sm = instance->type->sm;
+	for (int i=0;sm->transitions[i];++i) {
+		if (sm->transitions[i] == transition) {
+			if (instance->state == transition->from) {
+				if (instance->state->exit) {
+					instance->state->exit (context, instance, transition);
+				}
+				if (transition->to->enter) {
+					transition->to->enter (context, instance, transition);
+				}
+				instance->state = transition->to;
+				return;
+			}
+			else {
+				d_bug ("Illegal transition (%s) when object (%s) is in state (%s)", transition->description, instance->type->id, sm->description);
+			}
+		}
+	}
+	d_bug ("Transition (%s) not found in state machine (%s)",
+		   transition->description, sm->description);
+}
+
+
 struct d_ob_registry d_ob_registry = {
 	{
 		&d_ob_category_trees,
