@@ -31,6 +31,8 @@ static void d_cmd_map_zoom_out_cb ();
 
 static void d_cmd_esc_menu_cb ();
 
+static void d_cmd_look_around_cb ();
+
 struct d_ui_command d_cmd_map_pan_right = { "Scroll map right", d_cmd_map_pan_right_cb };
 struct d_ui_command d_cmd_map_pan_left = { "Scroll map left", d_cmd_map_pan_left_cb };
 struct d_ui_command d_cmd_map_pan_up = { "Scroll map up", d_cmd_map_pan_up_cb };
@@ -48,6 +50,8 @@ struct d_ui_command d_cmd_map_zoom_in = { "Zoom in", d_cmd_map_zoom_in_cb };
 struct d_ui_command d_cmd_map_zoom_out = { "Zoom out", d_cmd_map_zoom_out_cb };
 
 struct d_ui_command d_cmd_esc_menu = { "In game menu", d_cmd_esc_menu_cb };
+
+struct d_ui_command d_cmd_look_around = { "Look around", d_cmd_look_around_cb };
 
 struct d_ui_state d_gamescreen_state = {
 	"Game",
@@ -70,6 +74,8 @@ struct d_ui_state d_gamescreen_state = {
 
 		{ '+', &d_cmd_map_zoom_in },
 		{ '-', &d_cmd_map_zoom_out },
+
+		{ 'l', &d_cmd_look_around },
 
 		{ 'q', &d_cmd_esc_menu },
 
@@ -198,4 +204,58 @@ d_cmd_map_up_cb () {
 static void
 d_cmd_esc_menu_cb () {
 	d_ui_do_transition (&d_transition_esc_menu);
+}
+
+static void
+d_cmd_look_around_cb () {
+	d_ui_do_transition (&d_transition_look_around);
+}
+
+/* *************************************************************************
+   Look around state
+   ************************************************************************* */
+
+static void d_cmd_marker_down_cb ();
+static void d_cmd_marker_left_cb ();
+static void d_cmd_marker_right_cb ();
+static void d_cmd_marker_up_cb ();
+static void d_cmd_look_around_abandon_cb ();
+
+struct d_ui_command d_cmd_marker_down = { "Move marker down", d_cmd_marker_down_cb };
+struct d_ui_command d_cmd_marker_left = { "Move marker left", d_cmd_marker_left_cb };
+struct d_ui_command d_cmd_marker_right = { "Move marker right", d_cmd_marker_right_cb };
+struct d_ui_command d_cmd_marker_up = { "Move marker up", d_cmd_marker_up_cb };
+struct d_ui_command d_cmd_look_around_abandon = { "Return", d_cmd_look_around_abandon_cb };
+
+struct d_ui_state d_look_around_state = {
+	"Look around",
+	0,
+	d_gamescreen_update,
+	d_gamescreen_draw,
+	{
+		{ 'a', &d_cmd_marker_right },
+		{ 'd', &d_cmd_marker_left },
+		{ 's', &d_cmd_marker_up },
+		{ 'w', &d_cmd_marker_down },
+
+		{ 'q', &d_cmd_look_around_abandon },
+
+		{ 0, 0 }
+	}
+};
+
+static void d_cmd_marker_down_cb () {
+}
+
+static void d_cmd_marker_left_cb () {
+}
+
+static void d_cmd_marker_right_cb () {
+}
+
+static void d_cmd_marker_up_cb () {
+}
+
+static void d_cmd_look_around_abandon_cb () {
+	d_ui_do_transition (&d_transition_look_around_return);
 }

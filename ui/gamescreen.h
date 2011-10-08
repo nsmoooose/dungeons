@@ -6,5 +6,6 @@
 
 extern struct d_game_context *d_context;
 extern struct d_ui_state d_gamescreen_state;
+extern struct d_ui_state d_look_around_state;
 
 #endif

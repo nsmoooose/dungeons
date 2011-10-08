@@ -117,4 +117,8 @@ extern struct d_ui_state_transition d_transition_quit_resume;
 extern struct d_ui_state_transition d_transition_esc_menu;
 extern struct d_ui_state_transition d_transition_esc_menu_resume;
 extern struct d_ui_state_transition d_transition_esc_menu_to_main_menu;
+
+extern struct d_ui_state_transition d_transition_look_around;
+extern struct d_ui_state_transition d_transition_look_around_return;
+
 #endif

@@ -148,6 +148,11 @@ struct d_ui_state_transition d_transition_esc_menu_to_main_menu = {
 struct d_ui_state_transition d_transition_new_world_back = {
 	"To main menu", &d_new_world_state, &d_main_menu_state };
 
+struct d_ui_state_transition d_transition_look_around = {
+	"Look around", &d_gamescreen_state, &d_look_around_state };
+struct d_ui_state_transition d_transition_look_around_return = {
+	"Return", &d_look_around_state, &d_gamescreen_state };
+
 struct d_ui_state_machine d_ui_state_machine = {
 	"Dungeons",
 	&d_main_menu_state,
@@ -155,6 +160,7 @@ struct d_ui_state_machine d_ui_state_machine = {
 		&d_esc_menu_state,
 		&d_gamescreen_state,
 		&d_load_game_state,
+		&d_look_around_state,
 		&d_main_menu_state,
 		&d_new_world_state,
 		&d_quit_state,
@@ -167,6 +173,8 @@ struct d_ui_state_machine d_ui_state_machine = {
 		&d_transition_load_game,
 		&d_transition_load_game_abort,
 		&d_transition_load_game_loading,
+		&d_transition_look_around,
+		&d_transition_look_around_return,
 		&d_transition_quit_question,
 		&d_transition_quit_resume,
 		&d_transition_esc_menu,
