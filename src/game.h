@@ -1,7 +1,7 @@
 #ifndef __DUNGEONS_GAME_H__
 #define __DUNGEONS_GAME_H__
 
-#include "fractal_heightmap.h"
+#include "heightmap.h"
 #include "list.h"
 
 struct d_viewpoint {

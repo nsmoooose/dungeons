@@ -12,7 +12,6 @@
 
 #include "error.h"
 #include "fractal_heightmap.h"
-#include "memory.h"
 
 /*
  * randNum - Return a random floating point number such that
@@ -283,45 +282,4 @@ d_fractal_heightmap_generate (struct d_heightmap *hm,
 		scale *= ratio;
 		stride >>= 1;
     }
-}
-
-struct d_heightmap*
-d_fractal_heightmap_new (int size) {
-    /* For a sizeXsize array, we need (size+1)X(size+1) space. For
-       example, a 2x2 mesh needs 3x3=9 data points:
-
-           *   *   *
-
-           *   *   *
-
-           *   *   *
-
-       To account for this, increment 'size'. */
-	struct d_heightmap *hm = d_calloc (1, sizeof (struct d_heightmap));
-    hm->width = size;
-	hm->height = size;
-    hm->array = d_calloc (1, sizeof(float) * (hm->width + 1) * (hm->height + 1));
-	return hm;
-}
-
-void
-d_fractal_heightmap_destroy (struct d_heightmap *hm) {
-	d_free (hm->array);
-    d_free (hm);
-}
-
-short
-d_fractal_heightmap_get (struct d_heightmap *hm, int x, int y) {
-	if (x < 0 || y < 0 || x > hm->width || y > hm->height) {
-		d_bug ("Coordinates outside heightmap.");
-	}
-	return hm->array[y * hm->width + x];
-}
-
-void
-d_fractal_heightmap_set (struct d_heightmap *hm, int x, int y, short value) {
-	if (x < 0 || y < 0 || x > hm->width || y > hm->height) {
-		d_bug ("Coordinates outside heightmap.");
-	}
-	hm->array[y * hm->width + x] = value;
 }

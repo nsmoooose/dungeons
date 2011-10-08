@@ -3,9 +3,6 @@ Some things to get done
 * TODO Embed help as files in the binary?
   Here is a good link on how to do this:
   http://www.linuxjournal.com/content/embedding-file-executable-aka-hello-world-version-5967
-* TODO Convert the heightmap into an integer based heightmap.
-  This will save space.
-* TODO Persist heightmap to disk into a world directory.
 * TODO Wire an ui transition to a command object without any callback assigned.
   This makes it possible to do cmd to ui state without a callback with a single
   function call to execute the state change.
@@ -21,17 +18,7 @@ Some things to get done
   is done.
 * DONE Place menu of list of commands where you want.
   Today this is always rendered at the center of the screen. This should be changed.
-* TODO Create the .dungeons home directory when starting the application.
-  .dungeons/worlds/my_world/
-  .dungeons/dungeons.conf
-* TODO Object model
-  This is also a specific state machine.
 
-  struct d_object_type;
-  - serialize
-  - update
-  struct d_object_instance;
-  - type
 * TODO Object: tree
   The first and a simple object.
   A tree has the following parameters:
@@ -53,7 +40,8 @@ Some things to get done
   - On fire? Damage?
 * TODO Accelerate time when doing some development in order to test results.
 * TODO Test suite
-* DONE New directory structure
-  src
-  curses
-  gl
+* TODO emit properties for an object.
+  This is a generic way to expose information about an object.
+
+  It should also be possible to get notifications when a property change
+  in a kind of subscribe to object.

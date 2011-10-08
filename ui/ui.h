@@ -1,7 +1,7 @@
 #ifndef __DUNGEONS_UI_H__
 #define __DUNGEONS_UI_H__
 
-#include "fractal_heightmap.h"
+#include "heightmap.h"
 
 struct d_ui_pos {
 	int x, y;

@@ -138,7 +138,7 @@ d_game_save (struct d_game_context *context) {
 	d_storage_write_i (storage, &context->hm->width);
 	for (int x=0;x<=context->hm->width;++x) {
 		for (int y=0;y<=context->hm->height;++y) {
-			int h = d_fractal_heightmap_get (context->hm, x, y);
+			int h = d_heightmap_get (context->hm, x, y);
 			d_storage_write_i (storage, &h);
 		}
 	}
@@ -180,12 +180,12 @@ d_game_load (char *directory) {
 	storage = d_storage_new (directory, "hm");
 	int size;
 	d_storage_read_i (storage, &size);
-	context->hm = d_fractal_heightmap_new (size);
+	context->hm = d_heightmap_new (size);
 	for (int x=0;x<=context->hm->width;++x) {
 		for (int y=0;y<=context->hm->height;++y) {
 			int h;
 			d_storage_read_i (storage, &h);
-			d_fractal_heightmap_set (context->hm, x, y, h);
+			d_heightmap_set (context->hm, x, y, h);
 		}
 	}
 	d_storage_close (storage);

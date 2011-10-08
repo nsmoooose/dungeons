@@ -31,7 +31,7 @@ d_map_draw (
 			   - ground level.
 			*/
 
-			float f = d_fractal_heightmap_get (hm, realx, realy);
+			float f = d_heightmap_get (hm, realx, realy);
 			if (vp->z - 15.0 > f && vp->z <= 0.0) {
 				/* above ground but below sea level. */
 				d_ui->set_color (d_black_blue);

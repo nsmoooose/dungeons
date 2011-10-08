@@ -5,7 +5,7 @@
 #include "error.h"
 #include "game.h"
 #include "gamescreen.h"
-#include "fractal_heightmap.h"
+#include "heightmap.h"
 #include "map.h"
 #include "memory.h"
 #include "ui.h"
