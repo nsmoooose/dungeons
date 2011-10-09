@@ -10,6 +10,7 @@
 #include "memory.h"
 #include "ui.h"
 
+static void d_gamescreen_enter (struct d_ui_state *prev, struct d_ui_state *new);
 static void d_gamescreen_update (struct d_ui_state *handler, double now, double delta);
 static void d_gamescreen_draw (struct d_ui_state *handler);
 
@@ -56,7 +57,7 @@ struct d_ui_command d_cmd_look_around = { "Look around", d_cmd_look_around_cb };
 struct d_ui_state d_gamescreen_state = {
 	"Game",
 	0,
-	0, /* enter */
+	d_gamescreen_enter,
 	0, /* exit */
 	d_gamescreen_update,
 	d_gamescreen_draw,
@@ -85,7 +86,6 @@ struct d_ui_state d_gamescreen_state = {
 	}
 };
 
-/* static struct d_client_context *d_context = 0; */
 struct d_game_context *d_context = 0;
 
 static void
@@ -98,10 +98,14 @@ d_gamescreen_draw_terrain () {
 }
 
 static void
-d_gamescreen_update (struct d_ui_state *handler, double now, double delta) {
+d_gamescreen_enter (struct d_ui_state *prev, struct d_ui_state *new) {
 	if (!d_context) {
 		d_bug ("No context assign. Cannot run a game.");
 	}
+}
+
+static void
+d_gamescreen_update (struct d_ui_state *handler, double now, double delta) {
 	d_game_run (d_context, now, delta);
 }
 
