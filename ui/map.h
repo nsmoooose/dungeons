@@ -5,6 +5,8 @@
 #include "heightmap.h"
 #include "ui.h"
 
+void d_map_coord_to_screen (struct d_ui_area *area, struct d_viewpoint *vp,
+							int zoom, struct d_ui_pos *pos);
 void d_map_draw (struct d_ui_area *area, struct d_viewpoint *vp,
 				 int zoom, struct d_heightmap *hm);
 

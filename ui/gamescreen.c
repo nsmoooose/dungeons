@@ -88,6 +88,9 @@ struct d_ui_state d_gamescreen_state = {
 
 struct d_game_context *d_context = 0;
 
+static int d_marker_enable = 0;
+static struct d_ui_pos d_marker_pos = { 1, 1 };
+
 static void
 d_gamescreen_draw_terrain () {
 	struct d_ui_area area;
@@ -95,6 +98,13 @@ d_gamescreen_draw_terrain () {
 	area.size.width = d_ui->size.width - 1;
 	area.size.height = d_ui->size.height - 1;
 	d_map_draw (&area, d_context->vp, d_context->zoom_level, d_context->hm);
+
+	if (d_marker_enable) {
+		d_ui->set_color (d_black_white);
+		struct d_ui_pos pos;
+		d_map_coord_to_screen (&area, d_context->vp, d_context->zoom_level, &pos);
+		d_ui->printf_left (pos.x, pos.y, "X");
+	}
 }
 
 static void
@@ -227,6 +237,9 @@ static void d_cmd_marker_right_cb ();
 static void d_cmd_marker_up_cb ();
 static void d_cmd_look_around_abandon_cb ();
 
+static void d_look_around_enter (struct d_ui_state *prev, struct d_ui_state *new);
+static void d_look_around_exit (struct d_ui_state *prev, struct d_ui_state *new);
+
 struct d_ui_command d_cmd_marker_down = { "Move marker down", d_cmd_marker_down_cb };
 struct d_ui_command d_cmd_marker_left = { "Move marker left", d_cmd_marker_left_cb };
 struct d_ui_command d_cmd_marker_right = { "Move marker right", d_cmd_marker_right_cb };
@@ -236,8 +249,8 @@ struct d_ui_command d_cmd_look_around_abandon = { "Return", d_cmd_look_around_ab
 struct d_ui_state d_look_around_state = {
 	"Look around",
 	0,
-	0, /* enter */
-	0, /* exit */
+	d_look_around_enter,
+	d_look_around_exit,
 	d_gamescreen_update,
 	d_gamescreen_draw,
 	{
@@ -252,18 +265,39 @@ struct d_ui_state d_look_around_state = {
 	}
 };
 
-static void d_cmd_marker_down_cb () {
+static void
+d_look_around_enter (struct d_ui_state *prev, struct d_ui_state *new) {
+	d_marker_pos.x = d_context->vp->x;
+	d_marker_pos.y = d_context->vp->y;
+	d_marker_enable = 1;
 }
 
-static void d_cmd_marker_left_cb () {
+static void
+d_look_around_exit (struct d_ui_state *prev, struct d_ui_state *new) {
+	d_marker_enable = 0;
 }
 
-static void d_cmd_marker_right_cb () {
+static void
+d_cmd_marker_down_cb () {
+	d_marker_pos.y = fmin (d_context->hm->height, d_marker_pos.y + 1);
 }
 
-static void d_cmd_marker_up_cb () {
+static void
+d_cmd_marker_left_cb () {
+	d_marker_pos.x = fmax (0, d_marker_pos.x - 1);
 }
 
-static void d_cmd_look_around_abandon_cb () {
+static void
+d_cmd_marker_right_cb () {
+	d_marker_pos.x = fmin (d_context->hm->width, d_marker_pos.x + 1);
+}
+
+static void
+d_cmd_marker_up_cb () {
+	d_marker_pos.y = fmax (0, d_marker_pos.y - 1);
+}
+
+static void
+d_cmd_look_around_abandon_cb () {
 	d_ui_do_transition (&d_transition_look_around_return);
 }

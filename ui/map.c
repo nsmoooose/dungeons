@@ -12,6 +12,13 @@
 */
 
 void
+d_map_coord_to_screen (struct d_ui_area *area, struct d_viewpoint *vp,
+					   int zoom, struct d_ui_pos *pos) {
+	pos->x = 10;
+	pos->y = 10;
+}
+
+void
 d_map_draw (
 	struct d_ui_area *area, struct d_viewpoint *vp, int zoom, struct d_heightmap *hm) {
 	for (int x=area->pos.x;x<=area->size.width;++x) {
