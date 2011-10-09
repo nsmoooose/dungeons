@@ -10,6 +10,8 @@ struct d_ui_command d_cmd_quit_decline = { "Resume", d_cmd_quit_decline_cb };
 struct d_ui_state d_quit_state = {
 	"Quit",
 	0,
+	0, /* enter */
+	0, /* exit */
 	0,
 	0,
 	{

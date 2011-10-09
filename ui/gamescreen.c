@@ -56,6 +56,8 @@ struct d_ui_command d_cmd_look_around = { "Look around", d_cmd_look_around_cb };
 struct d_ui_state d_gamescreen_state = {
 	"Game",
 	0,
+	0, /* enter */
+	0, /* exit */
 	d_gamescreen_update,
 	d_gamescreen_draw,
 	{
@@ -230,6 +232,8 @@ struct d_ui_command d_cmd_look_around_abandon = { "Return", d_cmd_look_around_ab
 struct d_ui_state d_look_around_state = {
 	"Look around",
 	0,
+	0, /* enter */
+	0, /* exit */
 	d_gamescreen_update,
 	d_gamescreen_draw,
 	{

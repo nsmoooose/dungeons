@@ -9,6 +9,9 @@ static void d_cmd_load_game_directory_cb ();
 static void d_cmd_load_game_next_cb ();
 static void d_cmd_load_game_prev_cb ();
 
+static void d_load_game_enter (struct d_ui_state *prev, struct d_ui_state *new);
+static void d_load_game_exit (struct d_ui_state *prev, struct d_ui_state *new);
+
 static void d_load_game_update (struct d_ui_state *handler, double now, double delta);
 static void d_load_game_draw (struct d_ui_state *handler);
 
@@ -23,6 +26,8 @@ static struct d_list_node *d_selected_game = 0;
 struct d_ui_state d_load_game_state = {
 	"Load game",
 	0,
+	d_load_game_enter,
+	d_load_game_exit,
 	d_load_game_update,
 	d_load_game_draw,
 	{
@@ -35,15 +40,22 @@ struct d_ui_state d_load_game_state = {
 };
 
 static void
+d_load_game_enter (struct d_ui_state *prev, struct d_ui_state *new) {
+	d_loadable_games = d_game_info_list ();
+}
+
+static void
+d_load_game_exit (struct d_ui_state *prev, struct d_ui_state *new) {
+	d_list_destroy (d_loadable_games);
+}
+
+static void
 d_load_game_update (struct d_ui_state *handler, double now, double delta) {
 	usleep (100000);
 }
 
 static void
 d_load_game_draw (struct d_ui_state *handler) {
-	if (!d_loadable_games) {
-		d_loadable_games = d_game_info_list ();
-	}
 	d_ui->clearscr ();
 	d_ui->title_large_draw ();
 	struct d_list_node *node = d_loadable_games->first;
@@ -65,7 +77,6 @@ d_load_game_draw (struct d_ui_state *handler) {
 static void
 d_cmd_load_game_abort_cb () {
 	d_ui_do_transition (&d_transition_load_game_abort);
-	d_list_destroy (d_loadable_games);
 }
 
 static void
@@ -76,7 +87,6 @@ d_cmd_load_game_directory_cb () {
 	struct d_game_info *gi = d_selected_game->data;
 	d_context = d_game_load (gi->path);
 	d_ui_do_transition (&d_transition_load_game_loading);
-	d_list_destroy (d_loadable_games);
 }
 
 static void

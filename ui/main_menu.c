@@ -31,6 +31,8 @@ struct d_ui_command d_cmd_quit = { "Quit", d_cmd_quit_cb };
 struct d_ui_state d_main_menu_state = {
 	"Main menu",
 	0,
+	0, /* enter */
+	0, /* exit */
 	d_main_menu_update,
 	d_main_menu_draw,
 	{

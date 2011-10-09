@@ -13,6 +13,8 @@ struct d_ui_command d_cmd_save_dungeon = { "Save dungeon", d_cmd_save_dungeon_cb
 struct d_ui_state d_esc_menu_state = {
 	"In game menu",
 	0,
+	0, /* enter */
+	0, /* exit */
 	0,
 	0,
 	{

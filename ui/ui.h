@@ -29,6 +29,8 @@ struct d_ui_key_binding {
 struct d_ui_state {
 	char *description;
 	void *data;
+	void (*enter) (struct d_ui_state *prev, struct d_ui_state *new);
+	void (*exit) (struct d_ui_state *prev, struct d_ui_state *new);
 	void (*update) (struct d_ui_state *handler, double now, double delta);
 	void (*draw) (struct d_ui_state *handler);
 

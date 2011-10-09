@@ -17,9 +17,16 @@ extern struct d_ui_state_machine d_ui_state_machine;
 
 void
 d_ui_do_transition (struct d_ui_state_transition *transition) {
+	struct d_ui_state *current = d_ui_state_current ();
 	for (int i=0;d_ui_state_machine.transitions[i];++i) {
 		if (transition == d_ui_state_machine.transitions[i]) {
-			if (transition->from == d_ui_state_current ()) {
+			if (transition->from == current) {
+				if (current->exit) {
+					current->exit (current, transition->next);
+				}
+				if (transition->next->enter) {
+					transition->next->enter (current, transition->next);
+				}
 				d_ui_state_machine.current = transition->next;
 				return;
 			}

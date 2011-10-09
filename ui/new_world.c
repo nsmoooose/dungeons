@@ -14,6 +14,8 @@ struct d_ui_command d_cmd_world_new = { "Generate new world", d_cmd_world_new_cb
 struct d_ui_state d_new_world_state = {
 	"New world",
 	0,
+	0, /* enter */
+	0, /* exit */
 	0,
 	d_new_world_draw,
 	{
