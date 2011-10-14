@@ -102,7 +102,8 @@ d_gamescreen_draw_terrain () {
 	if (d_marker_enable) {
 		d_ui->set_color (d_black_white);
 		struct d_ui_pos pos;
-		d_map_coord_to_screen (&area, d_context->vp, d_context->zoom_level, &pos);
+		d_map_coord_to_screen (&area, d_context->vp, d_context->zoom_level,
+							   &d_marker_pos, &pos);
 		d_ui->printf_left (pos.x, pos.y, "X");
 	}
 }
@@ -254,10 +255,10 @@ struct d_ui_state d_look_around_state = {
 	d_gamescreen_update,
 	d_gamescreen_draw,
 	{
-		{ 'a', &d_cmd_marker_right },
-		{ 'd', &d_cmd_marker_left },
-		{ 's', &d_cmd_marker_up },
-		{ 'w', &d_cmd_marker_down },
+		{ 'a', &d_cmd_marker_left },
+		{ 'd', &d_cmd_marker_right },
+		{ 's', &d_cmd_marker_down },
+		{ 'w', &d_cmd_marker_up },
 
 		{ 'q', &d_cmd_look_around_abandon },
 
