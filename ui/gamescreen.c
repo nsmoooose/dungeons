@@ -106,6 +106,19 @@ d_gamescreen_draw_terrain () {
 	area.size.height = d_ui->size.height - 1;
 	d_map_draw (&area, d_context->vp, d_context->zoom_level, d_context->hm);
 
+	for (struct d_list_node *node=d_context->objects->first;node;node=node->next) {
+		struct d_ob_instance *object = node->data;
+
+		struct d_ui_pos oc = { object->pos.x, object->pos.y };
+		struct d_ui_pos sc;
+		d_map_coord_to_screen (&area, d_context->vp, d_context->zoom_level, &oc, &sc);
+		if (sc.x >= area.pos.x && sc.x <= (area.pos.x + area.size.width) &&
+			sc.y >= area.pos.y && sc.y <= (area.pos.y + area.size.height)) {
+			d_ui->set_color (d_black_white);
+			d_ui->printf_left (sc.x, sc.y, "T");
+		}
+	}
+
 	if (d_marker_enable) {
 		d_ui->set_color (d_black_white);
 		struct d_ui_pos pos;
@@ -129,6 +142,8 @@ d_gamescreen_update (struct d_ui_state *handler, double now, double delta) {
 
 static void
 d_gamescreen_draw (struct d_ui_state *handler) {
+	d_ui->clearscr ();
+
 	if (d_ui_state_current () == &d_debug_state ) {
 		d_ui->printf_left (2, 2, "Object count: %d", d_context->objects->nnodes);
 		int i = 4;
@@ -137,6 +152,10 @@ d_gamescreen_draw (struct d_ui_state *handler) {
 			struct d_ob_instance *instance = node->data;
 
 			d_ui->printf_left (3, i++, "Type: %s", instance->type->description);
+			for (int j=0;instance->type->properties[j];++j) {
+				struct d_ob_property_type *property = instance->type->properties[j];
+				d_ui->printf_left (4, i++, "%s: ", property->id);
+			}
 		}
 	}
 	else {
@@ -175,7 +194,6 @@ d_gamescreen_draw (struct d_ui_state *handler) {
 
 	d_ui->set_color (d_black_white);
 }
-
 
 static void
 d_cmd_map_pan_right_cb () {
@@ -330,6 +348,7 @@ d_cmd_look_around_abandon_cb () {
 /* *************************************************************************
    Debug mode state
    ************************************************************************* */
+
 static void d_cmd_print_object_info_cb ();
 static void d_cmd_debug_abandon_cb ();
 

@@ -40,15 +40,39 @@ enum d_ob_serialize_mode {
 	d_ob_read
 };
 
+struct d_ob_instance;
+struct d_ob_property_instance;
+
+typedef void (*d_ob_property_change_cb) (struct d_ob_instance *instance,
+										 struct d_ob_property_instance *property);
+
+enum d_ob_data_type {
+	d_string,
+	d_float,
+	d_int
+};
+
+struct d_ob_property_type {
+	char *id;
+	enum d_ob_data_type data_type;
+};
+
+struct d_ob_property_instance {
+	struct d_ob_property_type *type;
+	struct d_list *change;
+};
+
 struct d_ob_type {
 	char *id;
 	char *description;
 	struct d_ob_state_machine *sm;
 	void *data;
+	struct d_ob_property_type* properties[10];
 
 	struct d_ob_instance *(*create) (struct d_ob_type *type, int x, int y, int z);
 	void (*destroy) (struct d_ob_instance *inst);
-	void (*serialize) (struct d_ob_instance *inst, struct d_storage *storage, enum d_ob_serialize_mode mode);
+	void (*serialize) (struct d_ob_instance *inst, struct d_storage *storage,
+					   enum d_ob_serialize_mode mode);
 };
 
 struct d_ob_instance {
