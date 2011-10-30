@@ -123,4 +123,7 @@ extern struct d_ui_state_transition d_transition_esc_menu_to_main_menu;
 extern struct d_ui_state_transition d_transition_look_around;
 extern struct d_ui_state_transition d_transition_look_around_return;
 
+extern struct d_ui_state_transition d_transition_debug;
+extern struct d_ui_state_transition d_transition_debug_return;
+
 #endif

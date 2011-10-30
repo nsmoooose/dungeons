@@ -160,10 +160,16 @@ struct d_ui_state_transition d_transition_look_around = {
 struct d_ui_state_transition d_transition_look_around_return = {
 	"Return", &d_look_around_state, &d_gamescreen_state };
 
+struct d_ui_state_transition d_transition_debug = {
+	"Debug", &d_gamescreen_state, &d_debug_state };
+struct d_ui_state_transition d_transition_debug_return = {
+	"Return", &d_debug_state, &d_gamescreen_state };
+
 struct d_ui_state_machine d_ui_state_machine = {
 	"Dungeons",
 	&d_main_menu_state,
 	{
+		&d_debug_state,
 		&d_esc_menu_state,
 		&d_gamescreen_state,
 		&d_load_game_state,
@@ -174,6 +180,8 @@ struct d_ui_state_machine d_ui_state_machine = {
 		0
 	},
 	{
+		&d_transition_debug,
+		&d_transition_debug_return,
 		&d_transition_new_game,
 		&d_transition_new_world,
 		&d_transition_new_world_back,

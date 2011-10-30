@@ -8,6 +8,7 @@
 #include "heightmap.h"
 #include "map.h"
 #include "memory.h"
+#include "object.h"
 #include "ui.h"
 
 static void d_gamescreen_enter (struct d_ui_state *prev, struct d_ui_state *new);
@@ -34,6 +35,8 @@ static void d_cmd_esc_menu_cb ();
 
 static void d_cmd_look_around_cb ();
 
+static void d_cmd_debug_cb ();
+
 struct d_ui_command d_cmd_map_pan_right = { "Scroll map right", d_cmd_map_pan_right_cb };
 struct d_ui_command d_cmd_map_pan_left = { "Scroll map left", d_cmd_map_pan_left_cb };
 struct d_ui_command d_cmd_map_pan_up = { "Scroll map up", d_cmd_map_pan_up_cb };
@@ -53,6 +56,8 @@ struct d_ui_command d_cmd_map_zoom_out = { "Zoom out", d_cmd_map_zoom_out_cb };
 struct d_ui_command d_cmd_esc_menu = { "In game menu", d_cmd_esc_menu_cb };
 
 struct d_ui_command d_cmd_look_around = { "Look around", d_cmd_look_around_cb };
+
+struct d_ui_command d_cmd_debug = { "Debug", d_cmd_debug_cb };
 
 struct d_ui_state d_gamescreen_state = {
 	"Game",
@@ -79,6 +84,8 @@ struct d_ui_state d_gamescreen_state = {
 		{ '-', &d_cmd_map_zoom_out },
 
 		{ 'l', &d_cmd_look_around },
+
+		{ '.', &d_cmd_debug },
 
 		{ 'q', &d_cmd_esc_menu },
 
@@ -122,7 +129,19 @@ d_gamescreen_update (struct d_ui_state *handler, double now, double delta) {
 
 static void
 d_gamescreen_draw (struct d_ui_state *handler) {
-	d_gamescreen_draw_terrain ();
+	if (d_ui_state_current () == &d_debug_state ) {
+		d_ui->printf_left (2, 2, "Object count: %d", d_context->objects->nnodes);
+		int i = 4;
+		for (struct d_list_node* node=d_context->objects->first;
+			 node;node=node->next) {
+			struct d_ob_instance *instance = node->data;
+
+			d_ui->printf_left (3, i++, "Type: %s", instance->type->description);
+		}
+	}
+	else {
+		d_gamescreen_draw_terrain ();
+	}
 
 	d_ui->set_color (d_white_black);
 	d_ui->box (0, 0, d_ui->size.width-1,
@@ -228,6 +247,11 @@ d_cmd_look_around_cb () {
 	d_ui_do_transition (&d_transition_look_around);
 }
 
+static void
+d_cmd_debug_cb () {
+	d_ui_do_transition (&d_transition_debug);
+}
+
 /* *************************************************************************
    Look around state
    ************************************************************************* */
@@ -301,4 +325,47 @@ d_cmd_marker_up_cb () {
 static void
 d_cmd_look_around_abandon_cb () {
 	d_ui_do_transition (&d_transition_look_around_return);
+}
+
+/* *************************************************************************
+   Debug mode state
+   ************************************************************************* */
+static void d_cmd_print_object_info_cb ();
+static void d_cmd_debug_abandon_cb ();
+
+static void d_debug_enter (struct d_ui_state *prev, struct d_ui_state *new);
+static void d_debug_exit (struct d_ui_state *prev, struct d_ui_state *new);
+
+struct d_ui_command d_cmd_print_object_info = { "Print object info",
+												d_cmd_print_object_info_cb };
+struct d_ui_command d_cmd_debug_abandon = { "Return", d_cmd_debug_abandon_cb };
+
+struct d_ui_state d_debug_state = {
+	"Debug",
+	0,
+	d_debug_enter,
+	d_debug_exit,
+	d_gamescreen_update,
+	d_gamescreen_draw,
+	{
+		{ 'q', &d_cmd_debug_abandon },
+		{ 0, 0 }
+	}
+};
+
+static void
+d_cmd_print_object_info_cb () {
+}
+
+static void
+d_cmd_debug_abandon_cb () {
+	d_ui_do_transition (&d_transition_debug_return);
+}
+
+static void
+d_debug_enter (struct d_ui_state *prev, struct d_ui_state *new) {
+}
+
+static void
+d_debug_exit (struct d_ui_state *prev, struct d_ui_state *new) {
 }
