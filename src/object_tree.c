@@ -67,11 +67,12 @@ struct d_tree_type_data {
 };
 
 struct d_tree_inst_data {
-	int age;
-	int height;
+	struct d_ob_property_instance *age;
+	struct d_ob_property_instance *height;
 };
 
 struct d_ob_property_type d_ob_age = { "age", d_int };
+struct d_ob_property_type d_ob_height = { "height", d_int };
 
 static struct d_ob_type d_ob_type_tree_picea = {
 	"picea",
@@ -97,18 +98,26 @@ struct d_ob_category d_ob_category_trees = {
 
 static struct d_ob_instance*
 d_ob_create (struct d_ob_type *type, int x, int y, int z) {
+	struct d_tree_inst_data *data = d_calloc (1, sizeof (struct d_tree_inst_data));
 	struct d_ob_instance *inst = d_calloc (1, sizeof (struct d_ob_instance));
 	inst->type = type;
 	inst->state = type->sm->start;
-	inst->data = d_calloc (1, sizeof (struct d_tree_inst_data));
+	inst->data = data;
 	inst->pos.x = x;
 	inst->pos.y = y;
 	inst->pos.z = z;
+
+	inst->properties = d_ob_property_htable_new (2);
+	data->age = d_ob_property_instance_new (inst->properties, &d_ob_age);
+	data->height = d_ob_property_instance_new (inst->properties, &d_ob_height);
 	return inst;
 }
 
 static void
 d_ob_destroy (struct d_ob_instance *inst) {
+	if (inst->properties) {
+		d_htable_destroy (inst->properties);
+	}
 	d_free (inst->data);
 	d_free (inst);
 }
@@ -119,12 +128,12 @@ d_ob_serialize (struct d_ob_instance *inst, struct d_storage *storage,
 	struct d_tree_inst_data *id = inst->data;
 	switch (mode) {
 	case d_ob_write:
-		d_storage_write_i (storage, &id->age);
-		d_storage_write_i (storage, &id->height);
+		d_storage_write_i (storage, &id->age->value.int_v);
+		d_storage_write_i (storage, &id->height->value.int_v);
 		break;
 	case d_ob_read:
-		d_storage_read_i (storage, &id->age);
-		d_storage_read_i (storage, &id->height);
+		d_storage_read_i (storage, &id->age->value.int_v);
+		d_storage_read_i (storage, &id->height->value.int_v);
 		break;
 	}
 }

@@ -2,6 +2,7 @@
 #define __DUNGEONS_OBJECT_H__
 
 #include "game.h"
+#include "htable.h"
 #include "storage.h"
 
 struct d_ob_instance;
@@ -60,6 +61,11 @@ struct d_ob_property_type {
 struct d_ob_property_instance {
 	struct d_ob_property_type *type;
 	struct d_list *change;
+	union {
+		int int_v;
+		float float_v;
+		char *str_v;
+	} value;
 };
 
 struct d_ob_type {
@@ -79,6 +85,7 @@ struct d_ob_instance {
 	struct d_ob_type *type;
 	struct d_ob_state *state;
 	struct d_ob_pos pos;
+	struct d_htable *properties;
 	void *data;
 };
 
@@ -99,6 +106,13 @@ struct d_ob_state *d_ob_get_state (struct d_ob_state_machine *sm,
 void d_ob_do_transition (struct d_game_context *context,
 						 struct d_ob_instance *instance,
 						 struct d_ob_state_transition *transition);
+
+struct d_htable *d_ob_property_htable_new (int size);
+struct d_ob_property_instance *d_ob_property_instance_new (
+  struct d_htable *properties, struct d_ob_property_type *type);
+int d_ob_property_value_int_get (struct d_ob_property_instance *instance);
+float d_ob_property_value_float_get (struct d_ob_property_instance *instance);
+char* d_ob_property_value_str_get (struct d_ob_property_instance *instance);
 
 extern struct d_ob_registry d_ob_registry;
 

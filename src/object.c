@@ -2,6 +2,7 @@
 
 #include "error.h"
 #include "list.h"
+#include "memory.h"
 #include "object.h"
 #include "object_tree.h"
 
@@ -69,6 +70,28 @@ d_ob_do_transition (struct d_game_context *context,
 	}
 	d_bug ("Transition (%s) not found in state machine (%s)",
 		   transition->description, sm->description);
+}
+
+static void
+d_ob_property_instance_htable_remove (void *key, void *value) {
+	d_free (value);
+}
+
+struct d_htable *
+d_ob_property_htable_new (int size) {
+	struct d_htable *properties = d_htable_new_str (size);
+	properties->remove = d_ob_property_instance_htable_remove;
+	return properties;
+}
+
+struct d_ob_property_instance *
+d_ob_property_instance_new (struct d_htable *properties,
+							struct d_ob_property_type *type) {
+	struct d_ob_property_instance *instance = d_calloc
+		(1, sizeof (struct d_ob_property_instance));
+	instance->type = type;
+	d_htable_insert (properties, type->id, instance);
+	return instance;
 }
 
 
