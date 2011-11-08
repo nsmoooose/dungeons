@@ -81,6 +81,7 @@ static struct d_ob_type d_ob_type_tree_picea = {
 	0, /* data */
 	{
 		&d_ob_age,
+		&d_ob_height,
 		0
 	},
 	d_ob_create,

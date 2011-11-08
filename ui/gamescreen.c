@@ -154,7 +154,16 @@ d_gamescreen_draw (struct d_ui_state *handler) {
 			d_ui->printf_left (3, i++, "Type: %s", instance->type->description);
 			for (int j=0;instance->type->properties[j];++j) {
 				struct d_ob_property_type *property = instance->type->properties[j];
-				d_ui->printf_left (4, i++, "%s: ", property->id);
+				struct d_ob_property_instance *property_instance =
+					d_htable_lookup (instance->properties, property->id);
+				switch (property->data_type) {
+				case d_int:
+					d_ui->printf_left (4, i++, "%s: %d",
+									   property->id, property_instance->value.int_v);
+					break;
+				default:
+					d_ui->printf_left (4, i++, "%s: Unknown type", property->id);
+				}
 			}
 		}
 	}
