@@ -43,6 +43,16 @@ d_storage_read_d (struct d_storage *storage, double *value) {
 }
 
 void
+d_storage_write_f (struct d_storage *storage, float *value) {
+	fwrite (value, sizeof (float), 1, storage->f);
+}
+
+void
+d_storage_read_f (struct d_storage *storage, float *value) {
+	fread (value, sizeof (float), 1, storage->f);
+}
+
+void
 d_storage_write_i (struct d_storage *storage, int *value) {
 	fwrite (value, sizeof (int), 1, storage->f);
 }

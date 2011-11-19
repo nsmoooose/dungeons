@@ -51,6 +51,9 @@ static struct d_ob_state_machine d_ob_sm_tree = {
 };
 
 struct d_tree_type_data {
+	/* Growth rate in mm height per day */
+	float growth_rate;
+	/* The maximum age a tree can be. */
 	int max_age;
 	int max_height;
 
@@ -71,8 +74,8 @@ struct d_tree_inst_data {
 	struct d_ob_property_instance *height;
 };
 
-struct d_ob_property_type d_ob_age = { "age", d_int };
-struct d_ob_property_type d_ob_height = { "height", d_int };
+struct d_ob_property_type d_ob_age = { "age", d_float };
+struct d_ob_property_type d_ob_height = { "height", d_float };
 
 static struct d_ob_type d_ob_type_tree_picea = {
 	"picea",
@@ -129,12 +132,12 @@ d_ob_serialize (struct d_ob_instance *inst, struct d_storage *storage,
 	struct d_tree_inst_data *id = inst->data;
 	switch (mode) {
 	case d_ob_write:
-		d_storage_write_i (storage, &id->age->value.int_v);
-		d_storage_write_i (storage, &id->height->value.int_v);
+		d_ob_property_write (storage, id->age);
+		d_ob_property_write (storage, id->height);
 		break;
 	case d_ob_read:
-		d_storage_read_i (storage, &id->age->value.int_v);
-		d_storage_read_i (storage, &id->height->value.int_v);
+		d_ob_property_read (storage, id->age);
+		d_ob_property_read (storage, id->height);
 		break;
 	}
 }

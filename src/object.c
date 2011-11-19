@@ -94,6 +94,39 @@ d_ob_property_instance_new (struct d_htable *properties,
 	return instance;
 }
 
+void
+d_ob_property_write (struct d_storage *storage, struct d_ob_property_instance *instance) {
+	switch (instance->type->data_type) {
+	case d_string:
+		d_storage_write_s (storage, instance->value.str_v);
+		break;
+	case d_float:
+		d_storage_write_f (storage, &instance->value.float_v);
+		break;
+	case d_int:
+		d_storage_write_i (storage, &instance->value.int_v);
+		break;
+	default:
+		d_bug ("Unknown type of property");
+	}
+}
+
+void
+d_ob_property_read (struct d_storage *storage, struct d_ob_property_instance *instance) {
+	switch (instance->type->data_type) {
+	case d_string:
+		instance->value.str_v = d_storage_read_s (storage);
+		break;
+	case d_float:
+		d_storage_read_f (storage, &instance->value.float_v);
+		break;
+	case d_int:
+		d_storage_read_i (storage, &instance->value.int_v);
+		break;
+	default:
+		d_bug ("Unknown type of property");
+	}
+}
 
 struct d_ob_registry d_ob_registry = {
 	{

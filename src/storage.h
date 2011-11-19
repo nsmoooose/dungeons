@@ -16,6 +16,9 @@ void d_storage_close (struct d_storage *storage);
 void d_storage_write_d (struct d_storage *storage, double *value);
 void d_storage_read_d (struct d_storage *storage, double *value);
 
+void d_storage_write_f (struct d_storage *storage, float *value);
+void d_storage_read_f (struct d_storage *storage, float *value);
+
 void d_storage_write_i (struct d_storage *storage, int *value);
 void d_storage_read_i (struct d_storage *storage, int *value);
 

@@ -113,6 +113,10 @@ struct d_ob_property_instance *d_ob_property_instance_new (
 int d_ob_property_value_int_get (struct d_ob_property_instance *instance);
 float d_ob_property_value_float_get (struct d_ob_property_instance *instance);
 char* d_ob_property_value_str_get (struct d_ob_property_instance *instance);
+void d_ob_property_write (struct d_storage *storage,
+						  struct d_ob_property_instance *instance);
+void d_ob_property_read (struct d_storage *storage,
+						 struct d_ob_property_instance *instance);
 
 extern struct d_ob_registry d_ob_registry;
 
