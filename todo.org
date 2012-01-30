@@ -59,3 +59,10 @@ Some things to get done
   Is it a good idea that every action we perform is its own ui
   state?
   Too much code?
+
+* TODO Path finding algorithms
+  http://theory.stanford.edu/~amitp/GameProgramming/
+
+* TODO Render terrain in 3D.
+* TODO How to store data
+  Large bitmasks for certain data?

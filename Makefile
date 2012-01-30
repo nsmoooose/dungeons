@@ -4,15 +4,10 @@ export CFLAGS+=-std=gnu99 -g -Os -Wall -pedantic -Werror -I$(CURDIR) \
 export LIBS_CURSES+=-lrt -lm -lncurses
 export LIBS_GL+=-lrt -lm -lncurses -lglut -lGL -lGLU $(shell pkg-config --libs cairo)
 
-vpath %.c src
-vpath %.c curses
-vpath %.c gl
-vpath %.c ui
-
-FILES_SRC=$(patsubst %.c,%.o,$(notdir $(wildcard src/*.c)))
-FILES_UI=$(patsubst %.c,%.o,$(notdir $(wildcard ui/*.c)))
-FILES_CURSES=$(patsubst %.c,%.o,$(notdir $(wildcard curses/*.c)))
-FILES_GL=$(patsubst %.c,%.o,$(notdir $(wildcard gl/*.c)))
+FILES_SRC=$(patsubst %.c,%.o,$(wildcard src/*.c))
+FILES_UI=$(patsubst %.c,%.o,$(wildcard ui/*.c))
+FILES_CURSES=$(patsubst %.c,%.o,$(wildcard curses/*.c))
+FILES_GL=$(patsubst %.c,%.o,$(wildcard gl/*.c))
 
 all: dungeons-curses dungeons-gl
 
