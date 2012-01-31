@@ -3,5 +3,6 @@
 *.png
 dungeons-curses
 dungeons-gl
+dungeons-srv
 doc/*.pdf
 TAGS

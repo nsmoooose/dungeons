@@ -8,13 +8,17 @@ FILES_SRC=$(patsubst %.c,%.o,$(wildcard src/*.c))
 FILES_UI=$(patsubst %.c,%.o,$(wildcard ui/*.c))
 FILES_CURSES=$(patsubst %.c,%.o,$(wildcard curses/*.c))
 FILES_GL=$(patsubst %.c,%.o,$(wildcard gl/*.c))
+FILES_SRV=$(patsubst %.c,%.o,$(wildcard srv/*.c))
 
-all: dungeons-curses dungeons-gl
+all: dungeons-curses dungeons-gl dungeons-srv
 
 dungeons-curses: $(FILES_SRC) $(FILES_UI) $(FILES_CURSES)
 	$(CC) $(CFLAGS) -o $@ $(filter %.o, $^) $(LIBS_CURSES)
 
 dungeons-gl: $(FILES_SRC) $(FILES_UI) $(FILES_GL)
+	$(CC) $(CFLAGS) -o $@ $(filter %.o, $^) $(LIBS_GL)
+
+dungeons-srv: $(FILES_SRC) $(FILES_SRV)
 	$(CC) $(CFLAGS) -o $@ $(filter %.o, $^) $(LIBS_GL)
 
 clean:
