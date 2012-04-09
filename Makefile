@@ -22,7 +22,8 @@ dungeons-srv: $(FILES_SRC) $(FILES_SRV)
 	$(CC) $(CFLAGS) -o $@ $(filter %.o, $^) $(LIBS_GL)
 
 clean:
-	$(RM) -r *.o *.gcda *.gcno dungeons-curses dungeons-gl
+	$(RM) dungeons-curses dungeons-gl dungeons-srv
+	$(RM) $(foreach dir, . src ui curses gl srv,$(dir)/*.o $(dir)/*.gcda $(dir)/*.gcno)
 
 tags:
 	etags **/*.c **/*.h

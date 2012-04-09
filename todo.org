@@ -65,4 +65,27 @@ Some things to get done
 
 * TODO Render terrain in 3D.
 * TODO How to store data
-  Large bitmasks for certain data?
+  Large bitmasks for certain data? Would be cool to cover larger terrains
+  but that would involve loading tiles of data i guess.
+
+  Things could be split ut in several areas:
+  - tunneling, wall info, .
+* TODO Behaviors and extending object with new data
+  Smart way to extend an object with a behavior. Good programming pattern
+  to solve this?
+
+  Examples:
+  - containers. A box can contain smaller items.
+  - position. Not all objects have a position.
+* TODO New directory structure
+  - doc
+  - src
+    - tests
+    - srv
+      - tests
+    - ui
+      - tests
+      - curses
+        - tests
+      - gl
+        - tests
