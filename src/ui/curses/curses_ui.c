@@ -12,9 +12,9 @@
 
 #include "clock.h"
 #include "error.h"
-#include "curses_ui.h"
-#include "main_menu.h"
-#include "ui.h"
+#include "ui/curses/curses_ui.h"
+#include "ui/main_menu.h"
+#include "ui/ui.h"
 
 struct d_curses_color_def {
 	enum d_ui_color index;

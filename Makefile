@@ -5,10 +5,10 @@ export LIBS_CURSES+=-lrt -lm -lncurses
 export LIBS_GL+=-lrt -lm -lncurses -lglut -lGL -lGLU $(shell pkg-config --libs cairo)
 
 FILES_SRC=$(patsubst %.c,%.o,$(wildcard src/*.c))
-FILES_UI=$(patsubst %.c,%.o,$(wildcard ui/*.c))
-FILES_CURSES=$(patsubst %.c,%.o,$(wildcard curses/*.c))
-FILES_GL=$(patsubst %.c,%.o,$(wildcard gl/*.c))
-FILES_SRV=$(patsubst %.c,%.o,$(wildcard srv/*.c))
+FILES_UI=$(patsubst %.c,%.o,$(wildcard src/ui/*.c))
+FILES_CURSES=$(patsubst %.c,%.o,$(wildcard src/ui/curses/*.c))
+FILES_GL=$(patsubst %.c,%.o,$(wildcard src/ui/gl/*.c))
+FILES_SRV=$(patsubst %.c,%.o,$(wildcard src/srv/*.c))
 
 all: dungeons-curses dungeons-gl dungeons-srv
 
@@ -23,7 +23,7 @@ dungeons-srv: $(FILES_SRC) $(FILES_SRV)
 
 clean:
 	$(RM) dungeons-curses dungeons-gl dungeons-srv
-	$(RM) $(foreach dir, . src ui curses gl srv,$(dir)/*.o $(dir)/*.gcda $(dir)/*.gcno)
+	$(RM) $(foreach dir, . src src/ui src/ui/curses src/ui/gl src/srv,$(dir)/*.o $(dir)/*.gcda $(dir)/*.gcno)
 
 tags:
 	etags **/*.c **/*.h

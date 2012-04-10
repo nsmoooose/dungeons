@@ -77,7 +77,7 @@ Some things to get done
   Examples:
   - containers. A box can contain smaller items.
   - position. Not all objects have a position.
-* TODO New directory structure
+* DONE New directory structure
   - doc
   - src
     - tests

@@ -2,7 +2,7 @@
 
 #include "curses_ui.h"
 #include "memory.h"
-#include "ui.h"
+#include "ui/ui.h"
 
 int
 main (int argc, char *argv[]) {
