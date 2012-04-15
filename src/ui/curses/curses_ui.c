@@ -1,5 +1,6 @@
 #include <errno.h>
 #include <fcntl.h>
+#include <libintl.h>
 #include <math.h>
 #include <ncurses.h>
 #include <signal.h>
@@ -162,7 +163,7 @@ d_curses_widget_menu_draw (struct d_ui_area *area, struct d_ui_key_binding menu[
 
 	for (int i=0,row=area->pos.y;menu[i].key != 0;++i,++row) {
 		d_ui->printf_left (area->pos.x, row, "%c) %s",
-						   menu[i].key, menu[i].command->description);
+		                   menu[i].key, gettext (menu[i].command->description));
 	}
 }
 

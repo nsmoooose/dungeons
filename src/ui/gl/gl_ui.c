@@ -3,6 +3,7 @@
 #include <GL/gl.h>
 #include <GL/glu.h>
 #include <GL/glext.h>
+#include <libintl.h>
 #include <math.h>
 #include <stdarg.h>
 #include <stdio.h>
@@ -312,7 +313,7 @@ d_gl_widget_menu_draw (struct d_ui_area *area, struct d_ui_key_binding menu[]) {
 
 	for (int i=0,row=area->pos.y;menu[i].key != 0;++i,++row) {
 		d_ui->printf_left (area->pos.x, row, "%c) %s",
-						   menu[i].key, menu[i].command->description);
+		                   menu[i].key, gettext (menu[i].command->description));
 	}
 }
 
