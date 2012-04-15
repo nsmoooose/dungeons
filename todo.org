@@ -77,6 +77,12 @@ Some things to get done
   Examples:
   - containers. A box can contain smaller items.
   - position. Not all objects have a position.
+* TODO Behaviours
+** TODO Fire
+   Fire is an algorithm that works outside of each object. Every object
+   that can catch fire should have the following properties:
+   - explosivity?
+   - ?
 * DONE New directory structure
   - doc
   - src
