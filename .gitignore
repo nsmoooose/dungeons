@@ -4,5 +4,6 @@
 dungeons-curses
 dungeons-gl
 dungeons-srv
+dungeons-tests
 doc/*.pdf
 TAGS
