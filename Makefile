@@ -5,6 +5,10 @@ export LIBS_CURSES+=-lrt -lm -lncurses
 export LIBS_GL+=-lrt -lm -lncurses -lglut -lGL -lGLU $(shell pkg-config --libs cairo)
 export LIBS_TEST+=-lrt -lm -lcheck
 
+ifdef COVERAGE
+	CFLAGS+=--coverage
+endif
+
 FILES_SRC=$(patsubst %.c,%.o,$(wildcard src/*.c))
 FILES_DUNGEONS_TESTS=$(patsubst %.c,%.o,$(wildcard src/tests/*.c))
 FILES_UI=$(patsubst %.c,%.o,$(wildcard src/ui/*.c))
@@ -27,10 +31,14 @@ dungeons-tests: $(FILES_SRC) $(FILES_DUNGEONS_TESTS)
 	$(CC) $(CFLAGS) -o $@ $(filter %.o, $^) $(LIBS) $(LIBS_TEST)
 
 clean:
-	$(RM) dungeons-curses dungeons-gl dungeons-srv
+	$(RM) -r coverage dungeons-curses dungeons-gl dungeons-srv
 	$(RM) $(foreach dir, . src src/ui src/ui/curses src/ui/gl src/srv,$(dir)/*.o $(dir)/*.gcda $(dir)/*.gcno)
 
-tags:
-	etags **/*.c **/*.h
+coverage: clean
+	@$(MAKE) -C . all COVERAGE=1
+	@mkdir coverage
+	@-./dungeons-tests
+	@lcov -b . --directory . --capture --output-file coverage/coverage.info
+	@genhtml -o coverage/ coverage/coverage.info
 
-.PHONY: all clean tags
+.PHONY: all clean

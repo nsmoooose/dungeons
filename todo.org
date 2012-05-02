@@ -40,7 +40,7 @@ Some things to get done
   - Diameter
   - On fire? Damage?
 * TODO Accelerate time when doing some development in order to test results.
-* TODO Test suite with a coverage report
+* DONE Test suite with a coverage report
 * TODO emit properties for an object.
   This is a generic way to expose information about an object.
 
@@ -51,7 +51,6 @@ Some things to get done
   All communications is done through a file descriptor.
   - A local game is done with a unix socket.
   - A remote game is done with a tcp socket.
-* TODO A new directory structure to reflect the client and server part
 * TODO Generate a terrain mesh of the heightmap.
 * TODO Handle commands within a ui state?
   So when we are within the gamescreen we do want to be able to
