@@ -7,6 +7,18 @@
 #include "memory.h"
 #include "storage.h"
 
+int
+d_storage_file_exists (const char *filename) {
+	FILE *f = fopen (filename, "r");
+	if (f) {
+		fclose (f);
+		return 1;
+	}
+	else {
+		return 0;
+	}
+}
+
 struct d_storage*
 d_storage_new (const char *directory, const char *filename) {
 	struct d_storage *s = d_calloc (1, sizeof (struct d_storage));

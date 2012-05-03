@@ -9,8 +9,10 @@ struct d_storage {
 	FILE *f;
 };
 
+int d_storage_file_exists (const char *filename);
+
 struct d_storage* d_storage_new (const char *directory,
-								 const char *filename);
+                                 const char *filename);
 void d_storage_close (struct d_storage *storage);
 
 void d_storage_write_d (struct d_storage *storage, double *value);
