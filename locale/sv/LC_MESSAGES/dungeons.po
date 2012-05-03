@@ -1,0 +1,364 @@
+# Swedish translations for PACKAGE package.
+# Copyright (C) 2012 THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# Henrik Nilsson <henrikn@hn-laptop.localdomain>, 2012.
+#
+#: src/ui/ui.c:147
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2012-05-03 20:50+0200\n"
+"PO-Revision-Date: 2012-05-03 21:16+0200\n"
+"Last-Translator: Henrik Nilsson <henrikn@hn-laptop.localdomain>\n"
+"Language-Team: Swedish\n"
+"Language: sv\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=ASCII\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: src/ui/ui.c:69
+#, c-format
+msgid "\t\"%x\" -> \"%x\" [label=\"%s\"];\n"
+msgstr ""
+
+#: src/ui/ui.c:64
+#, c-format
+msgid "\t\"%x\" [shape=circle label=\"%s\"];\n"
+msgstr ""
+
+#: src/ui/gamescreen.c:202 src/ui/gamescreen.c:204 src/ui/gamescreen.c:206
+#: src/ui/gamescreen.c:208 src/ui/map.c:79
+msgid " "
+msgstr ""
+
+#: src/ui/gamescreen.c:192
+#, c-format
+msgid " N 37 23.516, W 122 02.625 (%d, %d), %dm "
+msgstr ""
+
+#: src/ui/gamescreen.c:211
+msgid " S "
+msgstr ""
+
+#: src/ui/ui.c:59
+#, c-format
+msgid ""
+"# Generate image with: \"dot -Tpng -o ui_state_machine.png ui_state_machine."
+"dot\"\n"
+msgstr ""
+
+#: src/ui/load_game.c:73
+#, c-format
+msgid "%-40s"
+msgstr ""
+
+#: src/ui/gamescreen.c:162
+#, c-format
+msgid "%s: %d"
+msgstr ""
+
+#: src/ui/gamescreen.c:166
+#, c-format
+msgid "%s: %f"
+msgstr ""
+
+#: src/ui/gamescreen.c:170
+#, c-format
+msgid "%s: %s"
+msgstr ""
+
+#: src/ui/gamescreen.c:174
+#, c-format
+msgid "%s: Unknown type"
+msgstr ""
+
+#: src/ui/map.c:74
+msgid "'"
+msgstr ""
+
+#: src/tests/program.c:14
+msgid "--debug"
+msgstr ""
+
+#: src/ui/map.c:69
+msgid "."
+msgstr ""
+
+#: src/ui/ui.c:134
+msgid "/dungeons-curses"
+msgstr ""
+
+#: src/ui/main_menu.c:52
+msgid "/home/henrikn/.dungeons/saves/test"
+msgstr ""
+
+#: src/ui/ui.c:139
+msgid "/usr/share/locale/"
+msgstr ""
+
+#: src/ui/esc_menu.c:10
+msgid "Abandon dungeon"
+msgstr ""
+
+#: src/ui/load_game.c:18 src/ui/ui.c:167
+msgid "Abort"
+msgstr ""
+
+#: src/ui/ui.c:40
+#, c-format
+msgid "Cannot perform transition: \"%s\""
+msgstr ""
+
+#: src/ui/gamescreen.c:60 src/ui/gamescreen.c:381 src/ui/ui.c:191
+msgid "Debug"
+msgstr ""
+
+#: src/ui/gamescreen.c:50
+msgid "Down"
+msgstr ""
+
+#: src/ui/ui.c:196
+msgid "Dungeons"
+msgstr ""
+
+#: src/ui/gamescreen.c:207
+msgid "E"
+msgstr ""
+
+#: src/ui/main_menu.c:28
+msgid "Explore"
+msgstr ""
+
+#: src/ui/ui.c:56
+msgid "Failed to create graphviz statemachine file."
+msgstr ""
+
+#: src/ui/gamescreen.c:63
+msgid "Game"
+msgstr ""
+
+#: src/ui/new_world.c:12
+msgid "Generate new world"
+msgstr ""
+
+#: src/ui/esc_menu.c:14 src/ui/gamescreen.c:56 src/ui/ui.c:175
+msgid "In game menu"
+msgstr ""
+
+#: src/ui/load_game.c:19
+msgid "Load"
+msgstr ""
+
+#: src/ui/load_game.c:27 src/ui/main_menu.c:27 src/ui/ui.c:162
+msgid "Load game"
+msgstr ""
+
+#: src/ui/ui.c:169
+msgid "Loading"
+msgstr ""
+
+#: src/ui/gamescreen.c:58 src/ui/gamescreen.c:311 src/ui/ui.c:186
+msgid "Look around"
+msgstr ""
+
+#: src/ui/main_menu.c:32 src/ui/new_world.c:10
+msgid "Main menu"
+msgstr ""
+
+#: src/ui/gamescreen.c:304
+msgid "Move marker down"
+msgstr ""
+
+#: src/ui/gamescreen.c:305
+msgid "Move marker left"
+msgstr ""
+
+#: src/ui/gamescreen.c:306
+msgid "Move marker right"
+msgstr ""
+
+#: src/ui/gamescreen.c:307
+msgid "Move marker up"
+msgstr ""
+
+#: src/ui/main_menu.c:25 src/ui/ui.c:160
+msgid "New game"
+msgstr ""
+
+#: src/ui/main_menu.c:26 src/ui/new_world.c:15 src/ui/ui.c:158
+msgid "New world"
+msgstr ""
+
+#: src/ui/load_game.c:20
+msgid "Next"
+msgstr ""
+
+#: src/ui/gamescreen.c:134
+msgid "No context assign. Cannot run a game."
+msgstr ""
+
+#: src/ui/map.c:82
+#, c-format
+msgid "Not supposed to happen. Viewpoint z: %d, Ground level: %f"
+msgstr ""
+
+#: src/ui/gamescreen.c:148
+#, c-format
+msgid "Object count: %d"
+msgstr ""
+
+#: src/ui/load_game.c:21
+msgid "Previous"
+msgstr ""
+
+#: src/ui/gamescreen.c:376
+msgid "Print object info"
+msgstr ""
+
+#: src/ui/main_menu.c:29 src/ui/quit.c:7 src/ui/quit.c:11 src/ui/ui.c:164
+msgid "Quit"
+msgstr ""
+
+#: src/ui/quit.c:8 src/ui/ui.c:172 src/ui/ui.c:178
+msgid "Resume"
+msgstr ""
+
+#: src/ui/esc_menu.c:9
+msgid "Resume game"
+msgstr ""
+
+#: src/ui/gamescreen.c:308 src/ui/gamescreen.c:378 src/ui/ui.c:188
+#: src/ui/ui.c:193
+msgid "Return"
+msgstr ""
+
+#: src/ui/esc_menu.c:11
+msgid "Save dungeon"
+msgstr ""
+
+#: src/ui/new_world.c:11
+msgid "Save world"
+msgstr ""
+
+#: src/ui/gamescreen.c:43
+msgid "Scroll map down"
+msgstr ""
+
+#: src/ui/gamescreen.c:48
+msgid "Scroll map down fast"
+msgstr ""
+
+#: src/ui/gamescreen.c:41
+msgid "Scroll map left"
+msgstr ""
+
+#: src/ui/gamescreen.c:46
+msgid "Scroll map left fast"
+msgstr ""
+
+#: src/ui/gamescreen.c:40
+msgid "Scroll map right"
+msgstr ""
+
+#: src/ui/gamescreen.c:45
+msgid "Scroll map right fast"
+msgstr ""
+
+#: src/ui/gamescreen.c:42
+msgid "Scroll map up"
+msgstr ""
+
+#: src/ui/gamescreen.c:47
+msgid "Scroll map up fast"
+msgstr ""
+
+#: src/ui/gamescreen.c:155
+#, c-format
+msgid "State: %s"
+msgstr ""
+
+#: src/ui/gamescreen.c:118
+msgid "T"
+msgstr ""
+
+#: src/ui/new_world.c:33
+msgid "TODO"
+msgstr ""
+
+#: src/ui/ui.c:180 src/ui/ui.c:183
+msgid "To main menu"
+msgstr ""
+
+#: src/ui/ui.c:44
+#, c-format
+msgid "Transition not found in state machine. \"%s\""
+msgstr ""
+
+#: src/ui/gamescreen.c:154
+#, c-format
+msgid "Type: %s"
+msgstr ""
+
+#: src/ui/gamescreen.c:51
+msgid "Up"
+msgstr ""
+
+#: src/ui/gamescreen.c:203
+msgid "W"
+msgstr ""
+
+#: src/ui/gamescreen.c:127 src/ui/map.c:44
+msgid "X"
+msgstr ""
+
+#: src/ui/gamescreen.c:53
+msgid "Zoom in"
+msgstr ""
+
+#: src/ui/gamescreen.c:54
+msgid "Zoom out"
+msgstr ""
+
+#: src/ui/ui.c:60
+#, c-format
+msgid "digraph G {\n"
+msgstr ""
+
+#: src/ui/ui.c:148 src/ui/ui.c:149
+msgid "dungeons"
+msgstr ""
+
+#: src/tests/t_str.c:6 src/tests/t_str.c:7
+msgid "kaka"
+msgstr ""
+
+#: src/ui/main_menu.c:64
+msgid "picea"
+msgstr ""
+
+#: src/tests/t_str.c:15
+msgid "str"
+msgstr ""
+
+#: src/tests/program.c:10
+msgid "trgen"
+msgstr ""
+
+#: src/ui/ui.c:54
+msgid "w"
+msgstr ""
+
+#: src/ui/gamescreen.c:188
+msgid "|======- D U N G E O N S -======|"
+msgstr ""
+
+#: src/ui/ui.c:74
+#, c-format
+msgid "}\n"
+msgstr ""
+
+#: src/ui/map.c:59
+msgid "~"
+msgstr ""

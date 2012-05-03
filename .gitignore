@@ -1,6 +1,7 @@
 *.dot
 *.gcda
 *.gcno
+*.mo
 *.o
 *.png
 /coverage

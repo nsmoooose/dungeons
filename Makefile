@@ -15,8 +15,9 @@ FILES_UI=$(patsubst %.c,%.o,$(wildcard src/ui/*.c))
 FILES_CURSES=$(patsubst %.c,%.o,$(wildcard src/ui/curses/*.c))
 FILES_GL=$(patsubst %.c,%.o,$(wildcard src/ui/gl/*.c))
 FILES_SRV=$(patsubst %.c,%.o,$(wildcard src/srv/*.c))
+FILES_INTL=$(patsubst %.po,%.mo,$(wildcard locale/*/LC_MESSAGES/*.po))
 
-all: dungeons-curses dungeons-gl dungeons-srv dungeons-tests
+all: dungeons-curses dungeons-gl dungeons-srv dungeons-tests intl-compile
 
 dungeons-curses: $(FILES_SRC) $(FILES_UI) $(FILES_CURSES)
 	$(CC) $(CFLAGS) -o $@ $(filter %.o, $^) $(LIBS_CURSES)
@@ -33,6 +34,7 @@ dungeons-tests: $(FILES_SRC) $(FILES_DUNGEONS_TESTS)
 clean:
 	$(RM) -r coverage dungeons-curses dungeons-gl dungeons-srv
 	$(RM) $(foreach dir, . src src/ui src/ui/curses src/ui/gl src/srv,$(dir)/*.o $(dir)/*.gcda $(dir)/*.gcno)
+	$(RM) locale/*/LC_MESSAGES/*.mo
 
 coverage: clean
 	@$(MAKE) -C . all COVERAGE=1
@@ -41,4 +43,12 @@ coverage: clean
 	@lcov -b . --directory . --capture --output-file coverage/coverage.info
 	@genhtml -o coverage/ coverage/coverage.info
 
-.PHONY: all clean
+intl-extract:
+	xgettext -a -d dungeons -s -o locale/dungeons.pot src/**/*.c
+
+intl-compile: $(FILES_INTL)
+
+%.mo: %.po
+	msgfmt -c -v -o $@ $^
+
+.PHONY: all clean intl-compile intl-extract
