@@ -3,6 +3,9 @@
 
 struct d_server_context {
 	int fd;
+	/*
+	  io_clients
+	*/
 };
 
 struct d_server_context* d_server_start_net (const char *addr, int port);
