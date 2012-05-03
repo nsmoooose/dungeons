@@ -1,9 +1,15 @@
 #include <curses.h>
+#include <libintl.h>
+#include <locale.h>
 #include <signal.h>
 #include <stdio.h>
+#include <string.h>
+#include <unistd.h>
+#include <linux/limits.h>
 
 #include "clock.h"
 #include "error.h"
+#include "storage.h"
 #include "esc_menu.h"
 #include "gamescreen.h"
 #include "load_game.h"
@@ -119,8 +125,29 @@ d_ui_render () {
 	}
 }
 
+static char *
+d_ui_get_locale_dir () {
+	static char directory[PATH_MAX] = { 0 };
+	if (directory[0] == 0 ) {
+		char tmp[PATH_MAX];
+		getcwd (tmp, PATH_MAX);
+		strncat (tmp, "/dungeons-curses", PATH_MAX);
+		if (d_storage_file_exists (tmp)) {
+			strncpy (directory, tmp, PATH_MAX);
+		}
+		else {
+			strncpy (directory, "/usr/share/locale/", PATH_MAX);
+		}
+	}
+	return directory;
+}
+
 void
 d_ui_run () {
+	setlocale (LC_ALL, "");
+	bindtextdomain ("dungeons", d_ui_get_locale_dir ());
+	textdomain ("dungeons");
+
 	d_ui->init ();
 	signal (SIGINT, d_ui_sigint);
 	d_ui->run ();

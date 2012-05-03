@@ -30,6 +30,8 @@ Some things to get done
   on a level.
 
 * TODO Translation of the software into several languages.
+  A tutorial on how to do this.
+  http://oriya.sarovar.org/docs/gettext_single.html
 * TODO Embed help as files in the binary?
   Here is a good link on how to do this:
   http://www.linuxjournal.com/content/embedding-file-executable-aka-hello-world-version-5967
