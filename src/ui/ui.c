@@ -3,6 +3,7 @@
 #include <locale.h>
 #include <signal.h>
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
 #include <linux/limits.h>
@@ -130,9 +131,12 @@ d_ui_get_locale_dir () {
 	static char directory[PATH_MAX] = { 0 };
 	if (directory[0] == 0 ) {
 		char tmp[PATH_MAX];
+		char tmp2[PATH_MAX];
 		getcwd (tmp, PATH_MAX);
-		strncat (tmp, "/dungeons-curses", PATH_MAX);
-		if (d_storage_file_exists (tmp)) {
+		strncpy (tmp2, tmp, PATH_MAX);
+		strncat (tmp2, "/dungeons-curses", PATH_MAX);
+		if (d_storage_file_exists (tmp2)) {
+			strncat (tmp, "/locale", PATH_MAX);
 			strncpy (directory, tmp, PATH_MAX);
 		}
 		else {
@@ -146,6 +150,7 @@ void
 d_ui_run () {
 	setlocale (LC_ALL, "");
 	bindtextdomain ("dungeons", d_ui_get_locale_dir ());
+	bind_textdomain_codeset("dungeons", "utf-8");
 	textdomain ("dungeons");
 
 	d_ui->init ();

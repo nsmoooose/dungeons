@@ -3,13 +3,13 @@
 # This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 #
-#: src/ui/ui.c:147
+#: src/ui/ui.c:151
 #, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-05-03 20:50+0200\n"
+"POT-Creation-Date: 2012-05-04 13:37+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,12 +18,12 @@ msgstr ""
 "Content-Type: text/plain; charset=CHARSET\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: src/ui/ui.c:69
+#: src/ui/ui.c:70
 #, c-format
 msgid "\t\"%x\" -> \"%x\" [label=\"%s\"];\n"
 msgstr ""
 
-#: src/ui/ui.c:64
+#: src/ui/ui.c:65
 #, c-format
 msgid "\t\"%x\" [shape=circle label=\"%s\"];\n"
 msgstr ""
@@ -42,7 +42,7 @@ msgstr ""
 msgid " S "
 msgstr ""
 
-#: src/ui/ui.c:59
+#: src/ui/ui.c:60
 #, c-format
 msgid ""
 "# Generate image with: \"dot -Tpng -o ui_state_machine.png ui_state_machine."
@@ -78,15 +78,11 @@ msgstr ""
 msgid "'"
 msgstr ""
 
-#: src/tests/program.c:14
-msgid "--debug"
-msgstr ""
-
 #: src/ui/map.c:69
 msgid "."
 msgstr ""
 
-#: src/ui/ui.c:134
+#: src/ui/ui.c:137
 msgid "/dungeons-curses"
 msgstr ""
 
@@ -95,6 +91,10 @@ msgid "/home/henrikn/.dungeons/saves/test"
 msgstr ""
 
 #: src/ui/ui.c:139
+msgid "/locale"
+msgstr ""
+
+#: src/ui/ui.c:143
 msgid "/usr/share/locale/"
 msgstr ""
 
@@ -102,16 +102,16 @@ msgstr ""
 msgid "Abandon dungeon"
 msgstr ""
 
-#: src/ui/load_game.c:18 src/ui/ui.c:167
+#: src/ui/load_game.c:18 src/ui/ui.c:172
 msgid "Abort"
 msgstr ""
 
-#: src/ui/ui.c:40
+#: src/ui/ui.c:41
 #, c-format
 msgid "Cannot perform transition: \"%s\""
 msgstr ""
 
-#: src/ui/gamescreen.c:60 src/ui/gamescreen.c:381 src/ui/ui.c:191
+#: src/ui/gamescreen.c:60 src/ui/gamescreen.c:381 src/ui/ui.c:196
 msgid "Debug"
 msgstr ""
 
@@ -119,7 +119,7 @@ msgstr ""
 msgid "Down"
 msgstr ""
 
-#: src/ui/ui.c:196
+#: src/ui/ui.c:201
 msgid "Dungeons"
 msgstr ""
 
@@ -131,7 +131,7 @@ msgstr ""
 msgid "Explore"
 msgstr ""
 
-#: src/ui/ui.c:56
+#: src/ui/ui.c:57
 msgid "Failed to create graphviz statemachine file."
 msgstr ""
 
@@ -143,7 +143,7 @@ msgstr ""
 msgid "Generate new world"
 msgstr ""
 
-#: src/ui/esc_menu.c:14 src/ui/gamescreen.c:56 src/ui/ui.c:175
+#: src/ui/esc_menu.c:14 src/ui/gamescreen.c:56 src/ui/ui.c:180
 msgid "In game menu"
 msgstr ""
 
@@ -151,15 +151,15 @@ msgstr ""
 msgid "Load"
 msgstr ""
 
-#: src/ui/load_game.c:27 src/ui/main_menu.c:27 src/ui/ui.c:162
+#: src/ui/load_game.c:27 src/ui/main_menu.c:27 src/ui/ui.c:167
 msgid "Load game"
 msgstr ""
 
-#: src/ui/ui.c:169
+#: src/ui/ui.c:174
 msgid "Loading"
 msgstr ""
 
-#: src/ui/gamescreen.c:58 src/ui/gamescreen.c:311 src/ui/ui.c:186
+#: src/ui/gamescreen.c:58 src/ui/gamescreen.c:311 src/ui/ui.c:191
 msgid "Look around"
 msgstr ""
 
@@ -183,11 +183,11 @@ msgstr ""
 msgid "Move marker up"
 msgstr ""
 
-#: src/ui/main_menu.c:25 src/ui/ui.c:160
+#: src/ui/main_menu.c:25 src/ui/ui.c:165
 msgid "New game"
 msgstr ""
 
-#: src/ui/main_menu.c:26 src/ui/new_world.c:15 src/ui/ui.c:158
+#: src/ui/main_menu.c:26 src/ui/new_world.c:15 src/ui/ui.c:163
 msgid "New world"
 msgstr ""
 
@@ -217,11 +217,11 @@ msgstr ""
 msgid "Print object info"
 msgstr ""
 
-#: src/ui/main_menu.c:29 src/ui/quit.c:7 src/ui/quit.c:11 src/ui/ui.c:164
+#: src/ui/main_menu.c:29 src/ui/quit.c:7 src/ui/quit.c:11 src/ui/ui.c:169
 msgid "Quit"
 msgstr ""
 
-#: src/ui/quit.c:8 src/ui/ui.c:172 src/ui/ui.c:178
+#: src/ui/quit.c:8 src/ui/ui.c:177 src/ui/ui.c:183
 msgid "Resume"
 msgstr ""
 
@@ -229,8 +229,8 @@ msgstr ""
 msgid "Resume game"
 msgstr ""
 
-#: src/ui/gamescreen.c:308 src/ui/gamescreen.c:378 src/ui/ui.c:188
-#: src/ui/ui.c:193
+#: src/ui/gamescreen.c:308 src/ui/gamescreen.c:378 src/ui/ui.c:193
+#: src/ui/ui.c:198
 msgid "Return"
 msgstr ""
 
@@ -287,11 +287,11 @@ msgstr ""
 msgid "TODO"
 msgstr ""
 
-#: src/ui/ui.c:180 src/ui/ui.c:183
+#: src/ui/ui.c:185 src/ui/ui.c:188
 msgid "To main menu"
 msgstr ""
 
-#: src/ui/ui.c:44
+#: src/ui/ui.c:45
 #, c-format
 msgid "Transition not found in state machine. \"%s\""
 msgstr ""
@@ -321,32 +321,24 @@ msgstr ""
 msgid "Zoom out"
 msgstr ""
 
-#: src/ui/ui.c:60
+#: src/ui/ui.c:61
 #, c-format
 msgid "digraph G {\n"
 msgstr ""
 
-#: src/ui/ui.c:148 src/ui/ui.c:149
+#: src/ui/ui.c:152 src/ui/ui.c:153 src/ui/ui.c:154
 msgid "dungeons"
-msgstr ""
-
-#: src/tests/t_str.c:6 src/tests/t_str.c:7
-msgid "kaka"
 msgstr ""
 
 #: src/ui/main_menu.c:64
 msgid "picea"
 msgstr ""
 
-#: src/tests/t_str.c:15
-msgid "str"
+#: src/ui/ui.c:153
+msgid "utf-8"
 msgstr ""
 
-#: src/tests/program.c:10
-msgid "trgen"
-msgstr ""
-
-#: src/ui/ui.c:54
+#: src/ui/ui.c:55
 msgid "w"
 msgstr ""
 
@@ -354,7 +346,7 @@ msgstr ""
 msgid "|======- D U N G E O N S -======|"
 msgstr ""
 
-#: src/ui/ui.c:74
+#: src/ui/ui.c:75
 #, c-format
 msgid "}\n"
 msgstr ""

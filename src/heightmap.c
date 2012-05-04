@@ -1,3 +1,5 @@
+#include <math.h>
+
 #include "error.h"
 #include "heightmap.h"
 #include "memory.h"
@@ -41,4 +43,20 @@ d_heightmap_set (struct d_heightmap *hm, int x, int y, short value) {
 		d_bug ("Coordinates outside heightmap.");
 	}
 	hm->array[y * hm->width + x] = value;
+}
+
+void
+d_heightmap_get_highlow (struct d_heightmap *hm, int *high, int *low) {
+	for (int x=0;x<=hm->width;++x) {
+		for (int y=0;y<=hm->height;++y) {
+			if (x == 0 && y == 0) {
+				(*high) = d_heightmap_get (hm, x, y);
+				(*low) = d_heightmap_get (hm, x, y);
+			}
+			else {
+				(*high) = fmax (d_heightmap_get (hm, x, y), *high);
+				(*low) = fmin (d_heightmap_get (hm, x, y), *low);
+			}
+		}
+	}
 }

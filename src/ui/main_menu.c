@@ -51,7 +51,7 @@ d_cmd_new_game_cb () {
 	d_context = d_game_context_new ();
 	d_context->directory = d_strdup ("/home/henrikn/.dungeons/saves/test");
 
-	int size = 2048;
+	int size = 128;
 	d_context->hm = d_heightmap_new (size);
 	d_fractal_heightmap_generate (d_context->hm, 123, 10000.f, 0.9f);
 
