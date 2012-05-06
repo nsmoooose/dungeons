@@ -29,9 +29,11 @@ Some things to get done
   and keep a heightmap to make it easy to find the surface without looping everything
   on a level.
 
-* TODO Translation of the software into several languages.
+* DONE Translation of the software into several languages.
   A tutorial on how to do this.
   http://oriya.sarovar.org/docs/gettext_single.html
+* TODO Handle UTF-8 for gl to get swedish characters.
+  http://www.cl.cam.ac.uk/~mgk25/unicode.html#mod
 * TODO Embed help as files in the binary?
   Here is a good link on how to do this:
   http://www.linuxjournal.com/content/embedding-file-executable-aka-hello-world-version-5967
