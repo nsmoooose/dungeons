@@ -215,7 +215,7 @@ d_gl_printf_left (int x, int y, const char *format, ...) {
 	for (int i=0;i<width;++i) {
 		int top = y * d_gl_char_size.height;
 		int left = (x + i) * d_gl_char_size.width;
-		GLuint texture = d_gl_char_get_texture (d_gl_color, buffer[i]);
+		GLuint texture = d_gl_char_get_texture (d_gl_color, (unsigned char)buffer[i]);
 		glBindTexture(GL_TEXTURE_2D, texture);
 		glBegin(GL_POLYGON);
 		glTexCoord2f(0.0f, 0.0f);
