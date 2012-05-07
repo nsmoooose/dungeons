@@ -1,11 +1,12 @@
+#include <check.h>
+
 #include "memory.h"
 #include "str.h"
-#include <check.h>
 
 START_TEST (test_strdup) {
 	char *s = d_strdup ("kaka");
 	ck_assert (strcmp (s, "kaka") == 0);
-	d_free (s);
+	d_strfree (s);
 	ck_assert (1 == d_allocations);
 }
 END_TEST

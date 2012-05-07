@@ -23,7 +23,7 @@ Some things to get done
   Every level is a quad tree?
   http://en.wikipedia.org/wiki/Quadtree
 
-  Build a 3D quad tree?
+  Build an octree?
 
   We could start with something simple. Build a data array with 3 dimensions
   and keep a heightmap to make it easy to find the surface without looping everything

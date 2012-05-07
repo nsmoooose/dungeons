@@ -26,8 +26,3 @@ d_world_generate (struct d_world_gen_params *params) {
 
 	return world;
 }
-
-void
-d_world_free (struct d_world *world) {
-}
-
