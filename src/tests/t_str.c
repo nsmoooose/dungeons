@@ -1,7 +1,7 @@
 #include <check.h>
 
-#include "memory.h"
-#include "str.h"
+#include "../memory.h"
+#include "../str.h"
 
 START_TEST (test_strdup) {
 	char *s = d_strdup ("kaka");

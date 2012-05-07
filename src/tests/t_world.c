@@ -1,7 +1,7 @@
 #include <check.h>
 
-#include "memory.h"
-#include "world_gen.h"
+#include "../memory.h"
+#include "../world_gen.h"
 
 START_TEST (test_world_free) {
 	struct d_world_gen_params params;

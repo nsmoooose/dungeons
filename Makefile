@@ -34,7 +34,7 @@ dungeons-tests: $(FILES_SRC) $(FILES_DUNGEONS_TESTS)
 
 clean:
 	$(RM) -r coverage dungeons-curses dungeons-gl dungeons-srv
-	$(RM) $(foreach dir, . src src/ui src/ui/curses src/ui/gl src/srv,$(dir)/*.o $(dir)/*.gcda $(dir)/*.gcno)
+	$(RM) $(foreach dir, . src src/tests src/ui src/ui/curses src/ui/gl src/srv,$(dir)/*.o $(dir)/*.gcda $(dir)/*.gcno)
 	$(RM) locale/*/LC_MESSAGES/*.mo
 
 coverage: clean
