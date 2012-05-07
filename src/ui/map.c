@@ -1,4 +1,4 @@
-#include "error.h"
+#include "../error.h"
 #include "map.h"
 
 /* Symbols to use:

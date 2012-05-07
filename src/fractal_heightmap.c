@@ -12,6 +12,7 @@
 
 #include "error.h"
 #include "fractal_heightmap.h"
+#include "math.h"
 
 /*
  * randNum - Return a random floating point number such that
@@ -109,32 +110,6 @@ avgSquareVals (int i, int j, int stride, int size, short *fa) {
 }
 
 /*
- * Returns 1 if size is a power of 2. Returns 0 if size is
- * not a power of 2, or is zero.
- */
-static int
-d_fractal_is_power_of_2 (int size) {
-    int i, bitcount = 0;
-
-    /* Note this code assumes that (sizeof(int)*8) will yield the
-       number of bits in an int. Should be portable to most
-       platforms. */
-    for (i=0; i<sizeof(int)*8; i++) {
-		if (size & (1<<i)) {
-			bitcount++;
-		}
-	}
-    if (bitcount == 1) {
-		/* One bit. Must be a power of 2. */
-		return (1);
-	}
-    else {
-		/* either size==0, or size not a power of 2. Sorry, Charlie. */
-		return (0);
-	}
-}
-
-/*
  * Use the diamond-square algorithm to tessalate a
  * grid of float values into a fractal height map.
  */
@@ -152,7 +127,7 @@ d_fractal_heightmap_generate (struct d_heightmap *hm,
 	short *fa = hm->array;
 	int size = hm->width;
 
-    if (!d_fractal_is_power_of_2 (size) || (size==1)) {
+    if (!d_is_power_of_2 (size) || (size==1)) {
 		d_bug ("We can't tesselate the array if it is not a power of 2.");
     }
 

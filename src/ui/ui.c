@@ -8,9 +8,9 @@
 #include <unistd.h>
 #include <linux/limits.h>
 
-#include "clock.h"
-#include "error.h"
-#include "storage.h"
+#include "../clock.h"
+#include "../error.h"
+#include "../storage.h"
 #include "esc_menu.h"
 #include "gamescreen.h"
 #include "load_game.h"

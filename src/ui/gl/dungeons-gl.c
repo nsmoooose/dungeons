@@ -1,6 +1,6 @@
+#include "../../memory.h"
+#include "../ui.h"
 #include "gl_ui.h"
-#include "memory.h"
-#include "ui/ui.h"
 
 int
 main (int argc, char *argv[]) {

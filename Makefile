@@ -1,5 +1,4 @@
 export CFLAGS+=-std=gnu99 -g -Os -Wall -pedantic -Werror -I$(CURDIR) \
-	-I$(CURDIR)/src -I$(CURDIR)/curses -I$(CURDIR)/gl -I$(CURDIR)/ui \
 	$(shell pkg-config --cflags cairo)
 export LIBS_CURSES+=-lrt -lm -lncursesw
 export LIBS_GL+=-lrt -lm -lglut -lGL -lGLU $(shell pkg-config --libs cairo)
@@ -49,6 +48,7 @@ intl: $(FILES_INTL_MO)
 
 locale/dungeons.pot: $(wildcard src/ui/*.c)
 	xgettext -a -d dungeons -s -o locale/dungeons.pot src/ui/*.c
+	sed -i /\"POT-Creation-Date:/d locale/dungeons.pot
 
 $(FILES_INTL_PO): locale/dungeons.pot
 	msgmerge -s -U $@ locale/dungeons.pot

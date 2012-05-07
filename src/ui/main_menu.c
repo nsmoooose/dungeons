@@ -1,16 +1,16 @@
 #include <math.h>
 #include <unistd.h>
 
-#include "clock.h"
-#include "error.h"
-#include "fractal_heightmap.h"
+#include "../clock.h"
+#include "../error.h"
+#include "../fractal_heightmap.h"
+#include "../memory.h"
+#include "../object.h"
+#include "../str.h"
 #include "gamescreen.h"
 #include "main_menu.h"
-#include "memory.h"
 #include "new_world.h"
-#include "object.h"
 #include "quit.h"
-#include "str.h"
 
 static void d_cmd_new_game_cb ();
 static void d_cmd_new_world_cb ();

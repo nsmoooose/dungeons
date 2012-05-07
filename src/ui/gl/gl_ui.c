@@ -9,8 +9,8 @@
 #include <stdio.h>
 #include <string.h>
 
-#include "clock.h"
-#include "error.h"
+#include "../../clock.h"
+#include "../../error.h"
 #include "gl_ui.h"
 
 #define d_gl_char_cache_size 1000

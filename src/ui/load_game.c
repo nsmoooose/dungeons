@@ -1,6 +1,6 @@
 #include <unistd.h>
 
-#include "game.h"
+#include "../game.h"
 #include "gamescreen.h"
 #include "load_game.h"
 

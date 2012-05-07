@@ -1,8 +1,8 @@
 #ifndef __DUNGEONS_CURSES_MAP_H__
 #define __DUNGEONS_CURSES_MAP_H__
 
-#include "game.h"
-#include "heightmap.h"
+#include "../game.h"
+#include "../heightmap.h"
 #include "ui.h"
 
 void d_map_coord_to_screen (struct d_ui_area *area, struct d_viewpoint *vp,

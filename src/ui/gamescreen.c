@@ -1,14 +1,14 @@
 #include <math.h>
 #include <stdio.h>
 
-#include "client.h"
-#include "error.h"
-#include "game.h"
+#include "../client.h"
+#include "../error.h"
+#include "../game.h"
+#include "../heightmap.h"
+#include "../object.h"
 #include "gamescreen.h"
-#include "heightmap.h"
 #include "map.h"
 #include "memory.h"
-#include "object.h"
 #include "ui.h"
 
 static void d_gamescreen_enter (struct d_ui_state *prev, struct d_ui_state *new);

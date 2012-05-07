@@ -11,11 +11,11 @@
 #include <termios.h>
 #include <unistd.h>
 
-#include "clock.h"
-#include "error.h"
-#include "ui/curses/curses_ui.h"
-#include "ui/main_menu.h"
-#include "ui/ui.h"
+#include "../../clock.h"
+#include "../../error.h"
+#include "../curses/curses_ui.h"
+#include "../main_menu.h"
+#include "../ui.h"
 
 struct d_curses_color_def {
 	enum d_ui_color index;

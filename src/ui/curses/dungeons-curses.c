@@ -1,8 +1,8 @@
 #include <stdio.h>
 
 #include "curses_ui.h"
-#include "memory.h"
-#include "ui/ui.h"
+#include "../../memory.h"
+#include "../ui.h"
 
 int
 main (int argc, char *argv[]) {
