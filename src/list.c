@@ -91,3 +91,10 @@ d_list_copy (struct d_list *dst, struct d_list *src) {
 		d_list_append (dst, node->data);
 	}
 }
+
+void
+d_list_clear (struct d_list *list) {
+	while (list->first) {
+		d_list_remove (list, list->first);
+	}
+}

@@ -19,6 +19,7 @@ void d_list_destroy (struct d_list *list);
 struct d_list_node *d_list_prepend (struct d_list *list, void *data);
 struct d_list_node *d_list_append (struct d_list *list, void *data);
 void *d_list_remove (struct d_list *list, struct d_list_node *node);
+void d_list_clear (struct d_list *list);
 
 void d_list_copy (struct d_list *dst, struct d_list *src);
 
