@@ -1,3 +1,4 @@
+#include <stdlib.h>
 #include "math.h"
 
 int
@@ -16,3 +17,7 @@ d_is_power_of_2 (int size) {
 	}
 }
 
+int
+d_rand (int min, int max) {
+	return rand () % (max-min) + min;
+}

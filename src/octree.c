@@ -23,6 +23,7 @@ d_octree_node_free (struct d_octree *tree, struct d_octree_node *node) {
 		}
 	}
 	d_free (node);
+	tree->nnodes--;
 }
 
 int
@@ -42,7 +43,6 @@ d_octree_node_new (int x, int y, int z, int half_dimension) {
 	node->aabb.pos.y = y;
 	node->aabb.pos.z = z;
 	node->aabb.half_dimension = half_dimension;
-
 	node->objects = d_list_new ();
 	return node;
 }
@@ -55,6 +55,7 @@ d_octree_new (int capacity, int half_dimension) {
 	struct d_octree *tree = d_calloc (1, sizeof (struct d_octree));
 	tree->capacity = capacity;
 	tree->root = d_octree_node_new (0, 0, 0, half_dimension);
+	tree->nnodes = 1;
 	return tree;
 }
 
@@ -90,22 +91,27 @@ d_octree_insert (struct d_octree *tree, int x, int y, int z,
 			}
 		}
 		else {
-			if (node->objects->nnodes < tree->capacity) {
+			if (node->objects->nnodes < tree->capacity || node->aabb.half_dimension == 2) {
 				struct d_octree_obj *object = d_calloc (1, sizeof (struct d_octree_obj));
+				object->pos.x = x;
+				object->pos.y = y;
+				object->pos.z = z;
+				object->instance = instance;
 				d_list_append (node->objects, object);
-				tree->nnodes++;
+				tree->objects++;
 				return object;
 			}
 			else {
 				int half = node->aabb.half_dimension / 2;
-				node->children[0] = d_octree_node_new (x - half, y - half, z - half, half);
-				node->children[1] = d_octree_node_new (x - half, y - half, z + half, half);
-				node->children[2] = d_octree_node_new (x - half, y + half, z - half, half);
-				node->children[3] = d_octree_node_new (x - half, y + half, z + half, half);
-				node->children[4] = d_octree_node_new (x + half, y - half, z - half, half);
-				node->children[5] = d_octree_node_new (x + half, y - half, z + half, half);
-				node->children[6] = d_octree_node_new (x + half, y + half, z - half, half);
-				node->children[7] = d_octree_node_new (x + half, y + half, z + half, half);
+				node->children[0] = d_octree_node_new (node->aabb.pos.x - half, node->aabb.pos.y - half, node->aabb.pos.z - half, half);
+				node->children[1] = d_octree_node_new (node->aabb.pos.x - half, node->aabb.pos.y - half, node->aabb.pos.z + half, half);
+				node->children[2] = d_octree_node_new (node->aabb.pos.x - half, node->aabb.pos.y + half, node->aabb.pos.z - half, half);
+				node->children[3] = d_octree_node_new (node->aabb.pos.x - half, node->aabb.pos.y + half, node->aabb.pos.z + half, half);
+				node->children[4] = d_octree_node_new (node->aabb.pos.x + half, node->aabb.pos.y - half, node->aabb.pos.z - half, half);
+				node->children[5] = d_octree_node_new (node->aabb.pos.x + half, node->aabb.pos.y - half, node->aabb.pos.z + half, half);
+				node->children[6] = d_octree_node_new (node->aabb.pos.x + half, node->aabb.pos.y + half, node->aabb.pos.z - half, half);
+				node->children[7] = d_octree_node_new (node->aabb.pos.x + half, node->aabb.pos.y + half, node->aabb.pos.z + half, half);
+				tree->nnodes += 8;
 
 				for (struct d_list_node *obj_node = node->objects->first;obj_node;obj_node = obj_node->next) {
 					struct d_octree_obj *obj = obj_node->data;
@@ -128,7 +134,7 @@ d_octree_delete_cb (struct d_octree *tree, struct d_octree_node *node,
 	if (object == data) {
 		d_octree_obj_free (object);
 		d_list_remove (objects, obj_node);
-		tree->nnodes--;
+		tree->objects--;
 		return 0;
 	}
 	return 1;

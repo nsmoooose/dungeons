@@ -6,6 +6,8 @@
 
 #include "error.h"
 
+const char *d_out_of_memory = "Out of memory";
+
 void
 d_bug_impl (const char *file, int line, const char *msg, ...) {
 	char buffer[1000];

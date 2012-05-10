@@ -25,6 +25,7 @@ struct d_octree {
 	int capacity;
 	struct d_octree_node *root;
 	int nnodes;
+	int objects;
 };
 
 typedef int (*d_octree_cb) (struct d_octree *tree, struct d_octree_node *node,
