@@ -1,6 +1,7 @@
 #include <check.h>
 #include <stdlib.h>
 
+void add_math_tests (Suite *suite);
 void add_octree_tests (Suite *suite);
 void add_str_tests (Suite *suite);
 void add_world_tests (Suite *suite);
@@ -10,6 +11,7 @@ main (int argc, char *argv[]) {
 	int failed;
 	SRunner* runner;
 	Suite* suite = suite_create("dungeons");
+	add_math_tests (suite);
 	add_octree_tests (suite);
 	add_str_tests (suite);
 	add_world_tests (suite);

@@ -119,39 +119,11 @@ START_TEST (test_octree_10k_objects) {
 }
 END_TEST
 
-START_TEST (test_aabb) {
-	struct d_aabb aabb = { { 0, 0, 0 }, 4 };
-
-	struct d_ob_pos pos1 = { 0, 0, 0 };
-	ck_assert (d_aabb_contains (&aabb, &pos1) == 1);
-	struct d_ob_pos pos2 = { -4, -4, -4 };
-	ck_assert (d_aabb_contains (&aabb, &pos2) == 1);
-
-	struct d_ob_pos pos3 = { -4, -4, -5 };
-	ck_assert (d_aabb_contains (&aabb, &pos3) == 0);
-	struct d_ob_pos pos4 = { -4, -5, -4 };
-	ck_assert (d_aabb_contains (&aabb, &pos4) == 0);
-	struct d_ob_pos pos5 = { -5, -4, -4 };
-	ck_assert (d_aabb_contains (&aabb, &pos5) == 0);
-
-	struct d_ob_pos pos6 = { 4, 3, 3 };
-	ck_assert (d_aabb_contains (&aabb, &pos6) == 0);
-	struct d_ob_pos pos7 = { 3, 4, 3 };
-	ck_assert (d_aabb_contains (&aabb, &pos7) == 0);
-	struct d_ob_pos pos8 = { 3, 3, 4 };
-	ck_assert (d_aabb_contains (&aabb, &pos8) == 0);
-
-	struct d_ob_pos pos9 = { 3, 3, 3 };
-	ck_assert (d_aabb_contains (&aabb, &pos9) == 1);
-}
-END_TEST
-
 void
 add_octree_tests (Suite *suite) {
 	TCase *c = tcase_create ("octree");
 	tcase_add_test (c, test_octree_alloc);
 	tcase_add_test (c, test_octree_insert_delete);
 	tcase_add_test (c, test_octree_10k_objects);
-	tcase_add_test (c, test_aabb);
 	suite_add_tcase (suite, c);
 }

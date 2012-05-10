@@ -25,7 +25,7 @@ struct d_gl_char_texture_cache {
 	GLuint textures[d_gl_char_cache_size];
 };
 
-static struct d_ui_pos d_gl_pos;
+static struct d_point2 d_gl_pos;
 static struct d_ui_size d_gl_char_size = { 8, 16 };
 static enum d_ui_color d_gl_color;
 static struct d_gl_color_def d_gl_color_def[] = {

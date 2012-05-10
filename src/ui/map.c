@@ -17,7 +17,7 @@
 
 void
 d_map_coord_to_screen (struct d_ui_area *area, struct d_viewpoint *vp,
-					   int zoom, struct d_ui_pos *coord, struct d_ui_pos *pos) {
+					   int zoom, struct d_point2 *coord, struct d_point2 *pos) {
 	/* TODO We need to handle zoom level. */
 	pos->x = coord->x - vp->x + (area->size.width / 2);
 	pos->y = coord->y - vp->y + (area->size.height / 2);
@@ -25,7 +25,7 @@ d_map_coord_to_screen (struct d_ui_area *area, struct d_viewpoint *vp,
 
 void
 d_map_coord_to_real (struct d_ui_area *area, struct d_viewpoint *vp,
-					 int zoom, struct d_ui_pos *screen_coords, struct d_ui_pos *pos) {
+					 int zoom, struct d_point2 *screen_coords, struct d_point2 *pos) {
 	pos->x = vp->x - (area->size.width / 2) * zoom + screen_coords->x * zoom;
 	pos->y = vp->y - (area->size.height / 2) * zoom + screen_coords->y * zoom;
 }
@@ -35,8 +35,8 @@ d_map_draw (
 	struct d_ui_area *area, struct d_viewpoint *vp, int zoom, struct d_heightmap *hm) {
 	for (int x=area->pos.x;x<=area->size.width;++x) {
 		for (int y=area->pos.y;y<=area->size.height;++y) {
-			struct d_ui_pos screen = { x, y };
-			struct d_ui_pos real;
+			struct d_point2 screen = { x, y };
+			struct d_point2 real;
 			d_map_coord_to_real (area, vp, zoom, &screen, &real);
 
 			if (real.x < 0 || real.y < 0 || real.x > hm->width || real.y > hm->height) {

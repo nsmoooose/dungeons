@@ -2,17 +2,14 @@
 #define __DUNGEONS_UI_H__
 
 #include "../heightmap.h"
-
-struct d_ui_pos {
-	int x, y;
-};
+#include "../math.h"
 
 struct d_ui_size {
 	int width, height;
 };
 
 struct d_ui_area {
-	struct d_ui_pos pos;
+	struct d_point2 pos;
 	struct d_ui_size size;
 };
 

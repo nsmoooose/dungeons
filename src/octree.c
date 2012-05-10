@@ -26,16 +26,6 @@ d_octree_node_free (struct d_octree *tree, struct d_octree_node *node) {
 	tree->nnodes--;
 }
 
-int
-d_aabb_contains (struct d_aabb *aabb, struct d_ob_pos *pos) {
-	if (pos->x >= aabb->pos.x - aabb->half_dimension && pos->x < aabb->pos.x + aabb->half_dimension &&
-	    pos->y >= aabb->pos.y - aabb->half_dimension && pos->y < aabb->pos.y + aabb->half_dimension &&
-	    pos->z >= aabb->pos.z - aabb->half_dimension && pos->z < aabb->pos.z + aabb->half_dimension) {
-		return 1;
-	}
-	return 0;
-}
-
 struct d_octree_node *
 d_octree_node_new (int x, int y, int z, int half_dimension) {
 	struct d_octree_node *node = d_calloc (1, sizeof (struct d_octree_node));
@@ -79,7 +69,7 @@ d_octree_insert (struct d_octree *tree, int x, int y, int z,
 	}
 
 	struct d_octree_node *node = tree->root;
-	struct d_ob_pos pos = { x, y, z };
+	struct d_point3 pos = { x, y, z };
 	for (;;) {
 		if (node->children[0]) {
 			for (int i=0;i<8;++i) {

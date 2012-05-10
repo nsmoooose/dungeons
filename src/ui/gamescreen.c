@@ -96,7 +96,7 @@ struct d_ui_state d_gamescreen_state = {
 struct d_game_context *d_context = 0;
 
 static int d_marker_enable = 0;
-static struct d_ui_pos d_marker_pos = { 1, 1 };
+static struct d_point2 d_marker_pos = { 1, 1 };
 
 static void
 d_gamescreen_draw_terrain () {
@@ -109,8 +109,8 @@ d_gamescreen_draw_terrain () {
 	for (struct d_list_node *node=d_context->objects->first;node;node=node->next) {
 		struct d_ob_instance *object = node->data;
 
-		struct d_ui_pos oc = { object->pos.x, object->pos.y };
-		struct d_ui_pos sc;
+		struct d_point2 oc = { object->pos.x, object->pos.y };
+		struct d_point2 sc;
 		d_map_coord_to_screen (&area, d_context->vp, d_context->zoom_level, &oc, &sc);
 		if (sc.x >= area.pos.x && sc.x <= (area.pos.x + area.size.width) &&
 			sc.y >= area.pos.y && sc.y <= (area.pos.y + area.size.height)) {
@@ -121,7 +121,7 @@ d_gamescreen_draw_terrain () {
 
 	if (d_marker_enable) {
 		d_ui->set_color (d_black_white);
-		struct d_ui_pos pos;
+		struct d_point2 pos;
 		d_map_coord_to_screen (&area, d_context->vp, d_context->zoom_level,
 							   &d_marker_pos, &pos);
 		d_ui->printf_left (pos.x, pos.y, "X");

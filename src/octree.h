@@ -1,17 +1,11 @@
 #ifndef __DUNGEONS_OCTREE_H__
 #define __DUNGEONS_OCTREE_H__
 
+#include "math.h"
 #include "object.h"
 
-struct d_aabb {
-	struct d_ob_pos pos;
-	int half_dimension;
-};
-
-int d_aabb_contains (struct d_aabb *aabb, struct d_ob_pos *pos);
-
 struct d_octree_obj {
-	struct d_ob_pos pos;
+	struct d_point3 pos;
 	struct d_ob_instance *instance;
 };
 
