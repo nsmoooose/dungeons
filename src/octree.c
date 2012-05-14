@@ -51,9 +51,11 @@ d_octree_new (int capacity, int half_dimension) {
 
 void
 d_octree_destroy (struct d_octree *tree) {
-	d_octree_node_free (tree, tree->root);
-	tree->root = 0;
-	d_free (tree);
+	if (tree) {
+		d_octree_node_free (tree, tree->root);
+		tree->root = 0;
+		d_free (tree);
+	}
 }
 
 struct d_octree_obj *

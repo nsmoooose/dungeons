@@ -48,6 +48,14 @@ Some things to get done
 
   It would be cool to have this information to be pushed as a channel
   event?
+
+
+  tiles have a position using a property that the octree is setting.
+  tile object can have new objects placed upon them. These objects
+  are retreiving their position by asking the pos of the tile.
+
+
+
 * DONE Translation of the software into several languages.
   A tutorial on how to do this.
   http://oriya.sarovar.org/docs/gettext_single.html
