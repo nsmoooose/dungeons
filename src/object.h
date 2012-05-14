@@ -1,7 +1,6 @@
 #ifndef __DUNGEONS_OBJECT_H__
 #define __DUNGEONS_OBJECT_H__
 
-#include "game.h"
 #include "htable.h"
 #include "math.h"
 #include "storage.h"
@@ -11,9 +10,9 @@ struct d_ob_state_transition;
 
 struct d_ob_state {
 	char *id;
-	void (*enter) (struct d_game_context *context, struct d_ob_instance *inst, struct d_ob_state_transition *transition);
-	void (*input) (struct d_game_context *context, struct d_ob_instance *inst);
-	void (*exit) (struct d_game_context *context, struct d_ob_instance *inst, struct d_ob_state_transition *transition);
+	void (*enter) (struct d_ob_instance *inst, struct d_ob_state_transition *transition);
+	void (*input) (struct d_ob_instance *inst);
+	void (*exit) (struct d_ob_instance *inst, struct d_ob_state_transition *transition);
 };
 
 struct d_ob_state_transition {
@@ -100,9 +99,8 @@ struct d_ob_type *d_ob_get_type (struct d_ob_registry *registry,
 								 const char *id);
 struct d_ob_state *d_ob_get_state (struct d_ob_state_machine *sm,
 								   const char *id);
-void d_ob_do_transition (struct d_game_context *context,
-						 struct d_ob_instance *instance,
-						 struct d_ob_state_transition *transition);
+void d_ob_do_transition (struct d_ob_instance *instance,
+                         struct d_ob_state_transition *transition);
 
 struct d_htable *d_ob_property_htable_new (int size);
 struct d_ob_property_instance *d_ob_property_instance_new (

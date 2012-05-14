@@ -35,7 +35,7 @@ d_game_run (struct d_game_context *context, double now, double delta) {
 
 	for (struct d_list_node *node = context->objects->first;node;node=node->next) {
 		struct d_ob_instance *inst = node->data;
-		inst->state->input (context, inst);
+		inst->state->input (inst);
 	}
 
 	context->datetime += context->delta;

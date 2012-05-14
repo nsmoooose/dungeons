@@ -47,18 +47,17 @@ d_ob_get_state (struct d_ob_state_machine *sm, const char *id) {
 }
 
 void
-d_ob_do_transition (struct d_game_context *context,
-					struct d_ob_instance *instance,
-					struct d_ob_state_transition *transition) {
+d_ob_do_transition (struct d_ob_instance *instance,
+                    struct d_ob_state_transition *transition) {
 	struct d_ob_state_machine *sm = instance->type->sm;
 	for (int i=0;sm->transitions[i];++i) {
 		if (sm->transitions[i] == transition) {
 			if (instance->state == transition->from) {
 				if (instance->state->exit) {
-					instance->state->exit (context, instance, transition);
+					instance->state->exit (instance, transition);
 				}
 				if (transition->to->enter) {
-					transition->to->enter (context, instance, transition);
+					transition->to->enter (instance, transition);
 				}
 				instance->state = transition->to;
 				return;

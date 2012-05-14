@@ -8,9 +8,9 @@ static struct d_ob_instance* d_ob_create (struct d_ob_type *type, int x, int y, 
 static void d_ob_destroy (struct d_ob_instance *inst);
 static void d_ob_serialize (struct d_ob_instance *inst, struct d_storage *storage,
 							enum d_ob_serialize_mode mode);
-static void d_ob_growing_input (struct d_game_context *c, struct d_ob_instance *inst);
-static void d_ob_dead_input (struct d_game_context *c, struct d_ob_instance *inst);
-static void d_ob_on_fire_input (struct d_game_context *c, struct d_ob_instance *inst);
+static void d_ob_growing_input (struct d_ob_instance *inst);
+static void d_ob_dead_input (struct d_ob_instance *inst);
+static void d_ob_on_fire_input (struct d_ob_instance *inst);
 
 static struct d_ob_state d_ob_state_tree_growing = { "growing", 0, d_ob_growing_input, 0 };
 static struct d_ob_state d_ob_state_tree_dead = { "dead", 0, d_ob_dead_input, 0 };
@@ -143,7 +143,8 @@ d_ob_serialize (struct d_ob_instance *inst, struct d_storage *storage,
 }
 
 static void
-d_ob_growing_input (struct d_game_context *context, struct d_ob_instance *inst) {
+d_ob_growing_input (struct d_ob_instance *inst) {
+#if 0
 	struct d_tree_type_data *td = inst->type->data;
 
 	short ground_level = d_heightmap_get (context->hm, inst->pos.x, inst->pos.y);
@@ -159,10 +160,11 @@ d_ob_growing_input (struct d_game_context *context, struct d_ob_instance *inst) 
 		/* TODO transition to dead. */
 		return;
 	}
+#endif
 }
 
 static void
-d_ob_dead_input (struct d_game_context *context, struct d_ob_instance *inst) {
+d_ob_dead_input (struct d_ob_instance *inst) {
 	struct d_tree_inst_data *id = inst->data;
 	if (id->height == 0) {
 		/* A seed that never took root. */
@@ -178,7 +180,7 @@ d_ob_dead_input (struct d_game_context *context, struct d_ob_instance *inst) {
 }
 
 static void
-d_ob_on_fire_input (struct d_game_context *context, struct d_ob_instance *inst) {
+d_ob_on_fire_input (struct d_ob_instance *inst) {
 	/* TODO fire will last until the entire tree is consumed */
 
 	/* TODO fire is put out with water (raining) and we move to the dead state. */
