@@ -33,6 +33,21 @@ Some things to get done
   and keep a heightmap to make it easy to find the surface without looping everything
   on a level.
 
+* TODO Container and position of objects
+  Each object shouldn't be aware of its position. All that information
+  is stored into the octree. In order for an object to get its position
+  it must have a pointer to its container (the octree object, or a
+  parent container (a box, barrel etc)).
+
+  Apropriate pattern for this?
+
+  One way is that the tile object is the only object with a position.
+  So if an object wants its position it will have to query its parent.
+  And the parents parent until we get to the tile object. The tile
+  object has this information as a "pos" property.
+
+  It would be cool to have this information to be pushed as a channel
+  event?
 * DONE Translation of the software into several languages.
   A tutorial on how to do this.
   http://oriya.sarovar.org/docs/gettext_single.html
@@ -83,7 +98,6 @@ Some things to get done
 
   It should also be possible to get notifications when a property change
   in a kind of subscribe to object.
-
 * TODO Split it up into server and client.
   All communications is done through a file descriptor.
   - A local game is done with a unix socket.

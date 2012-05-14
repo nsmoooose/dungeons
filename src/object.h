@@ -3,14 +3,11 @@
 
 #include "game.h"
 #include "htable.h"
+#include "math.h"
 #include "storage.h"
 
 struct d_ob_instance;
 struct d_ob_state_transition;
-
-struct d_ob_pos {
-	int x,y,z;
-};
 
 struct d_ob_state {
 	char *id;
@@ -84,7 +81,7 @@ struct d_ob_type {
 struct d_ob_instance {
 	struct d_ob_type *type;
 	struct d_ob_state *state;
-	struct d_ob_pos pos;
+	struct d_point3 pos;
 	struct d_htable *properties;
 	void *data;
 };
