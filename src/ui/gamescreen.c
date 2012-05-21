@@ -154,8 +154,8 @@ d_gamescreen_draw (struct d_ui_state *handler) {
 			d_ui->printf_left (3, i++, "Type: %s", instance->type->description);
 			d_ui->printf_left (4, i++, "State: %s", instance->state->id);
 			for (int j=0;instance->type->properties[j];++j) {
-				struct d_ob_property_type *property = instance->type->properties[j];
-				struct d_ob_property_instance *property_instance =
+				struct d_prop_type *property = instance->type->properties[j];
+				struct d_prop_instance *property_instance =
 					d_htable_lookup (instance->properties, property->id);
 				switch (property->data_type) {
 				case d_int:

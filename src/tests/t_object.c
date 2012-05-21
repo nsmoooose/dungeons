@@ -3,7 +3,7 @@
 #include "../object.h"
 
 START_TEST (test_prop_pos3) {
-	struct d_ob_property_instance *inst = d_prop_pos3.create (&d_prop_pos3);
+	struct d_prop_instance *inst = d_prop_pos3.create (&d_prop_pos3);
 	ck_assert (inst != 0);
 	ck_assert (inst->type == &d_prop_pos3);
 	ck_assert (inst->value != 0);
@@ -15,7 +15,7 @@ START_TEST (test_prop_pos3) {
 END_TEST
 
 START_TEST (test_prop_string) {
-	struct d_ob_property_instance *inst = d_prop_str.create (&d_prop_str);
+	struct d_prop_instance *inst = d_prop_str.create (&d_prop_str);
 	ck_assert (inst != 0);
 	ck_assert (inst->type == &d_prop_str);
 	ck_assert (inst->value == 0);
@@ -27,7 +27,7 @@ START_TEST (test_prop_string) {
 END_TEST
 
 START_TEST (test_prop_float) {
-	struct d_ob_property_instance *inst = d_prop_float.create (&d_prop_float);
+	struct d_prop_instance *inst = d_prop_float.create (&d_prop_float);
 	ck_assert (inst != 0);
 	ck_assert (inst->type == &d_prop_float);
 	ck_assert (inst->value != 0);
@@ -40,7 +40,7 @@ START_TEST (test_prop_float) {
 END_TEST
 
 START_TEST (test_prop_int) {
-	struct d_ob_property_instance *inst = d_prop_int.create (&d_prop_int);
+	struct d_prop_instance *inst = d_prop_int.create (&d_prop_int);
 	ck_assert (inst != 0);
 	ck_assert (inst->type == &d_prop_int);
 	ck_assert (inst->value != 0);

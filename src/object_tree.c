@@ -70,12 +70,12 @@ struct d_tree_type_data {
 };
 
 struct d_tree_inst_data {
-	struct d_ob_property_instance *age;
-	struct d_ob_property_instance *height;
+	struct d_prop_instance *age;
+	struct d_prop_instance *height;
 };
 
-struct d_ob_property_type d_ob_age = { "age", d_float };
-struct d_ob_property_type d_ob_height = { "height", d_float };
+struct d_prop_type d_ob_age = { "age", d_float };
+struct d_prop_type d_ob_height = { "height", d_float };
 
 static struct d_ob_type d_ob_type_tree_picea = {
 	"picea",
@@ -112,8 +112,8 @@ d_ob_create (struct d_ob_type *type, int x, int y, int z) {
 	inst->pos.z = z;
 
 	inst->properties = d_ob_property_htable_new (2);
-	data->age = d_ob_property_instance_new (inst->properties, &d_ob_age);
-	data->height = d_ob_property_instance_new (inst->properties, &d_ob_height);
+	data->age = d_prop_instance_new (inst->properties, &d_ob_age);
+	data->height = d_prop_instance_new (inst->properties, &d_ob_height);
 	return inst;
 }
 

@@ -7,16 +7,16 @@
 #include "object_tree.h"
 #include "str.h"
 
-static struct d_ob_property_instance *
-d_prop_point3_create (struct d_ob_property_type *type) {
-	struct d_ob_property_instance *inst = d_calloc (1, sizeof (struct d_ob_property_instance));
+static struct d_prop_instance *
+d_prop_point3_create (struct d_prop_type *type) {
+	struct d_prop_instance *inst = d_calloc (1, sizeof (struct d_prop_instance));
 	inst->type = type;
 	inst->value = d_calloc (1, sizeof (struct d_point3));
 	return inst;
 }
 
 static void
-d_prop_destroy (struct d_ob_property_instance *inst) {
+d_prop_destroy (struct d_prop_instance *inst) {
 	if (inst) {
 		if (inst->value) {
 			d_free (inst->value);
@@ -25,28 +25,28 @@ d_prop_destroy (struct d_ob_property_instance *inst) {
 	}
 }
 
-struct d_ob_property_type d_prop_pos3 = {
+struct d_prop_type d_prop_pos3 = {
 	.create = d_prop_point3_create,
 	.destroy = d_prop_destroy
 };
 
 struct d_point3 *
-d_prop_pos3_get (struct d_ob_property_instance *inst) {
+d_prop_pos3_get (struct d_prop_instance *inst) {
 	if (inst->type != &d_prop_pos3) {
 		d_bug (d_invalid_property_usage);
 	}
 	return (struct d_point3*)inst->value;
 }
 
-static struct d_ob_property_instance *
-d_prop_str_create (struct d_ob_property_type *type) {
-	struct d_ob_property_instance *inst = d_calloc (1, sizeof (struct d_ob_property_instance));
+static struct d_prop_instance *
+d_prop_str_create (struct d_prop_type *type) {
+	struct d_prop_instance *inst = d_calloc (1, sizeof (struct d_prop_instance));
 	inst->type = type;
 	return inst;
 }
 
 char *
-d_prop_str_get (struct d_ob_property_instance *inst) {
+d_prop_str_get (struct d_prop_instance *inst) {
 	if (inst->type != &d_prop_str) {
 		d_bug (d_invalid_property_usage);
 	}
@@ -54,7 +54,7 @@ d_prop_str_get (struct d_ob_property_instance *inst) {
 }
 
 void
-d_prop_str_set (struct d_ob_property_instance *inst, const char *value) {
+d_prop_str_set (struct d_prop_instance *inst, const char *value) {
 	if (inst->type != &d_prop_str) {
 		d_bug (d_invalid_property_usage);
 	}
@@ -64,32 +64,32 @@ d_prop_str_set (struct d_ob_property_instance *inst, const char *value) {
 	inst->value = d_strdup (value);
 }
 
-struct d_ob_property_type d_prop_str = {
+struct d_prop_type d_prop_str = {
 	.create = d_prop_str_create,
 	.destroy = d_prop_destroy
 };
 
-static struct d_ob_property_instance *d_prop_int_create (struct d_ob_property_type *type) {
-	struct d_ob_property_instance *inst = d_calloc (1, sizeof (struct d_ob_property_instance));
+static struct d_prop_instance *d_prop_int_create (struct d_prop_type *type) {
+	struct d_prop_instance *inst = d_calloc (1, sizeof (struct d_prop_instance));
 	inst->type = type;
 	inst->value = d_calloc (1, sizeof (int));
 	return inst;
 }
 
-struct d_ob_property_type d_prop_int = {
+struct d_prop_type d_prop_int = {
 	.create = d_prop_int_create,
 	.destroy = d_prop_destroy
 };
 
-static struct d_ob_property_instance *d_prop_float_create (struct d_ob_property_type *type) {
-	struct d_ob_property_instance *inst = d_calloc (1, sizeof (struct d_ob_property_instance));
+static struct d_prop_instance *d_prop_float_create (struct d_prop_type *type) {
+	struct d_prop_instance *inst = d_calloc (1, sizeof (struct d_prop_instance));
 	inst->type = type;
 	inst->value = d_calloc (1, sizeof (float));
 	return inst;
 }
 
 int
-d_prop_int_get (struct d_ob_property_instance *inst) {
+d_prop_int_get (struct d_prop_instance *inst) {
 	if (inst->type != &d_prop_int) {
 		d_bug (d_invalid_property_usage);
 	}
@@ -97,20 +97,20 @@ d_prop_int_get (struct d_ob_property_instance *inst) {
 }
 
 void
-d_prop_int_set (struct d_ob_property_instance *inst, int value) {
+d_prop_int_set (struct d_prop_instance *inst, int value) {
 	if (inst->type != &d_prop_int) {
 		d_bug (d_invalid_property_usage);
 	}
 	*((int*)inst->value) = value;
 }
 
-struct d_ob_property_type d_prop_float = {
+struct d_prop_type d_prop_float = {
 	.create = d_prop_float_create,
 	.destroy = d_prop_destroy
 };
 
 float
-d_prop_float_get (struct d_ob_property_instance *inst) {
+d_prop_float_get (struct d_prop_instance *inst) {
 	if (inst->type != &d_prop_float) {
 		d_bug (d_invalid_property_usage);
 	}
@@ -118,7 +118,7 @@ d_prop_float_get (struct d_ob_property_instance *inst) {
 }
 
 void
-d_prop_float_set (struct d_ob_property_instance *inst, float value) {
+d_prop_float_set (struct d_prop_instance *inst, float value) {
 	if (inst->type != &d_prop_float) {
 		d_bug (d_invalid_property_usage);
 	}
@@ -191,29 +191,29 @@ d_ob_do_transition (struct d_ob_instance *instance,
 }
 
 static void
-d_ob_property_instance_htable_remove (void *key, void *value) {
+d_prop_instance_htable_remove (void *key, void *value) {
 	d_free (value);
 }
 
 struct d_htable *
 d_ob_property_htable_new (int size) {
 	struct d_htable *properties = d_htable_new_str (size);
-	properties->remove = d_ob_property_instance_htable_remove;
+	properties->remove = d_prop_instance_htable_remove;
 	return properties;
 }
 
-struct d_ob_property_instance *
-d_ob_property_instance_new (struct d_htable *properties,
-							struct d_ob_property_type *type) {
-	struct d_ob_property_instance *instance = d_calloc
-		(1, sizeof (struct d_ob_property_instance));
+struct d_prop_instance *
+d_prop_instance_new (struct d_htable *properties,
+							struct d_prop_type *type) {
+	struct d_prop_instance *instance = d_calloc
+		(1, sizeof (struct d_prop_instance));
 	instance->type = type;
 	d_htable_insert (properties, type->id, instance);
 	return instance;
 }
 
 void
-d_ob_property_write (struct d_storage *storage, struct d_ob_property_instance *instance) {
+d_ob_property_write (struct d_storage *storage, struct d_prop_instance *instance) {
 	switch (instance->type->data_type) {
 	case d_string:
 		d_storage_write_s (storage, instance->value);
@@ -230,7 +230,7 @@ d_ob_property_write (struct d_storage *storage, struct d_ob_property_instance *i
 }
 
 void
-d_ob_property_read (struct d_storage *storage, struct d_ob_property_instance *instance) {
+d_ob_property_read (struct d_storage *storage, struct d_prop_instance *instance) {
 	switch (instance->type->data_type) {
 	case d_string:
 		instance->value = d_storage_read_s (storage);

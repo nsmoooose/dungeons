@@ -3,7 +3,6 @@
 
 #include "htable.h"
 #include "math.h"
-#include "prop.h"
 #include "storage.h"
 
 /* ******************************************************************************** */
@@ -44,10 +43,10 @@ enum d_ob_serialize_mode {
 /* ******************************************************************************** */
 /*                               PROPERTIES                                         */
 /* ******************************************************************************** */
-struct d_ob_property_instance;
+struct d_prop_instance;
 
 typedef void (*d_ob_property_change_cb) (struct d_ob_instance *instance,
-                                         struct d_ob_property_instance *property);
+                                         struct d_prop_instance *property);
 
 enum d_ob_data_type {
 	d_string,
@@ -55,34 +54,34 @@ enum d_ob_data_type {
 	d_int
 };
 
-struct d_ob_property_type {
+struct d_prop_type {
 	char *id;
 	/* TODO to be removed */
 	enum d_ob_data_type data_type;
 
-	struct d_ob_property_instance *(*create) (struct d_ob_property_type *type);
-	void (*destroy) (struct d_ob_property_instance *inst);
-	void (*serialize) (struct d_ob_property_instance *inst, struct d_storage *storage,
+	struct d_prop_instance *(*create) (struct d_prop_type *type);
+	void (*destroy) (struct d_prop_instance *inst);
+	void (*serialize) (struct d_prop_instance *inst, struct d_storage *storage,
 					   enum d_ob_serialize_mode mode);
 };
 
-float d_prop_float_get (struct d_ob_property_instance *inst);
-void d_prop_float_set (struct d_ob_property_instance *inst, float value);
-extern struct d_ob_property_type d_prop_float;
+float d_prop_float_get (struct d_prop_instance *inst);
+void d_prop_float_set (struct d_prop_instance *inst, float value);
+extern struct d_prop_type d_prop_float;
 
-int d_prop_int_get (struct d_ob_property_instance *inst);
-void d_prop_int_set (struct d_ob_property_instance *inst, int value);
-extern struct d_ob_property_type d_prop_int;
+int d_prop_int_get (struct d_prop_instance *inst);
+void d_prop_int_set (struct d_prop_instance *inst, int value);
+extern struct d_prop_type d_prop_int;
 
-struct d_point3 *d_prop_pos3_get (struct d_ob_property_instance *inst);
-extern struct d_ob_property_type d_prop_pos3;
+struct d_point3 *d_prop_pos3_get (struct d_prop_instance *inst);
+extern struct d_prop_type d_prop_pos3;
 
-char *d_prop_str_get (struct d_ob_property_instance *inst);
-void d_prop_str_set (struct d_ob_property_instance *inst, const char *value);
-extern struct d_ob_property_type d_prop_str;
+char *d_prop_str_get (struct d_prop_instance *inst);
+void d_prop_str_set (struct d_prop_instance *inst, const char *value);
+extern struct d_prop_type d_prop_str;
 
-struct d_ob_property_instance {
-	struct d_ob_property_type *type;
+struct d_prop_instance {
+	struct d_prop_type *type;
 	struct d_list *change;
 	void *value;
 };
@@ -96,7 +95,7 @@ struct d_ob_type {
 	char *description;
 	struct d_ob_state_machine *sm;
 	void *data;
-	struct d_ob_property_type* properties[10];
+	struct d_prop_type* properties[10];
 
 	struct d_ob_instance *(*create) (struct d_ob_type *type, int x, int y, int z);
 	void (*destroy) (struct d_ob_instance *inst);
@@ -130,15 +129,15 @@ void d_ob_do_transition (struct d_ob_instance *instance,
                          struct d_ob_state_transition *transition);
 
 struct d_htable *d_ob_property_htable_new (int size);
-struct d_ob_property_instance *d_ob_property_instance_new (
-  struct d_htable *properties, struct d_ob_property_type *type);
-int d_ob_property_value_int_get (struct d_ob_property_instance *instance);
-float d_ob_property_value_float_get (struct d_ob_property_instance *instance);
-char* d_ob_property_value_str_get (struct d_ob_property_instance *instance);
+struct d_prop_instance *d_prop_instance_new (
+  struct d_htable *properties, struct d_prop_type *type);
+int d_ob_property_value_int_get (struct d_prop_instance *instance);
+float d_ob_property_value_float_get (struct d_prop_instance *instance);
+char* d_ob_property_value_str_get (struct d_prop_instance *instance);
 void d_ob_property_write (struct d_storage *storage,
-						  struct d_ob_property_instance *instance);
+						  struct d_prop_instance *instance);
 void d_ob_property_read (struct d_storage *storage,
-						 struct d_ob_property_instance *instance);
+						 struct d_prop_instance *instance);
 
 extern struct d_ob_registry d_ob_registry;
 
