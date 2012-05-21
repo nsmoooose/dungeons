@@ -3,8 +3,12 @@
 
 #include "htable.h"
 #include "math.h"
+#include "prop.h"
 #include "storage.h"
 
+/* ******************************************************************************** */
+/*                               STATE MACHINE                                      */
+/* ******************************************************************************** */
 struct d_ob_instance;
 struct d_ob_state_transition;
 
@@ -37,11 +41,13 @@ enum d_ob_serialize_mode {
 	d_ob_read
 };
 
-struct d_ob_instance;
+/* ******************************************************************************** */
+/*                               PROPERTIES                                         */
+/* ******************************************************************************** */
 struct d_ob_property_instance;
 
 typedef void (*d_ob_property_change_cb) (struct d_ob_instance *instance,
-										 struct d_ob_property_instance *property);
+                                         struct d_ob_property_instance *property);
 
 enum d_ob_data_type {
 	d_string,
@@ -51,18 +57,39 @@ enum d_ob_data_type {
 
 struct d_ob_property_type {
 	char *id;
+	/* TODO to be removed */
 	enum d_ob_data_type data_type;
+
+	struct d_ob_property_instance *(*create) (struct d_ob_property_type *type);
+	void (*destroy) (struct d_ob_property_instance *inst);
+	void (*serialize) (struct d_ob_property_instance *inst, struct d_storage *storage,
+					   enum d_ob_serialize_mode mode);
 };
+
+float d_prop_float_get (struct d_ob_property_instance *inst);
+void d_prop_float_set (struct d_ob_property_instance *inst, float value);
+extern struct d_ob_property_type d_prop_float;
+
+int d_prop_int_get (struct d_ob_property_instance *inst);
+void d_prop_int_set (struct d_ob_property_instance *inst, int value);
+extern struct d_ob_property_type d_prop_int;
+
+struct d_point3 *d_prop_pos3_get (struct d_ob_property_instance *inst);
+extern struct d_ob_property_type d_prop_pos3;
+
+char *d_prop_str_get (struct d_ob_property_instance *inst);
+void d_prop_str_set (struct d_ob_property_instance *inst, const char *value);
+extern struct d_ob_property_type d_prop_str;
 
 struct d_ob_property_instance {
 	struct d_ob_property_type *type;
 	struct d_list *change;
-	union {
-		int int_v;
-		float float_v;
-		char *str_v;
-	} value;
+	void *value;
 };
+
+/* ******************************************************************************** */
+/*                               OBJECTS                                            */
+/* ******************************************************************************** */
 
 struct d_ob_type {
 	char *id;

@@ -5,6 +5,125 @@
 #include "memory.h"
 #include "object.h"
 #include "object_tree.h"
+#include "str.h"
+
+static struct d_ob_property_instance *
+d_prop_point3_create (struct d_ob_property_type *type) {
+	struct d_ob_property_instance *inst = d_calloc (1, sizeof (struct d_ob_property_instance));
+	inst->type = type;
+	inst->value = d_calloc (1, sizeof (struct d_point3));
+	return inst;
+}
+
+static void
+d_prop_destroy (struct d_ob_property_instance *inst) {
+	if (inst) {
+		if (inst->value) {
+			d_free (inst->value);
+		}
+		d_free (inst);
+	}
+}
+
+struct d_ob_property_type d_prop_pos3 = {
+	.create = d_prop_point3_create,
+	.destroy = d_prop_destroy
+};
+
+struct d_point3 *
+d_prop_pos3_get (struct d_ob_property_instance *inst) {
+	if (inst->type != &d_prop_pos3) {
+		d_bug (d_invalid_property_usage);
+	}
+	return (struct d_point3*)inst->value;
+}
+
+static struct d_ob_property_instance *
+d_prop_str_create (struct d_ob_property_type *type) {
+	struct d_ob_property_instance *inst = d_calloc (1, sizeof (struct d_ob_property_instance));
+	inst->type = type;
+	return inst;
+}
+
+char *
+d_prop_str_get (struct d_ob_property_instance *inst) {
+	if (inst->type != &d_prop_str) {
+		d_bug (d_invalid_property_usage);
+	}
+	return inst->value;
+}
+
+void
+d_prop_str_set (struct d_ob_property_instance *inst, const char *value) {
+	if (inst->type != &d_prop_str) {
+		d_bug (d_invalid_property_usage);
+	}
+	if (inst->value) {
+		d_strfree (inst->value);
+	}
+	inst->value = d_strdup (value);
+}
+
+struct d_ob_property_type d_prop_str = {
+	.create = d_prop_str_create,
+	.destroy = d_prop_destroy
+};
+
+static struct d_ob_property_instance *d_prop_int_create (struct d_ob_property_type *type) {
+	struct d_ob_property_instance *inst = d_calloc (1, sizeof (struct d_ob_property_instance));
+	inst->type = type;
+	inst->value = d_calloc (1, sizeof (int));
+	return inst;
+}
+
+struct d_ob_property_type d_prop_int = {
+	.create = d_prop_int_create,
+	.destroy = d_prop_destroy
+};
+
+static struct d_ob_property_instance *d_prop_float_create (struct d_ob_property_type *type) {
+	struct d_ob_property_instance *inst = d_calloc (1, sizeof (struct d_ob_property_instance));
+	inst->type = type;
+	inst->value = d_calloc (1, sizeof (float));
+	return inst;
+}
+
+int
+d_prop_int_get (struct d_ob_property_instance *inst) {
+	if (inst->type != &d_prop_int) {
+		d_bug (d_invalid_property_usage);
+	}
+	return *((int*)inst->value);
+}
+
+void
+d_prop_int_set (struct d_ob_property_instance *inst, int value) {
+	if (inst->type != &d_prop_int) {
+		d_bug (d_invalid_property_usage);
+	}
+	*((int*)inst->value) = value;
+}
+
+struct d_ob_property_type d_prop_float = {
+	.create = d_prop_float_create,
+	.destroy = d_prop_destroy
+};
+
+float
+d_prop_float_get (struct d_ob_property_instance *inst) {
+	if (inst->type != &d_prop_float) {
+		d_bug (d_invalid_property_usage);
+	}
+	return *((float*)inst->value);
+}
+
+void
+d_prop_float_set (struct d_ob_property_instance *inst, float value) {
+	if (inst->type != &d_prop_float) {
+		d_bug (d_invalid_property_usage);
+	}
+	*((float*)inst->value) = value;
+}
 
 static void
 d_ob_remove (void *data) {
@@ -97,13 +216,13 @@ void
 d_ob_property_write (struct d_storage *storage, struct d_ob_property_instance *instance) {
 	switch (instance->type->data_type) {
 	case d_string:
-		d_storage_write_s (storage, instance->value.str_v);
+		d_storage_write_s (storage, instance->value);
 		break;
 	case d_float:
-		d_storage_write_f (storage, &instance->value.float_v);
+		d_storage_write_f (storage, (float*)instance->value);
 		break;
 	case d_int:
-		d_storage_write_i (storage, &instance->value.int_v);
+		d_storage_write_i (storage, (int*)instance->value);
 		break;
 	default:
 		d_bug ("Unknown type of property");
@@ -114,13 +233,13 @@ void
 d_ob_property_read (struct d_storage *storage, struct d_ob_property_instance *instance) {
 	switch (instance->type->data_type) {
 	case d_string:
-		instance->value.str_v = d_storage_read_s (storage);
+		instance->value = d_storage_read_s (storage);
 		break;
 	case d_float:
-		d_storage_read_f (storage, &instance->value.float_v);
+		d_storage_read_f (storage, (float*)instance->value);
 		break;
 	case d_int:
-		d_storage_read_i (storage, &instance->value.int_v);
+		d_storage_read_i (storage, (int*)instance->value);
 		break;
 	default:
 		d_bug ("Unknown type of property");

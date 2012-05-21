@@ -160,15 +160,15 @@ d_gamescreen_draw (struct d_ui_state *handler) {
 				switch (property->data_type) {
 				case d_int:
 					d_ui->printf_left (4, i++, "%s: %d",
-									   property->id, property_instance->value.int_v);
+					                   property->id, *((int*)property_instance->value));
 					break;
 				case d_float:
 					d_ui->printf_left (4, i++, "%s: %f",
-									   property->id, property_instance->value.float_v);
+					                   property->id, *((float*)property_instance->value));
 					break;
 				case d_string:
 					d_ui->printf_left (4, i++, "%s: %s",
-									   property->id, property_instance->value.str_v);
+					                   property->id, (char*)property_instance->value);
 					break;
 				default:
 					d_ui->printf_left (4, i++, "%s: Unknown type", property->id);
