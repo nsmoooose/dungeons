@@ -46,6 +46,9 @@ coverage: clean
 
 intl: $(FILES_INTL_MO)
 
+tests: dungeons-tests
+	./dungeons-tests
+
 locale/dungeons.pot: $(wildcard src/ui/*.c)
 	xgettext -a -d dungeons -s -o locale/dungeons.pot src/ui/*.c
 	sed -i /\"POT-Creation-Date:/d locale/dungeons.pot
@@ -56,4 +59,4 @@ $(FILES_INTL_PO): locale/dungeons.pot
 %.mo: %.po
 	msgfmt -c -v -o $@ $^
 
-.PHONY: all clean intl
+.PHONY: all clean intl tests
