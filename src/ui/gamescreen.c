@@ -154,24 +154,23 @@ d_gamescreen_draw (struct d_ui_state *handler) {
 			d_ui->printf_left (3, i++, "Type: %s", instance->type->description);
 			d_ui->printf_left (4, i++, "State: %s", instance->state->id);
 			for (int j=0;instance->type->properties[j];++j) {
-				struct d_prop_type *property = instance->type->properties[j];
-				struct d_prop_instance *property_instance =
-					d_htable_lookup (instance->properties, property->id);
-				switch (property->data_type) {
-				case d_int:
-					d_ui->printf_left (4, i++, "%s: %d",
-					                   property->id, *((int*)property_instance->value));
-					break;
-				case d_float:
-					d_ui->printf_left (4, i++, "%s: %f",
-					                   property->id, *((float*)property_instance->value));
-					break;
-				case d_string:
+				struct d_prop_def *pdef = instance->type->properties[j];
+				struct d_prop_instance *pinst =
+					d_htable_lookup (instance->properties, pdef->id);
+				if (pdef->type == &d_prop_str) {
 					d_ui->printf_left (4, i++, "%s: %s",
-					                   property->id, (char*)property_instance->value);
-					break;
-				default:
-					d_ui->printf_left (4, i++, "%s: Unknown type", property->id);
+					                   pdef->id, d_prop_str_get (pinst));
+				}
+				else if (pdef->type == &d_prop_float) {
+					d_ui->printf_left (4, i++, "%s: %f",
+					                   pdef->id, *((float*)pinst->value));
+				}
+				else if (pdef->type == &d_prop_int) {
+					d_ui->printf_left (4, i++, "%s: %d",
+					                   pdef->id, *((int*)pinst->value));
+				}
+				else {
+					d_ui->printf_left (4, i++, "%s: Unknown type", pdef->id);
 				}
 			}
 		}

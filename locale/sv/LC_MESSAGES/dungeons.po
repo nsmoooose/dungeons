@@ -29,17 +29,17 @@ msgstr ""
 msgid "\t\"%x\" [shape=circle label=\"%s\"];\n"
 msgstr ""
 
-#: src/ui/gamescreen.c:202 src/ui/gamescreen.c:204 src/ui/gamescreen.c:206
-#: src/ui/gamescreen.c:208 src/ui/map.c:79
+#: src/ui/gamescreen.c:201 src/ui/gamescreen.c:203 src/ui/gamescreen.c:205
+#: src/ui/gamescreen.c:207 src/ui/map.c:79
 msgid " "
 msgstr ""
 
-#: src/ui/gamescreen.c:192
+#: src/ui/gamescreen.c:191
 #, c-format
 msgid " N 37 23.516, W 122 02.625 (%d, %d), %dm "
 msgstr ""
 
-#: src/ui/gamescreen.c:211
+#: src/ui/gamescreen.c:210
 msgid " S "
 msgstr ""
 
@@ -55,22 +55,22 @@ msgstr ""
 msgid "%-40s"
 msgstr ""
 
-#: src/ui/gamescreen.c:162
+#: src/ui/gamescreen.c:169
 #, c-format
 msgid "%s: %d"
 msgstr ""
 
-#: src/ui/gamescreen.c:166
+#: src/ui/gamescreen.c:165
 #, c-format
 msgid "%s: %f"
 msgstr ""
 
-#: src/ui/gamescreen.c:170
+#: src/ui/gamescreen.c:161
 #, c-format
 msgid "%s: %s"
 msgstr ""
 
-#: src/ui/gamescreen.c:174
+#: src/ui/gamescreen.c:173
 #, c-format
 msgid "%s: Unknown type"
 msgstr ""
@@ -112,7 +112,7 @@ msgstr "Avbryt"
 msgid "Cannot perform transition: \"%s\""
 msgstr "Kan inte utföra övergång: \\\"%s\\\""
 
-#: src/ui/gamescreen.c:60 src/ui/gamescreen.c:381 src/ui/ui.c:196
+#: src/ui/gamescreen.c:60 src/ui/gamescreen.c:380 src/ui/ui.c:196
 msgid "Debug"
 msgstr "Debug"
 
@@ -124,7 +124,7 @@ msgstr "Ner"
 msgid "Dungeons"
 msgstr "Grottor"
 
-#: src/ui/gamescreen.c:207
+#: src/ui/gamescreen.c:206
 msgid "E"
 msgstr ""
 
@@ -160,7 +160,7 @@ msgstr "Ladda spel"
 msgid "Loading"
 msgstr "Laddar"
 
-#: src/ui/gamescreen.c:58 src/ui/gamescreen.c:311 src/ui/ui.c:191
+#: src/ui/gamescreen.c:58 src/ui/gamescreen.c:310 src/ui/ui.c:191
 msgid "Look around"
 msgstr "Titta omkring"
 
@@ -168,19 +168,19 @@ msgstr "Titta omkring"
 msgid "Main menu"
 msgstr "Huvudmenu"
 
-#: src/ui/gamescreen.c:304
+#: src/ui/gamescreen.c:303
 msgid "Move marker down"
 msgstr "Flytta markör ner"
 
-#: src/ui/gamescreen.c:305
+#: src/ui/gamescreen.c:304
 msgid "Move marker left"
 msgstr "Flytta markör till vänster"
 
-#: src/ui/gamescreen.c:306
+#: src/ui/gamescreen.c:305
 msgid "Move marker right"
 msgstr "Flytta markör till höger"
 
-#: src/ui/gamescreen.c:307
+#: src/ui/gamescreen.c:306
 msgid "Move marker up"
 msgstr "Flytta markör upp"
 
@@ -214,7 +214,7 @@ msgstr ""
 msgid "Previous"
 msgstr "Föregående"
 
-#: src/ui/gamescreen.c:376
+#: src/ui/gamescreen.c:375
 msgid "Print object info"
 msgstr ""
 
@@ -230,7 +230,7 @@ msgstr "Återgå"
 msgid "Resume game"
 msgstr "Återgå till spel"
 
-#: src/ui/gamescreen.c:308 src/ui/gamescreen.c:378 src/ui/ui.c:193
+#: src/ui/gamescreen.c:307 src/ui/gamescreen.c:377 src/ui/ui.c:193
 #: src/ui/ui.c:198
 msgid "Return"
 msgstr "Tillbaka"
@@ -306,7 +306,7 @@ msgstr ""
 msgid "Up"
 msgstr ""
 
-#: src/ui/gamescreen.c:203
+#: src/ui/gamescreen.c:202
 msgid "W"
 msgstr ""
 
@@ -343,7 +343,7 @@ msgstr ""
 msgid "w"
 msgstr ""
 
-#: src/ui/gamescreen.c:188
+#: src/ui/gamescreen.c:187
 msgid "|======- D U N G E O N S -======|"
 msgstr ""
 

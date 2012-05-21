@@ -204,11 +204,9 @@ d_ob_property_htable_new (int size) {
 
 struct d_prop_instance *
 d_prop_instance_new (struct d_htable *properties,
-							struct d_prop_type *type) {
-	struct d_prop_instance *instance = d_calloc
-		(1, sizeof (struct d_prop_instance));
-	instance->type = type;
-	d_htable_insert (properties, type->id, instance);
+                     struct d_prop_def *def) {
+	struct d_prop_instance *instance = def->type->create (def->type);
+	d_htable_insert (properties, def->id, instance);
 	return instance;
 }
 

@@ -65,6 +65,17 @@ struct d_prop_type {
 					   enum d_ob_serialize_mode mode);
 };
 
+struct d_prop_def {
+	char *id;
+	struct d_prop_type *type;
+};
+
+struct d_prop_instance {
+	struct d_prop_type *type;
+	struct d_list *change;
+	void *value;
+};
+
 float d_prop_float_get (struct d_prop_instance *inst);
 void d_prop_float_set (struct d_prop_instance *inst, float value);
 extern struct d_prop_type d_prop_float;
@@ -80,12 +91,6 @@ char *d_prop_str_get (struct d_prop_instance *inst);
 void d_prop_str_set (struct d_prop_instance *inst, const char *value);
 extern struct d_prop_type d_prop_str;
 
-struct d_prop_instance {
-	struct d_prop_type *type;
-	struct d_list *change;
-	void *value;
-};
-
 /* ******************************************************************************** */
 /*                               OBJECTS                                            */
 /* ******************************************************************************** */
@@ -95,7 +100,7 @@ struct d_ob_type {
 	char *description;
 	struct d_ob_state_machine *sm;
 	void *data;
-	struct d_prop_type* properties[10];
+	struct d_prop_def* properties[10];
 
 	struct d_ob_instance *(*create) (struct d_ob_type *type, int x, int y, int z);
 	void (*destroy) (struct d_ob_instance *inst);
@@ -130,7 +135,7 @@ void d_ob_do_transition (struct d_ob_instance *instance,
 
 struct d_htable *d_ob_property_htable_new (int size);
 struct d_prop_instance *d_prop_instance_new (
-  struct d_htable *properties, struct d_prop_type *type);
+  struct d_htable *properties, struct d_prop_def *def);
 int d_ob_property_value_int_get (struct d_prop_instance *instance);
 float d_ob_property_value_float_get (struct d_prop_instance *instance);
 char* d_ob_property_value_str_get (struct d_prop_instance *instance);

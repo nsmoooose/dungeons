@@ -74,8 +74,8 @@ struct d_tree_inst_data {
 	struct d_prop_instance *height;
 };
 
-struct d_prop_type d_ob_age = { "age", d_float };
-struct d_prop_type d_ob_height = { "height", d_float };
+struct d_prop_def d_ob_age = { "age", &d_prop_float };
+struct d_prop_def d_ob_height = { "height", &d_prop_float };
 
 static struct d_ob_type d_ob_type_tree_picea = {
 	"picea",
