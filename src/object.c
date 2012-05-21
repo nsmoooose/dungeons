@@ -210,40 +210,6 @@ d_prop_instance_new (struct d_htable *properties,
 	return instance;
 }
 
-void
-d_ob_property_write (struct d_storage *storage, struct d_prop_instance *instance) {
-	switch (instance->type->data_type) {
-	case d_string:
-		d_storage_write_s (storage, instance->value);
-		break;
-	case d_float:
-		d_storage_write_f (storage, (float*)instance->value);
-		break;
-	case d_int:
-		d_storage_write_i (storage, (int*)instance->value);
-		break;
-	default:
-		d_bug ("Unknown type of property");
-	}
-}
-
-void
-d_ob_property_read (struct d_storage *storage, struct d_prop_instance *instance) {
-	switch (instance->type->data_type) {
-	case d_string:
-		instance->value = d_storage_read_s (storage);
-		break;
-	case d_float:
-		d_storage_read_f (storage, (float*)instance->value);
-		break;
-	case d_int:
-		d_storage_read_i (storage, (int*)instance->value);
-		break;
-	default:
-		d_bug ("Unknown type of property");
-	}
-}
-
 struct d_ob_registry d_ob_registry = {
 	{
 		&d_ob_category_trees,

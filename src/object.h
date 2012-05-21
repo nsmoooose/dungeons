@@ -48,21 +48,12 @@ struct d_prop_instance;
 typedef void (*d_ob_property_change_cb) (struct d_ob_instance *instance,
                                          struct d_prop_instance *property);
 
-enum d_ob_data_type {
-	d_string,
-	d_float,
-	d_int
-};
-
 struct d_prop_type {
 	char *id;
-	/* TODO to be removed */
-	enum d_ob_data_type data_type;
-
 	struct d_prop_instance *(*create) (struct d_prop_type *type);
 	void (*destroy) (struct d_prop_instance *inst);
-	void (*serialize) (struct d_prop_instance *inst, struct d_storage *storage,
-					   enum d_ob_serialize_mode mode);
+	void (*serialize) (struct d_storage *storage, struct d_prop_instance *inst);
+	void (*deserialize) (struct d_storage *storage, struct d_prop_instance *inst);
 };
 
 struct d_prop_def {
@@ -139,10 +130,6 @@ struct d_prop_instance *d_prop_instance_new (
 int d_ob_property_value_int_get (struct d_prop_instance *instance);
 float d_ob_property_value_float_get (struct d_prop_instance *instance);
 char* d_ob_property_value_str_get (struct d_prop_instance *instance);
-void d_ob_property_write (struct d_storage *storage,
-						  struct d_prop_instance *instance);
-void d_ob_property_read (struct d_storage *storage,
-						 struct d_prop_instance *instance);
 
 extern struct d_ob_registry d_ob_registry;
 

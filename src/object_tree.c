@@ -132,12 +132,12 @@ d_ob_serialize (struct d_ob_instance *inst, struct d_storage *storage,
 	struct d_tree_inst_data *id = inst->data;
 	switch (mode) {
 	case d_ob_write:
-		d_ob_property_write (storage, id->age);
-		d_ob_property_write (storage, id->height);
+		id->age->type->serialize (storage, id->age);
+		id->height->type->serialize (storage, id->height);
 		break;
 	case d_ob_read:
-		d_ob_property_read (storage, id->age);
-		d_ob_property_read (storage, id->height);
+		id->age->type->deserialize (storage, id->age);
+		id->height->type->deserialize (storage, id->height);
 		break;
 	}
 }
