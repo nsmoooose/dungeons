@@ -192,7 +192,8 @@ d_ob_do_transition (struct d_ob_instance *instance,
 
 static void
 d_prop_instance_htable_remove (void *key, void *value) {
-	d_free (value);
+	struct d_prop_instance *inst = value;
+	inst->type->destroy (inst);
 }
 
 struct d_htable *

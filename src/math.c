@@ -23,7 +23,7 @@ d_rand (int min, int max) {
 }
 
 int
-d_aabb_contains (struct d_aabb *aabb, struct d_point3 *pos) {
+d_aabb3_contains (struct d_aabb3 *aabb, struct d_point3 *pos) {
 	if (pos->x >= aabb->pos.x - aabb->half_dimension && pos->x < aabb->pos.x + aabb->half_dimension &&
 	    pos->y >= aabb->pos.y - aabb->half_dimension && pos->y < aabb->pos.y + aabb->half_dimension &&
 	    pos->z >= aabb->pos.z - aabb->half_dimension && pos->z < aabb->pos.z + aabb->half_dimension) {

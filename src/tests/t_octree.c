@@ -119,11 +119,60 @@ START_TEST (test_octree_10k_objects) {
 }
 END_TEST
 
+int matches = 0;
+
+static int
+test_octree_traverse_cb (struct d_octree *tree, struct d_octree_node *node,
+                              struct d_list *objects, struct d_list_node *obj_node,
+                              struct d_octree_obj *object, void *data) {
+	ck_assert (object == data);
+	matches++;
+	return 1;
+}
+
+
+START_TEST (test_octree_aabb) {
+	struct d_octree *tree = d_octree_new (10, 256);
+	struct d_ob_type *type = d_ob_category_trees.objects[0];
+
+	struct d_ob_instance *instance1 = type->create (type, 1, 2, 3);
+	struct d_ob_instance *instance2 = type->create (type, 1, 2, 3);
+	struct d_ob_instance *instance3 = type->create (type, 1, 2, 3);
+	ck_assert (instance1 != 0 && instance2 != 0 && instance3 != 0);
+
+	struct d_octree_obj *object1 = d_octree_insert (tree, 10, 10, 10, instance1);
+	struct d_octree_obj *object2 = d_octree_insert (tree, 10, 100, 10, instance2);
+	struct d_octree_obj *object3 = d_octree_insert (tree, 10, -100, 10, instance3);
+	ck_assert (tree->objects == 3);
+
+	struct d_aabb3 a1 = { { 9, 8, 13 }, 4 };
+	d_octree_traverse_aabb (tree, tree->root, &a1, test_octree_traverse_cb, object1);
+	ck_assert (matches == 1);
+
+	struct d_aabb3 a2 = { { 9, 103, 13 }, 4 };
+	d_octree_traverse_aabb (tree, tree->root, &a2, test_octree_traverse_cb, object2);
+	ck_assert (matches == 2);
+
+	struct d_aabb3 a3 = { { 9, -101, 13 }, 4 };
+	d_octree_traverse_aabb (tree, tree->root, &a3, test_octree_traverse_cb, object3);
+	ck_assert (matches == 3);
+
+	struct d_aabb3 a4 = { { 90, -101, 13 }, 4 };
+	d_octree_traverse_aabb (tree, tree->root, &a4, test_octree_traverse_cb, 0);
+	ck_assert (matches == 3);
+
+	d_octree_traverse (tree, tree->root, test_octree_object_delete_cb, 0);
+	d_octree_destroy (tree);
+	ck_assert_msg (d_allocations == d_frees, "Allocations: %d, Frees: %d", d_allocations, d_frees);
+}
+END_TEST
+
 void
 add_octree_tests (Suite *suite) {
 	TCase *c = tcase_create ("octree");
 	tcase_add_test (c, test_octree_alloc);
 	tcase_add_test (c, test_octree_insert_delete);
 	tcase_add_test (c, test_octree_10k_objects);
+	tcase_add_test (c, test_octree_aabb);
 	suite_add_tcase (suite, c);
 }

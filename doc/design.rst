@@ -111,12 +111,13 @@ High mountain
 
 Once upon a time there was a large mountain (5000 m). There was small stair up to
 the peak of this mountain where a large fortress was placed. The fortress had an
-excellent view of the suroundings.
+excellent view of the suroundings. Large eagles circled and sometimes catched small
+children from the fort.
 
 Ice world
 ---------
 
 Near the north pole on the glacier was a fortress built from ice only. Large
 dungeons were placed there. Life was hard. Men lived of the nature by hunting
-bears and whales.
+bears and whales. The dungeons were carved in ice.
 

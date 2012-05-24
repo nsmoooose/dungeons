@@ -10,7 +10,7 @@ struct d_octree_obj {
 };
 
 struct d_octree_node {
-	struct d_aabb aabb;
+	struct d_aabb3 aabb;
 	struct d_octree_node* children[8];
 	struct d_list *objects;
 };
@@ -35,6 +35,6 @@ void d_octree_delete (struct d_octree *tree, struct d_octree_obj *object);
 void d_octree_traverse (struct d_octree *tree, struct d_octree_node *node,
                         d_octree_cb cb, void *data);
 void d_octree_traverse_aabb (struct d_octree *tree, struct d_octree_node *node,
-                             int x1, int y1, int x2, int y2, d_octree_cb cb, void *data);
+                             struct d_aabb3 *aabb, d_octree_cb cb, void *data);
 
 #endif

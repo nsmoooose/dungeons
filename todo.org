@@ -55,7 +55,6 @@ Some things to get done
   are retreiving their position by asking the pos of the tile.
 
 
-
 * DONE Translation of the software into several languages.
   A tutorial on how to do this.
   http://oriya.sarovar.org/docs/gettext_single.html
