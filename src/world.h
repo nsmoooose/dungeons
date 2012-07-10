@@ -2,6 +2,7 @@
 #define __DUNGEONS_WORLD_H__
 
 #include "heightmap.h"
+#include "octree.h"
 
 /*
 struct d_pos {
@@ -25,6 +26,7 @@ struct d_world {
 
 	struct d_heightmap *hm;
 	struct d_tile **tiles;
+	struct d_octree *tree;
 };
 
 struct d_tile *d_world_tile_new ();
