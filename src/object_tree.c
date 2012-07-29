@@ -1,5 +1,6 @@
 #include <string.h>
 
+#include "ease.h"
 #include "error.h"
 #include "memory.h"
 #include "object_tree.h"
@@ -55,11 +56,14 @@ struct d_tree_type_data {
 	float growth_rate;
 	/* The maximum age a tree can be. */
 	int max_age;
+	/* Maximum height in mm */
 	int max_height;
 
+	/* Max m above sea level this tree can live in. */
 	int growing_zone_min;
 	int growing_zone_max;
 
+	/* Which day in the year the growing period will start. */
 	int growing_period_min;
 	int growing_period_max;
 	int growing_temp_min;
@@ -76,12 +80,19 @@ struct d_tree_inst_data {
 
 struct d_ob_property_type d_ob_age = { "age", d_float };
 struct d_ob_property_type d_ob_height = { "height", d_float };
+struct d_ob_property_type d_ob_last_update = { "last_update", d_double };
+
+static struct d_tree_type_data d_ob_tree_picea_data = {
+	.growth_rate = 4.0,
+	.max_age = 1000,
+	.max_height = 45000
+};
 
 static struct d_ob_type d_ob_type_tree_picea = {
 	"picea",
 	"Spruce",
 	&d_ob_sm_tree,
-	0, /* data */
+	&d_ob_tree_picea_data,
 	{
 		&d_ob_age,
 		&d_ob_height,
@@ -145,6 +156,7 @@ d_ob_serialize (struct d_ob_instance *inst, struct d_storage *storage,
 static void
 d_ob_growing_input (struct d_game_context *context, struct d_ob_instance *inst) {
 	struct d_tree_type_data *td = inst->type->data;
+	struct d_tree_inst_data *id = inst->data;
 
 	short ground_level = d_heightmap_get (context->hm, inst->pos.x, inst->pos.y);
 	if (inst->pos.z < ground_level || inst->pos.z < 0) {
@@ -153,12 +165,18 @@ d_ob_growing_input (struct d_game_context *context, struct d_ob_instance *inst) 
 		d_ob_do_transition (context, inst, &d_ob_transition_tree_dying);
 	}
 
-	/* struct d_tree_inst_data *id = inst->data; */
 	if (inst->pos.z >= td->growing_zone_max || inst->pos.z <= td->growing_zone_min) {
 		/* If we are outside of the growing zone we transition to dead directly. */
 		/* TODO transition to dead. */
 		return;
 	}
+
+	float period = ease_time_protect4f (ease_sine_in_out,
+										d_game_time_days (context->datetime),
+										0.0,
+										1.0,
+										td->growing_period_max - td->growing_period_min);
+	
 }
 
 static void

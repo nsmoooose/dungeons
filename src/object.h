@@ -50,6 +50,7 @@ typedef void (*d_ob_property_change_cb) (struct d_ob_instance *instance,
 enum d_ob_data_type {
 	d_string,
 	d_float,
+	d_double,
 	d_int
 };
 
@@ -64,6 +65,7 @@ struct d_ob_property_instance {
 	union {
 		int int_v;
 		float float_v;
+		double double_v;
 		char *str_v;
 	} value;
 };
@@ -112,6 +114,7 @@ struct d_ob_property_instance *d_ob_property_instance_new (
   struct d_htable *properties, struct d_ob_property_type *type);
 int d_ob_property_value_int_get (struct d_ob_property_instance *instance);
 float d_ob_property_value_float_get (struct d_ob_property_instance *instance);
+double d_ob_property_value_double_get (struct d_ob_property_instance *instance);
 char* d_ob_property_value_str_get (struct d_ob_property_instance *instance);
 void d_ob_property_write (struct d_storage *storage,
 						  struct d_ob_property_instance *instance);

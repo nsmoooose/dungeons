@@ -52,6 +52,12 @@ d_game_format_date (char *buffer, int buffer_size, double datetime) {
 	snprintf (buffer, buffer_size, "%03d-%02d-%02d", year, month, day);
 }
 
+int
+d_game_time_days (double datetime) {
+	int days = datetime / (60 * 60 * 24);
+	return days % 372
+}
+
 static int
 d_dir_exists (const char *path) {
 	DIR *d = opendir (path);

@@ -100,6 +100,9 @@ d_ob_property_write (struct d_storage *storage, struct d_ob_property_instance *i
 	case d_string:
 		d_storage_write_s (storage, instance->value.str_v);
 		break;
+	case d_double:
+		d_storage_write_d (storage, &instance->value.double_v);
+		break;
 	case d_float:
 		d_storage_write_f (storage, &instance->value.float_v);
 		break;
@@ -116,6 +119,9 @@ d_ob_property_read (struct d_storage *storage, struct d_ob_property_instance *in
 	switch (instance->type->data_type) {
 	case d_string:
 		instance->value.str_v = d_storage_read_s (storage);
+		break;
+	case d_double:
+		d_storage_read_d (storage, &instance->value.double_v);
 		break;
 	case d_float:
 		d_storage_read_f (storage, &instance->value.float_v);
