@@ -62,13 +62,13 @@ d_ui_state_machine_print (char *filename) {
 
 	for (int i=0;d_ui_state_machine.states[i];++i) {
 		struct d_ui_state *state = d_ui_state_machine.states[i];
-		fprintf (f, "\t\"%x\" [shape=circle label=\"%s\"];\n", (unsigned int)state, state->description);
+		fprintf (f, "\t\"%p\" [shape=circle label=\"%s\"];\n", (void*)state, state->description);
 	}
 
 	for (int i=0;d_ui_state_machine.transitions[i];++i) {
 		struct d_ui_state_transition *transition = d_ui_state_machine.transitions[i];
-		fprintf (f, "\t\"%x\" -> \"%x\" [label=\"%s\"];\n",
-				 (unsigned int)transition->from, (unsigned int)transition->next,
+		fprintf (f, "\t\"%p\" -> \"%p\" [label=\"%s\"];\n",
+				 (void*)transition->from, (void*)transition->next,
 				 transition->description);
 	}
 
