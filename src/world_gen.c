@@ -2,6 +2,7 @@
 
 #include "fractal_heightmap.h"
 #include "memory.h"
+#include "octree.h"
 #include "world_gen.h"
 
 struct d_world *
@@ -23,6 +24,14 @@ d_world_generate (struct d_world_gen_params *params) {
 	world->height = params->size;
 	world->depth = fabs (low - 50) + fabs (high + 50);
 	world->ocean = fabs (low - 50);
+
+	world->tree = d_octree_new (5, 1000);
+	for (int x=0;x<world->width;++x) {
+		for (int y=0;y<world->height;++y) {
+			int z = d_heightmap_get (world->hm, x, y);
+			d_octree_insert (world->tree, x, y, z, 0);
+		}
+	}
 
 	return world;
 }

@@ -25,6 +25,7 @@ struct d_world {
 
 	struct d_heightmap *hm;
 	struct d_tile **tiles;
+	struct d_octree *tree;
 };
 
 struct d_tile *d_world_tile_new ();
