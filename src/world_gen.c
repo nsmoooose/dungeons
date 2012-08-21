@@ -19,9 +19,10 @@ d_world_gen_hm_to_tiles (struct d_heightmap *hm) {
 			short z = d_heightmap_get (hm, x, y);
 			struct d_ob_type *type = d_ob_category_tiles.objects[0];
 			struct d_ob_instance *inst = type->create (type, x, y, z);
-			d_octree_insert (tree, offset->x + x, offset->y + y, offset->z + z, inst);
+			d_octree_insert (tree, offset.x + x, offset.y + y, offset.z + z, inst);
 		}
 	}
+	return tree;
 }
 
 struct d_world *
@@ -44,7 +45,7 @@ d_world_generate (struct d_world_gen_params *params) {
 	world->depth = fabs (low - 50) + fabs (high + 50);
 	world->ocean = fabs (low - 50);
 
-	int m = fmax (world->depth, fmax (world->width, world->height));
+	/* int m = fmax (world->depth, fmax (world->width, world->height)); */
 	world->tree = d_world_gen_hm_to_tiles (world->hm);
 
 	return world;
