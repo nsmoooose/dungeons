@@ -162,3 +162,25 @@ d_octree_traverse_aabb (struct d_octree *tree, struct d_octree_node *node,
 		}
 	}
 }
+
+struct d_octree_traverse_result {
+	struct d_aabb3 *aabb;
+	struct d_octree_obj *match;
+};
+
+static int
+d_octree_traverse_point_cb (struct d_octree *tree, struct d_octree_node *node,
+                            struct d_list *objects, struct d_list_node *obj_node,
+                            struct d_octree_obj *object, void *data) {
+	struct d_octree_traverse_result *result = data;
+	result->match = object;
+	return 0;
+}
+
+struct d_octree_obj*
+d_octree_traverse_point (struct d_octree *tree, struct d_point3 *point) {
+	struct d_aabb3 aabb = { {point->x, point->y, point->z }, 1 };
+	struct d_octree_traverse_result result = { &aabb, 0 };
+	d_octree_traverse_aabb (tree, tree->root, &aabb, d_octree_traverse_point_cb, &result);
+	return result.match;
+}
