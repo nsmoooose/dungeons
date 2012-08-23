@@ -1,4 +1,6 @@
 #include <math.h>
+#include <string.h>
+#include "error.h"
 #include "math.h"
 #include "memory.h"
 #include "octree.h"
@@ -27,12 +29,9 @@ d_octree_node_free (struct d_octree *tree, struct d_octree_node *node) {
 }
 
 struct d_octree_node *
-d_octree_node_new (int x, int y, int z, int half_dimension) {
+d_octree_node_new (struct d_aabb3 *aabb) {
 	struct d_octree_node *node = d_calloc (1, sizeof (struct d_octree_node));
-	node->aabb.pos.x = x;
-	node->aabb.pos.y = y;
-	node->aabb.pos.z = z;
-	node->aabb.half_dimension = half_dimension;
+	memcpy (&node->aabb, aabb, sizeof (struct d_aabb3));
 	node->objects = d_list_new ();
 	return node;
 }
@@ -44,7 +43,12 @@ d_octree_new (int capacity, int half_dimension) {
 	}
 	struct d_octree *tree = d_calloc (1, sizeof (struct d_octree));
 	tree->capacity = capacity;
-	tree->root = d_octree_node_new (0, 0, 0, half_dimension);
+
+	struct d_aabb3 aabb = {
+		{ 0 - half_dimension, 0 - half_dimension, 0 - half_dimension },
+		{ half_dimension - 1, half_dimension - 1, half_dimension - 1 }
+	};
+	tree->root = d_octree_node_new (&aabb);
 	tree->nnodes = 1;
 	return tree;
 }
@@ -64,14 +68,12 @@ d_octree_insert (struct d_octree *tree, int x, int y, int z,
 	if (instance == 0) {
 		return 0;
 	}
-	if (fabs (x) > tree->root->aabb.half_dimension ||
-	    fabs (y) > tree->root->aabb.half_dimension ||
-	    fabs (z) > tree->root->aabb.half_dimension) {
+	struct d_point3 pos = { x, y, z };
+	if (!d_aabb3_contains (&tree->root->aabb, &pos)) {
 		return 0;
 	}
 
 	struct d_octree_node *node = tree->root;
-	struct d_point3 pos = { x, y, z };
 	for (;;) {
 		if (node->children[0]) {
 			for (int i=0;i<8;++i) {
@@ -83,7 +85,9 @@ d_octree_insert (struct d_octree *tree, int x, int y, int z,
 			}
 		}
 		else {
-			if (node->objects->nnodes < tree->capacity || node->aabb.half_dimension == 2) {
+			struct d_point3 size;
+			d_aabb3_size (&node->aabb, &size);
+			if (node->objects->nnodes < tree->capacity || size.x == 2 || size.y == 2 || size.z == 2) {
 				struct d_octree_obj *object = d_calloc (1, sizeof (struct d_octree_obj));
 				object->pos.x = x;
 				object->pos.y = y;
@@ -93,28 +97,39 @@ d_octree_insert (struct d_octree *tree, int x, int y, int z,
 				tree->objects++;
 				return object;
 			}
-			else {
-				int half = node->aabb.half_dimension / 2;
-				node->children[0] = d_octree_node_new (node->aabb.pos.x - half, node->aabb.pos.y - half, node->aabb.pos.z - half, half);
-				node->children[1] = d_octree_node_new (node->aabb.pos.x - half, node->aabb.pos.y - half, node->aabb.pos.z + half, half);
-				node->children[2] = d_octree_node_new (node->aabb.pos.x - half, node->aabb.pos.y + half, node->aabb.pos.z - half, half);
-				node->children[3] = d_octree_node_new (node->aabb.pos.x - half, node->aabb.pos.y + half, node->aabb.pos.z + half, half);
-				node->children[4] = d_octree_node_new (node->aabb.pos.x + half, node->aabb.pos.y - half, node->aabb.pos.z - half, half);
-				node->children[5] = d_octree_node_new (node->aabb.pos.x + half, node->aabb.pos.y - half, node->aabb.pos.z + half, half);
-				node->children[6] = d_octree_node_new (node->aabb.pos.x + half, node->aabb.pos.y + half, node->aabb.pos.z - half, half);
-				node->children[7] = d_octree_node_new (node->aabb.pos.x + half, node->aabb.pos.y + half, node->aabb.pos.z + half, half);
-				tree->nnodes += 8;
 
-				for (struct d_list_node *obj_node = node->objects->first;obj_node;obj_node = obj_node->next) {
-					struct d_octree_obj *obj = obj_node->data;
-					for (int i=0;i<8;++i) {
-						if (d_aabb3_contains (&node->children[i]->aabb, &obj->pos)) {
-							d_list_append (node->children[i]->objects, obj);
-						}
+			int hx = size.x / 2, hy = size.y / 2, hz = size.z / 2;
+			if (hx % 2 != 0 || hy % 2 != 0 || hz % 2 != 0) {
+				d_bug ("kaka %d, %d, %d", hx, hy, hz);
+			}
+			struct d_aabb3 aabb0 = { { node->aabb.p1.x, node->aabb.p1.y, node->aabb.p1.z }, { node->aabb.p1.x + hx - 1, node->aabb.p1.y + hy - 1, node->aabb.p1.z + hz - 1 } };
+			struct d_aabb3 aabb1 = { { node->aabb.p1.x + hx, node->aabb.p1.y, node->aabb.p1.z }, { node->aabb.p2.x, node->aabb.p1.y + hy - 1, node->aabb.p1.z + hz - 1 } };
+			struct d_aabb3 aabb2 = { { node->aabb.p1.x, node->aabb.p1.y + hy, node->aabb.p1.z }, { node->aabb.p1.x + hx - 1, node->aabb.p2.y, node->aabb.p1.z + hz - 1 } };
+			struct d_aabb3 aabb3 = { { node->aabb.p1.x + hx, node->aabb.p1.y + hy, node->aabb.p1.z }, { node->aabb.p2.x, node->aabb.p2.y, node->aabb.p1.z + hz - 1 } };
+
+			struct d_aabb3 aabb4 = { { node->aabb.p1.x, node->aabb.p1.y, node->aabb.p1.z + hz }, { node->aabb.p1.x + hx - 1, node->aabb.p1.y + hy - 1, node->aabb.p2.z } };
+			struct d_aabb3 aabb5 = { { node->aabb.p1.x + hx, node->aabb.p1.y, node->aabb.p1.z + hz }, { node->aabb.p2.x, node->aabb.p1.y + hy - 1, node->aabb.p2.z } };
+			struct d_aabb3 aabb6 = { { node->aabb.p1.x, node->aabb.p1.y + hy, node->aabb.p1.z + hz }, { node->aabb.p1.x + hx - 1, node->aabb.p2.y, node->aabb.p2.z } };
+			struct d_aabb3 aabb7 = { { node->aabb.p1.x + hx, node->aabb.p1.y + hy, node->aabb.p1.z + hz }, { node->aabb.p2.x, node->aabb.p2.y, node->aabb.p2.z } };
+
+			node->children[0] = d_octree_node_new (&aabb0);
+			node->children[1] = d_octree_node_new (&aabb1);
+			node->children[2] = d_octree_node_new (&aabb2);
+			node->children[3] = d_octree_node_new (&aabb3);
+			node->children[4] = d_octree_node_new (&aabb4);
+			node->children[5] = d_octree_node_new (&aabb5);
+			node->children[6] = d_octree_node_new (&aabb6);
+			node->children[7] = d_octree_node_new (&aabb7);
+			tree->nnodes += 8;
+			for (struct d_list_node *obj_node = node->objects->first;obj_node;obj_node = obj_node->next) {
+				struct d_octree_obj *obj = obj_node->data;
+				for (int i=0;i<8;++i) {
+					if (d_aabb3_contains (&node->children[i]->aabb, &obj->pos)) {
+						d_list_append (node->children[i]->objects, obj);
 					}
 				}
-				d_list_clear (node->objects);
 			}
+			d_list_clear (node->objects);
 		}
 	}
 }
@@ -179,7 +194,7 @@ d_octree_traverse_point_cb (struct d_octree *tree, struct d_octree_node *node,
 
 struct d_octree_obj*
 d_octree_traverse_point (struct d_octree *tree, struct d_point3 *point) {
-	struct d_aabb3 aabb = { {point->x, point->y, point->z }, 1 };
+	struct d_aabb3 aabb = { { point->x, point->y, point->z }, { point->x, point->y, point->z } };
 	struct d_octree_traverse_result result = { &aabb, 0 };
 	d_octree_traverse_aabb (tree, tree->root, &aabb, d_octree_traverse_point_cb, &result);
 	return result.match;

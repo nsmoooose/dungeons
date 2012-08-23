@@ -145,19 +145,19 @@ START_TEST (test_octree_aabb) {
 	struct d_octree_obj *object3 = d_octree_insert (tree, 10, -100, 10, instance3);
 	ck_assert (tree->objects == 3);
 
-	struct d_aabb3 a1 = { { 9, 8, 13 }, 4 };
+	struct d_aabb3 a1 = { { 5, 4, 9 }, { 13, 12, 17 } };
 	d_octree_traverse_aabb (tree, tree->root, &a1, test_octree_traverse_cb, object1);
 	ck_assert (matches == 1);
 
-	struct d_aabb3 a2 = { { 9, 103, 13 }, 4 };
+	struct d_aabb3 a2 = { { 5, 99, 9 }, { 13, 107, 17 } };
 	d_octree_traverse_aabb (tree, tree->root, &a2, test_octree_traverse_cb, object2);
 	ck_assert (matches == 2);
 
-	struct d_aabb3 a3 = { { 9, -101, 13 }, 4 };
+	struct d_aabb3 a3 = { { 5, -105, 9 }, { 13, -97, 17} };
 	d_octree_traverse_aabb (tree, tree->root, &a3, test_octree_traverse_cb, object3);
 	ck_assert (matches == 3);
 
-	struct d_aabb3 a4 = { { 90, -101, 13 }, 4 };
+	struct d_aabb3 a4 = { { 86, -105, 9 }, { 94, 97, 14} };
 	d_octree_traverse_aabb (tree, tree->root, &a4, test_octree_traverse_cb, 0);
 	ck_assert (matches == 3);
 

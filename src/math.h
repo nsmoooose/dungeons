@@ -10,13 +10,14 @@ struct d_point3 {
 };
 
 struct d_aabb3 {
-	struct d_point3 pos;
-	int half_dimension;
+	struct d_point3 p1;
+	struct d_point3 p2;
 };
 
 int d_is_power_of_2 (int size);
 int d_rand (int min, int max);
 
 int d_aabb3_contains (struct d_aabb3 *aabb, struct d_point3 *pos);
+void d_aabb3_size (struct d_aabb3 *aabb, struct d_point3 *pos);
 
 #endif
