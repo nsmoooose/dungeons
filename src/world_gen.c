@@ -19,7 +19,7 @@ d_world_gen_hm_to_tiles (struct d_heightmap *hm) {
 			short z = d_heightmap_get (hm, x, y);
 			/* TODO We should handle several different tile types like water and rock. */
 			struct d_ob_type *type = d_ob_category_tiles.objects[0];
-			struct d_ob_instance *inst = type->create (type, x, y, z);
+			struct d_ob_instance *inst = type->create (type);
 			d_octree_insert (tree, offset.x + x, offset.y + y, offset.z + z, inst);
 		}
 	}

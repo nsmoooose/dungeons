@@ -161,9 +161,6 @@ d_game_save (struct d_game_context *context) {
 		struct d_ob_type *type = instance->type;
 		d_storage_write_s (storage, type->id);
 		d_storage_write_s (storage, instance->state->id);
-		d_storage_write_i (storage, &instance->pos.x);
-		d_storage_write_i (storage, &instance->pos.y);
-		d_storage_write_i (storage, &instance->pos.z);
 		type->serialize (instance, storage, d_ob_write);
 	}
 	d_storage_close (storage);
@@ -205,14 +202,9 @@ d_game_load (char *directory) {
 	for (int i=0;i<object_count;++i) {
 		char *type_id = d_storage_read_s (storage);
 		char *state_id = d_storage_read_s (storage);
-		int x, y, z;
-		d_storage_read_i (storage, &x);
-		d_storage_read_i (storage, &y);
-		d_storage_read_i (storage, &z);
-
 		struct d_ob_type *type = d_ob_get_type (&d_ob_registry, type_id);
 		struct d_ob_state *state = d_ob_get_state (type->sm, state_id);
-		struct d_ob_instance *instance = type->create (type, x, y, z);
+		struct d_ob_instance *instance = type->create (type);
 		instance->state = state;
 		type->serialize (instance, storage, d_ob_read);
 

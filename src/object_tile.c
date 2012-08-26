@@ -1,6 +1,6 @@
 #include "object_tile.h"
 
-static struct d_ob_instance* d_ob_create (struct d_ob_type *type, int x, int y, int z);
+static struct d_ob_instance* d_ob_create (struct d_ob_type *type);
 static void d_ob_destroy (struct d_ob_instance *inst);
 static void d_ob_serialize (struct d_ob_instance *inst, struct d_storage *storage,
 							enum d_ob_serialize_mode mode);
@@ -34,7 +34,7 @@ struct d_ob_category d_ob_category_tiles = {
 };
 
 static struct d_ob_instance*
-d_ob_create (struct d_ob_type *type, int x, int y, int z) {
+d_ob_create (struct d_ob_type *type) {
 	return 0;
 }
 

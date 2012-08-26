@@ -93,7 +93,7 @@ struct d_ob_type {
 	void *data;
 	struct d_prop_def* properties[10];
 
-	struct d_ob_instance *(*create) (struct d_ob_type *type, int x, int y, int z);
+	struct d_ob_instance *(*create) (struct d_ob_type *type);
 	void (*destroy) (struct d_ob_instance *inst);
 	void (*serialize) (struct d_ob_instance *inst, struct d_storage *storage,
 					   enum d_ob_serialize_mode mode);
@@ -102,7 +102,6 @@ struct d_ob_type {
 struct d_ob_instance {
 	struct d_ob_type *type;
 	struct d_ob_state *state;
-	struct d_point3 pos;
 	struct d_htable *properties;
 	void *data;
 };

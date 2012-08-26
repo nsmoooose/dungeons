@@ -40,7 +40,7 @@ START_TEST (test_octree_insert_delete) {
 	struct d_octree *tree = d_octree_new (3, 256);
 
 	struct d_ob_type *type = d_ob_category_trees.objects[0];
-	struct d_ob_instance *instance = type->create (type, 1, 2, 3);
+	struct d_ob_instance *instance = type->create (type);
 
 	struct d_octree_obj *obj = d_octree_insert (tree, 5000, 5000, 5000, instance);
 	ck_assert (obj == 0);
@@ -100,7 +100,7 @@ START_TEST (test_octree_10k_objects) {
 	struct d_ob_type *type = d_ob_category_trees.objects[0];
 
 	for (int i=0;i<10000;++i) {
-		struct d_ob_instance *instance = type->create (type, 1, 2, 3);
+		struct d_ob_instance *instance = type->create (type);
 		ck_assert (instance != 0);
 		int x = d_rand (-100, 100);
 		int y = d_rand (-100, 100);
@@ -135,9 +135,9 @@ START_TEST (test_octree_aabb) {
 	struct d_octree *tree = d_octree_new (10, 256);
 	struct d_ob_type *type = d_ob_category_trees.objects[0];
 
-	struct d_ob_instance *instance1 = type->create (type, 1, 2, 3);
-	struct d_ob_instance *instance2 = type->create (type, 1, 2, 3);
-	struct d_ob_instance *instance3 = type->create (type, 1, 2, 3);
+	struct d_ob_instance *instance1 = type->create (type);
+	struct d_ob_instance *instance2 = type->create (type);
+	struct d_ob_instance *instance3 = type->create (type);
 	ck_assert (instance1 != 0 && instance2 != 0 && instance3 != 0);
 
 	struct d_octree_obj *object1 = d_octree_insert (tree, 10, 10, 10, instance1);
@@ -171,9 +171,9 @@ START_TEST (test_octree_point) {
 	struct d_octree *tree = d_octree_new (10, 256);
 	struct d_ob_type *type = d_ob_category_trees.objects[0];
 
-	struct d_ob_instance *instance1 = type->create (type, 1, 2, 3);
-	struct d_ob_instance *instance2 = type->create (type, 1, 2, 3);
-	struct d_ob_instance *instance3 = type->create (type, 1, 2, 3);
+	struct d_ob_instance *instance1 = type->create (type);
+	struct d_ob_instance *instance2 = type->create (type);
+	struct d_ob_instance *instance3 = type->create (type);
 	ck_assert (instance1 != 0 && instance2 != 0 && instance3 != 0);
 
 	struct d_octree_obj *object1 = d_octree_insert (tree, 10, 10, 10, instance1);

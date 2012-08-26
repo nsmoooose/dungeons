@@ -4,7 +4,7 @@
 #include "memory.h"
 #include "object_tree.h"
 
-static struct d_ob_instance* d_ob_create (struct d_ob_type *type, int x, int y, int z);
+static struct d_ob_instance* d_ob_create (struct d_ob_type *type);
 static void d_ob_destroy (struct d_ob_instance *inst);
 static void d_ob_serialize (struct d_ob_instance *inst, struct d_storage *storage,
 							enum d_ob_serialize_mode mode);
@@ -101,16 +101,12 @@ struct d_ob_category d_ob_category_trees = {
 };
 
 static struct d_ob_instance*
-d_ob_create (struct d_ob_type *type, int x, int y, int z) {
+d_ob_create (struct d_ob_type *type) {
 	struct d_tree_inst_data *data = d_calloc (1, sizeof (struct d_tree_inst_data));
 	struct d_ob_instance *inst = d_calloc (1, sizeof (struct d_ob_instance));
 	inst->type = type;
 	inst->state = type->sm->start;
 	inst->data = data;
-	inst->pos.x = x;
-	inst->pos.y = y;
-	inst->pos.z = z;
-
 	inst->properties = d_ob_property_htable_new (2);
 	data->age = d_prop_instance_new (inst->properties, &d_ob_age);
 	data->height = d_prop_instance_new (inst->properties, &d_ob_height);

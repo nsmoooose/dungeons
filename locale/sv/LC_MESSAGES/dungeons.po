@@ -21,25 +21,25 @@ msgstr ""
 
 #: src/ui/ui.c:70
 #, c-format
-msgid "\t\"%x\" -> \"%x\" [label=\"%s\"];\n"
+msgid "\t\"%p\" -> \"%p\" [label=\"%s\"];\n"
 msgstr ""
 
 #: src/ui/ui.c:65
 #, c-format
-msgid "\t\"%x\" [shape=circle label=\"%s\"];\n"
+msgid "\t\"%p\" [shape=circle label=\"%s\"];\n"
 msgstr ""
 
-#: src/ui/gamescreen.c:201 src/ui/gamescreen.c:203 src/ui/gamescreen.c:205
-#: src/ui/gamescreen.c:207 src/ui/map.c:79
+#: src/ui/gamescreen.c:203 src/ui/gamescreen.c:205 src/ui/gamescreen.c:207
+#: src/ui/gamescreen.c:209 src/ui/map.c:79
 msgid " "
 msgstr ""
 
-#: src/ui/gamescreen.c:191
+#: src/ui/gamescreen.c:193
 #, c-format
 msgid " N 37 23.516, W 122 02.625 (%d, %d), %dm "
 msgstr ""
 
-#: src/ui/gamescreen.c:210
+#: src/ui/gamescreen.c:212
 msgid " S "
 msgstr ""
 
@@ -55,22 +55,22 @@ msgstr ""
 msgid "%-40s"
 msgstr ""
 
-#: src/ui/gamescreen.c:169
+#: src/ui/gamescreen.c:171
 #, c-format
 msgid "%s: %d"
 msgstr ""
 
-#: src/ui/gamescreen.c:165
+#: src/ui/gamescreen.c:167
 #, c-format
 msgid "%s: %f"
 msgstr ""
 
-#: src/ui/gamescreen.c:161
+#: src/ui/gamescreen.c:163
 #, c-format
 msgid "%s: %s"
 msgstr ""
 
-#: src/ui/gamescreen.c:173
+#: src/ui/gamescreen.c:175
 #, c-format
 msgid "%s: Unknown type"
 msgstr ""
@@ -112,7 +112,7 @@ msgstr "Avbryt"
 msgid "Cannot perform transition: \"%s\""
 msgstr "Kan inte utföra övergång: \\\"%s\\\""
 
-#: src/ui/gamescreen.c:60 src/ui/gamescreen.c:380 src/ui/ui.c:196
+#: src/ui/gamescreen.c:60 src/ui/gamescreen.c:382 src/ui/ui.c:196
 msgid "Debug"
 msgstr "Debug"
 
@@ -124,7 +124,7 @@ msgstr "Ner"
 msgid "Dungeons"
 msgstr "Grottor"
 
-#: src/ui/gamescreen.c:206
+#: src/ui/gamescreen.c:208
 msgid "E"
 msgstr ""
 
@@ -160,7 +160,7 @@ msgstr "Ladda spel"
 msgid "Loading"
 msgstr "Laddar"
 
-#: src/ui/gamescreen.c:58 src/ui/gamescreen.c:310 src/ui/ui.c:191
+#: src/ui/gamescreen.c:58 src/ui/gamescreen.c:312 src/ui/ui.c:191
 msgid "Look around"
 msgstr "Titta omkring"
 
@@ -168,19 +168,19 @@ msgstr "Titta omkring"
 msgid "Main menu"
 msgstr "Huvudmenu"
 
-#: src/ui/gamescreen.c:303
+#: src/ui/gamescreen.c:305
 msgid "Move marker down"
 msgstr "Flytta markör ner"
 
-#: src/ui/gamescreen.c:304
+#: src/ui/gamescreen.c:306
 msgid "Move marker left"
 msgstr "Flytta markör till vänster"
 
-#: src/ui/gamescreen.c:305
+#: src/ui/gamescreen.c:307
 msgid "Move marker right"
 msgstr "Flytta markör till höger"
 
-#: src/ui/gamescreen.c:306
+#: src/ui/gamescreen.c:308
 msgid "Move marker up"
 msgstr "Flytta markör upp"
 
@@ -196,7 +196,7 @@ msgstr "Ny värld"
 msgid "Next"
 msgstr "Nästa"
 
-#: src/ui/gamescreen.c:134
+#: src/ui/gamescreen.c:136
 msgid "No context assign. Cannot run a game."
 msgstr ""
 
@@ -205,7 +205,7 @@ msgstr ""
 msgid "Not supposed to happen. Viewpoint z: %d, Ground level: %f"
 msgstr ""
 
-#: src/ui/gamescreen.c:148
+#: src/ui/gamescreen.c:150
 #, c-format
 msgid "Object count: %d"
 msgstr ""
@@ -214,7 +214,7 @@ msgstr ""
 msgid "Previous"
 msgstr "Föregående"
 
-#: src/ui/gamescreen.c:375
+#: src/ui/gamescreen.c:377
 msgid "Print object info"
 msgstr ""
 
@@ -230,7 +230,7 @@ msgstr "Återgå"
 msgid "Resume game"
 msgstr "Återgå till spel"
 
-#: src/ui/gamescreen.c:307 src/ui/gamescreen.c:377 src/ui/ui.c:193
+#: src/ui/gamescreen.c:309 src/ui/gamescreen.c:379 src/ui/ui.c:193
 #: src/ui/ui.c:198
 msgid "Return"
 msgstr "Tillbaka"
@@ -275,13 +275,9 @@ msgstr ""
 msgid "Scroll map up fast"
 msgstr ""
 
-#: src/ui/gamescreen.c:155
+#: src/ui/gamescreen.c:157
 #, c-format
 msgid "State: %s"
-msgstr ""
-
-#: src/ui/gamescreen.c:118
-msgid "T"
 msgstr ""
 
 #: src/ui/new_world.c:33
@@ -297,7 +293,7 @@ msgstr "Till huvud menyn"
 msgid "Transition not found in state machine. \"%s\""
 msgstr ""
 
-#: src/ui/gamescreen.c:154
+#: src/ui/gamescreen.c:156
 #, c-format
 msgid "Type: %s"
 msgstr ""
@@ -306,11 +302,11 @@ msgstr ""
 msgid "Up"
 msgstr ""
 
-#: src/ui/gamescreen.c:202
+#: src/ui/gamescreen.c:204
 msgid "W"
 msgstr ""
 
-#: src/ui/gamescreen.c:127 src/ui/map.c:44
+#: src/ui/gamescreen.c:129 src/ui/map.c:44
 msgid "X"
 msgstr ""
 
@@ -343,7 +339,7 @@ msgstr ""
 msgid "w"
 msgstr ""
 
-#: src/ui/gamescreen.c:187
+#: src/ui/gamescreen.c:189
 msgid "|======- D U N G E O N S -======|"
 msgstr ""
 

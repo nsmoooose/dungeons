@@ -62,8 +62,8 @@ d_cmd_new_game_cb () {
 	d_context->zoom_level = 1;
 
 	struct d_ob_type *tree_type = d_ob_get_type (&d_ob_registry, "picea");
-	short height = d_heightmap_get (d_context->world->hm, 10, 10);
-	struct d_ob_instance *tree = tree_type->create (tree_type, 10, 10, height);
+	/* short height = d_heightmap_get (d_context->world->hm, 10, 10); */
+	struct d_ob_instance *tree = tree_type->create (tree_type);
 	d_list_append (d_context->objects, tree);
 
 	d_ui_do_transition (&d_transition_new_game);

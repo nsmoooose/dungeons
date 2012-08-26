@@ -107,6 +107,7 @@ d_gamescreen_draw_terrain () {
 	d_map_draw (&area, d_context->vp, d_context->zoom_level, d_context->world->hm);
 
 	for (struct d_list_node *node=d_context->objects->first;node;node=node->next) {
+		/*
 		struct d_ob_instance *object = node->data;
 
 		struct d_point2 oc = { object->pos.x, object->pos.y };
@@ -117,6 +118,7 @@ d_gamescreen_draw_terrain () {
 			d_ui->set_color (d_black_white);
 			d_ui->printf_left (sc.x, sc.y, "T");
 		}
+		*/
 	}
 
 	if (d_marker_enable) {
