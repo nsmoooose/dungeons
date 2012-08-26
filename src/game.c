@@ -10,6 +10,7 @@
 #include "object.h"
 #include "storage.h"
 #include "str.h"
+#include "world.h"
 
 struct d_game_context*
 d_game_context_new () {
@@ -24,6 +25,7 @@ d_game_context_destroy (struct d_game_context *context) {
 	d_free (context->directory);
 	d_free (context->vp);
 	d_list_destroy (context->objects);
+	d_world_free (context->world);
 	d_free (context);
 }
 
@@ -135,10 +137,10 @@ d_game_save (struct d_game_context *context) {
 	d_storage_close (storage);
 
 	storage = d_storage_new (context->directory, "hm");
-	d_storage_write_i (storage, &context->hm->width);
-	for (int x=0;x<=context->hm->width;++x) {
-		for (int y=0;y<=context->hm->height;++y) {
-			int h = d_heightmap_get (context->hm, x, y);
+	d_storage_write_i (storage, &context->world->hm->width);
+	for (int x=0;x<=context->world->hm->width;++x) {
+		for (int y=0;y<=context->world->hm->height;++y) {
+			int h = d_heightmap_get (context->world->hm, x, y);
 			d_storage_write_i (storage, &h);
 		}
 	}
@@ -180,12 +182,12 @@ d_game_load (char *directory) {
 	storage = d_storage_new (directory, "hm");
 	int size;
 	d_storage_read_i (storage, &size);
-	context->hm = d_heightmap_new (size);
-	for (int x=0;x<=context->hm->width;++x) {
-		for (int y=0;y<=context->hm->height;++y) {
+	context->world->hm = d_heightmap_new (size);
+	for (int x=0;x<=context->world->hm->width;++x) {
+		for (int y=0;y<=context->world->hm->height;++y) {
 			int h;
 			d_storage_read_i (storage, &h);
-			d_heightmap_set (context->hm, x, y, h);
+			d_heightmap_set (context->world->hm, x, y, h);
 		}
 	}
 	d_storage_close (storage);
