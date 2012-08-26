@@ -3,6 +3,7 @@
 
 #include "heightmap.h"
 #include "list.h"
+#include "world.h"
 
 struct d_viewpoint {
 	int x, y, z;
@@ -16,10 +17,10 @@ struct d_game_context {
 	/* Delta since the last update. */
 	double delta;
 
-	struct d_heightmap *hm;
 	struct d_viewpoint *vp;
 	int zoom_level;
 	struct d_list *objects;
+	struct d_world *world;
 };
 
 struct d_game_context* d_game_context_new ();

@@ -104,7 +104,7 @@ d_gamescreen_draw_terrain () {
 	area.pos.x = area.pos.y = 1;
 	area.size.width = d_ui->size.width - 1;
 	area.size.height = d_ui->size.height - 1;
-	d_map_draw (&area, d_context->vp, d_context->zoom_level, d_context->hm);
+	d_map_draw (&area, d_context->vp, d_context->zoom_level, d_context->world->hm);
 
 	for (struct d_list_node *node=d_context->objects->first;node;node=node->next) {
 		struct d_ob_instance *object = node->data;
@@ -219,12 +219,12 @@ d_cmd_map_pan_right_cb () {
 
 static void
 d_cmd_map_pan_left_cb () {
-	d_context->vp->x = fmin (d_context->vp->x + 1, d_context->hm->width);
+	d_context->vp->x = fmin (d_context->vp->x + 1, d_context->world->hm->width);
 }
 
 static void
 d_cmd_map_pan_up_cb () {
-	d_context->vp->y = fmin (d_context->vp->y + 1, d_context->hm->height);
+	d_context->vp->y = fmin (d_context->vp->y + 1, d_context->world->hm->height);
 }
 
 static void
@@ -239,12 +239,12 @@ d_cmd_map_pan_right_fast_cb () {
 
 static void
 d_cmd_map_pan_left_fast_cb () {
-	d_context->vp->x = fmin (d_context->vp->x + 10 * d_context->zoom_level, d_context->hm->width);
+	d_context->vp->x = fmin (d_context->vp->x + 10 * d_context->zoom_level, d_context->world->hm->width);
 }
 
 static void
 d_cmd_map_pan_up_fast_cb () {
-	d_context->vp->y = fmin (d_context->vp->y + 10 * d_context->zoom_level, d_context->hm->height);
+	d_context->vp->y = fmin (d_context->vp->y + 10 * d_context->zoom_level, d_context->world->hm->height);
 }
 
 static void
@@ -339,7 +339,7 @@ d_look_around_exit (struct d_ui_state *prev, struct d_ui_state *new) {
 
 static void
 d_cmd_marker_down_cb () {
-	d_marker_pos.y = fmin (d_context->hm->height, d_marker_pos.y + 1);
+	d_marker_pos.y = fmin (d_context->world->hm->height, d_marker_pos.y + 1);
 }
 
 static void
@@ -349,7 +349,7 @@ d_cmd_marker_left_cb () {
 
 static void
 d_cmd_marker_right_cb () {
-	d_marker_pos.x = fmin (d_context->hm->width, d_marker_pos.x + 1);
+	d_marker_pos.x = fmin (d_context->world->hm->width, d_marker_pos.x + 1);
 }
 
 static void

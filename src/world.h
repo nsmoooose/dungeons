@@ -2,20 +2,7 @@
 #define __DUNGEONS_WORLD_H__
 
 #include "heightmap.h"
-
-/*
-struct d_pos {
-	short x, y, z;
-};
-*/
-
-struct d_tile {
-	int i;
-	/*
-	   struct d_list* objects;
-	   shortcuts for adjascent tiles?
-	*/
-};
+#include "octree.h"
 
 struct d_world {
 	int width;
@@ -24,7 +11,7 @@ struct d_world {
 	int ocean;
 
 	struct d_heightmap *hm;
-	struct d_tile **tiles;
+	struct d_octree *tree;
 };
 
 struct d_tile *d_world_tile_new ();

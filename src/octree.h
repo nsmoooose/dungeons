@@ -36,5 +36,6 @@ void d_octree_traverse (struct d_octree *tree, struct d_octree_node *node,
                         d_octree_cb cb, void *data);
 void d_octree_traverse_aabb (struct d_octree *tree, struct d_octree_node *node,
                              struct d_aabb3 *aabb, d_octree_cb cb, void *data);
+struct d_octree_obj* d_octree_traverse_point (struct d_octree *tree, struct d_point3 *point);
 
 #endif

@@ -7,6 +7,7 @@
 #include "../memory.h"
 #include "../object.h"
 #include "../str.h"
+#include "../world_gen.h"
 #include "gamescreen.h"
 #include "main_menu.h"
 #include "new_world.h"
@@ -49,20 +50,19 @@ static void
 d_cmd_new_game_cb () {
 	/* Set a context */
 	d_context = d_game_context_new ();
+
+	struct d_world_gen_params params = { 128 };
+	d_context->world = d_world_generate (&params);
+
 	d_context->directory = d_strdup ("/home/henrikn/.dungeons/saves/test");
-
-	int size = 128;
-	d_context->hm = d_heightmap_new (size);
-	d_fractal_heightmap_generate (d_context->hm, 123, 10000.f, 0.9f);
-
-	d_context->vp->x = size / 2;
-	d_context->vp->y = size / 2;
-	d_context->vp->z = fmax (d_heightmap_get (d_context->hm, d_context->vp->x, d_context->vp->y), 0.0f);
+	d_context->vp->x = params.size / 2;
+	d_context->vp->y = params.size / 2;
+	d_context->vp->z = fmax (d_heightmap_get (d_context->world->hm, d_context->vp->x, d_context->vp->y), 0.0f);
 
 	d_context->zoom_level = 1;
 
 	struct d_ob_type *tree_type = d_ob_get_type (&d_ob_registry, "picea");
-	short height = d_heightmap_get (d_context->hm, 10, 10);
+	short height = d_heightmap_get (d_context->world->hm, 10, 10);
 	struct d_ob_instance *tree = tree_type->create (tree_type, 10, 10, height);
 	d_list_append (d_context->objects, tree);
 

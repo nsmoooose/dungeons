@@ -87,7 +87,7 @@ msgstr ""
 msgid "/dungeons-curses"
 msgstr ""
 
-#: src/ui/main_menu.c:52
+#: src/ui/main_menu.c:57
 msgid "/home/henrikn/.dungeons/saves/test"
 msgstr ""
 
@@ -128,7 +128,7 @@ msgstr "Grottor"
 msgid "E"
 msgstr ""
 
-#: src/ui/main_menu.c:28
+#: src/ui/main_menu.c:29
 msgid "Explore"
 msgstr "Utforska"
 
@@ -152,7 +152,7 @@ msgstr "I spel meny"
 msgid "Load"
 msgstr "Ladda"
 
-#: src/ui/load_game.c:27 src/ui/main_menu.c:27 src/ui/ui.c:167
+#: src/ui/load_game.c:27 src/ui/main_menu.c:28 src/ui/ui.c:167
 msgid "Load game"
 msgstr "Ladda spel"
 
@@ -164,7 +164,7 @@ msgstr "Laddar"
 msgid "Look around"
 msgstr "Titta omkring"
 
-#: src/ui/main_menu.c:32 src/ui/new_world.c:10
+#: src/ui/main_menu.c:33 src/ui/new_world.c:10
 msgid "Main menu"
 msgstr "Huvudmenu"
 
@@ -184,11 +184,11 @@ msgstr "Flytta markör till höger"
 msgid "Move marker up"
 msgstr "Flytta markör upp"
 
-#: src/ui/main_menu.c:25 src/ui/ui.c:165
+#: src/ui/main_menu.c:26 src/ui/ui.c:165
 msgid "New game"
 msgstr "Nytt spel"
 
-#: src/ui/main_menu.c:26 src/ui/new_world.c:15 src/ui/ui.c:163
+#: src/ui/main_menu.c:27 src/ui/new_world.c:15 src/ui/ui.c:163
 msgid "New world"
 msgstr "Ny värld"
 
@@ -218,7 +218,7 @@ msgstr "Föregående"
 msgid "Print object info"
 msgstr ""
 
-#: src/ui/main_menu.c:29 src/ui/quit.c:7 src/ui/quit.c:11 src/ui/ui.c:169
+#: src/ui/main_menu.c:30 src/ui/quit.c:7 src/ui/quit.c:11 src/ui/ui.c:169
 msgid "Quit"
 msgstr "Avsluta"
 

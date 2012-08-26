@@ -155,3 +155,7 @@ Some things to get done
         - tests
 * TODO Experiment with a websocket client javascript version
   This could be a nice way to do multiplayer?
+* TODO Procedural content generation
+  Some interesting articles here:
+  http://pcg.wikidot.com/
+  http://www.gamasutra.com/view/feature/131954/interview_the_making_of_dwarf_.php?page=7

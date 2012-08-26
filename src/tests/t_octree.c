@@ -145,25 +145,57 @@ START_TEST (test_octree_aabb) {
 	struct d_octree_obj *object3 = d_octree_insert (tree, 10, -100, 10, instance3);
 	ck_assert (tree->objects == 3);
 
-	struct d_aabb3 a1 = { { 9, 8, 13 }, 4 };
+	struct d_aabb3 a1 = { { 5, 4, 9 }, { 13, 12, 17 } };
 	d_octree_traverse_aabb (tree, tree->root, &a1, test_octree_traverse_cb, object1);
 	ck_assert (matches == 1);
 
-	struct d_aabb3 a2 = { { 9, 103, 13 }, 4 };
+	struct d_aabb3 a2 = { { 5, 99, 9 }, { 13, 107, 17 } };
 	d_octree_traverse_aabb (tree, tree->root, &a2, test_octree_traverse_cb, object2);
 	ck_assert (matches == 2);
 
-	struct d_aabb3 a3 = { { 9, -101, 13 }, 4 };
+	struct d_aabb3 a3 = { { 5, -105, 9 }, { 13, -97, 17} };
 	d_octree_traverse_aabb (tree, tree->root, &a3, test_octree_traverse_cb, object3);
 	ck_assert (matches == 3);
 
-	struct d_aabb3 a4 = { { 90, -101, 13 }, 4 };
+	struct d_aabb3 a4 = { { 86, -105, 9 }, { 94, 97, 14} };
 	d_octree_traverse_aabb (tree, tree->root, &a4, test_octree_traverse_cb, 0);
 	ck_assert (matches == 3);
 
 	d_octree_traverse (tree, tree->root, test_octree_object_delete_cb, 0);
 	d_octree_destroy (tree);
 	ck_assert_msg (d_allocations == d_frees, "Allocations: %d, Frees: %d", d_allocations, d_frees);
+}
+END_TEST
+
+START_TEST (test_octree_point) {
+	struct d_octree *tree = d_octree_new (10, 256);
+	struct d_ob_type *type = d_ob_category_trees.objects[0];
+
+	struct d_ob_instance *instance1 = type->create (type, 1, 2, 3);
+	struct d_ob_instance *instance2 = type->create (type, 1, 2, 3);
+	struct d_ob_instance *instance3 = type->create (type, 1, 2, 3);
+	ck_assert (instance1 != 0 && instance2 != 0 && instance3 != 0);
+
+	struct d_octree_obj *object1 = d_octree_insert (tree, 10, 10, 10, instance1);
+	struct d_octree_obj *object2 = d_octree_insert (tree, 11, 10, 10, instance2);
+	struct d_octree_obj *object3 = d_octree_insert (tree, 12, 10, 10, instance3);
+	ck_assert (tree->objects == 3);
+	ck_assert (object1 != 0 && object2 != 0 && object3 != 0);
+
+	struct d_point3 point = {10, 10, 10};
+	struct d_octree_obj *match = 0;
+
+	point.x = 10;
+	match = d_octree_traverse_point (tree, &point);
+	ck_assert (match == object1);
+
+	point.x = 11;
+	match = d_octree_traverse_point (tree, &point);
+	ck_assert (match == object2);
+
+	point.x = 12;
+	match = d_octree_traverse_point (tree, &point);
+	ck_assert (match == object3);
 }
 END_TEST
 
@@ -174,5 +206,6 @@ add_octree_tests (Suite *suite) {
 	tcase_add_test (c, test_octree_insert_delete);
 	tcase_add_test (c, test_octree_10k_objects);
 	tcase_add_test (c, test_octree_aabb);
+	tcase_add_test (c, test_octree_point);
 	suite_add_tcase (suite, c);
 }
