@@ -4,20 +4,6 @@
 #include "heightmap.h"
 #include "octree.h"
 
-/*
-struct d_pos {
-	short x, y, z;
-};
-*/
-
-struct d_tile {
-	int i;
-	/*
-	   struct d_list* objects;
-	   shortcuts for adjascent tiles?
-	*/
-};
-
 struct d_world {
 	int width;
 	int height;
@@ -25,7 +11,6 @@ struct d_world {
 	int ocean;
 
 	struct d_heightmap *hm;
-	struct d_tile **tiles;
 	struct d_octree *tree;
 };
 
