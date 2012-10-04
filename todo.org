@@ -159,3 +159,8 @@ Some things to get done
   Some interesting articles here:
   http://pcg.wikidot.com/
   http://www.gamasutra.com/view/feature/131954/interview_the_making_of_dwarf_.php?page=7
+
+Research topics:
+* TODO browser based game
+  https://github.com/mrdoob/three.js
+
