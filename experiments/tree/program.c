@@ -27,14 +27,6 @@ struct tree {
 	double height;
 };
 
-static double d_time_get () {
-	struct timespec clock;
-	if (clock_gettime (CLOCK_REALTIME, &clock) == -1) {
-		/* d_bug ("Failed to get clock."); */
-	}
-	return clock.tv_sec + ((double)clock.tv_nsec / 1000000000.0);
-}
-
 static void tree_update (struct tree* t, double d) {
 	/* TODO tree should slowly die outside its normal habitat.
 	/* Tree should die outside of its normal habitat.
